@@ -1,6 +1,6 @@
 # Maintainer: Funbinet <funbinet@gmail.com>
 pkgname=loute
-pkgver=0.0.0
+pkgver=1.5.0
 pkgrel=1
 pkgdesc="LOUTE - Autonomous Bug Bounty Framework"
 arch=('x86_64')

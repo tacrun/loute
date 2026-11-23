@@ -4,7 +4,7 @@
 
 set -e
 
-VERSION="0.0.0"
+VERSION="1.5.0"
 APP_NAME="loute"
 DEB_NAME="${APP_NAME}_v${VERSION}"
 

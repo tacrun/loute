@@ -2,7 +2,7 @@
   <img src="../loute/assets/icons/logo.png" width="120" alt="LOUTE Logo">
   <h1><b>L O U C E</b></h1>
   <h3>AUTONOMOUS BUG BOUNTY FRAMEWORK</h3>
-  <p><b>V 0.0.0</b></p>
+  <p><b>V 1.5.0</b></p>
   <p><b>© 2026 Funbinet Inc.</b></p>
   <br>
   <a href="https://github.com/funbinet">
@@ -20,7 +20,7 @@
 
 This document explains how to build, modify, and troubleshoot the distribution packages for the LOUTE framework. The system is designed to be packaged as `.apk` (Android), `.deb` (Linux Debian-based), `.pkg.tar.zst` (Arch Linux), and `.exe` (Windows).
 
-All generated packages should be named according to the system version, e.g., `loute_v0.0.0.apk` or `loute-v0.0.0-1-x86_64.pkg.tar.zst`.
+All generated packages should be named according to the system version, e.g., `loute_v1.5.0.apk` or `loute-v1.5.0-1-x86_64.pkg.tar.zst`.
 
 ---
 
@@ -55,7 +55,7 @@ Arch does not install `.deb` packages natively. LOUTE provides a native Arch pac
    ```
 3. Install the generated package:
    ```bash
-   sudo pacman -U loute-v0.0.0-1-x86_64.pkg.tar.zst
+   sudo pacman -U loute-v1.5.0-1-x86_64.pkg.tar.zst
    ```
 
 ### After Install
@@ -106,7 +106,7 @@ Upon successful build of the packages, they should be uploaded to the Git releas
 
 <div align="center">
 
-**LOUTE V 0.0.0** 
+**LOUTE V 1.5.0** 
 **© 2026 Funbinet Inc. All Rights Reserved.**
 
 </div>
