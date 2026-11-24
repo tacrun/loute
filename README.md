@@ -1,6 +1,6 @@
 <div align="center">
   <img src="loute/assets/icons/logo.png" width="120" alt="LOUTE Logo">
-  <h1><b>L O U C E</b></h1>
+  <h1><b>L O U T E</b></h1>
   <h3>AUTONOMOUS BUG BOUNTY FRAMEWORK</h3>
   <p><b>V 1.5.0</b></p>
   <p><b>© 2026 Funbinet Inc.</b></p>
