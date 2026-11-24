@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-enum ReportFormat { html, json, txt, csv, cve }
+enum ReportFormat { html, json, txt, csv, cve, md, sarif, pdf }
 
 class ReportPayload {
   final String id;

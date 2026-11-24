@@ -14,6 +14,14 @@ echo "=========================================="
 
 cd ../loute
 
+# --- Catalog shipping gate (1-5-5.md S4): fail if the capability bible is absent ---
+echo "[*] Verifying capability catalog is bundled..."
+if [ ! -f "assets/capabilities/capabilities.toml.txt" ]; then
+  echo "[!] FATAL: capabilities.toml.txt missing from assets — refusing to package." >&2
+  exit 1
+fi
+echo "[+] Catalog present: $(sha256sum assets/capabilities/capabilities.toml.txt | cut -d' ' -f1)"
+
 # Clean previous builds
 echo "[*] Cleaning old builds..."
 flutter clean
