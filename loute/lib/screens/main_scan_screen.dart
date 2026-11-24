@@ -11,6 +11,12 @@ import 'dashboard_screen.dart';
 import 'documentation_screen.dart';
 import 'settings_screen.dart';
 import 'reports_screen.dart';
+import '../features/ops/ops_dashboard_screen.dart';
+import '../features/cap/capability_explorer_screen.dart';
+import '../features/providers/provider_health_screen.dart';
+import '../features/jobs/jobs_screen.dart';
+import '../features/findings/findings_screen.dart';
+import '../features/graph/asset_graph_screen.dart';
 
 /// Main scan screen — coordinates main layout, sidebar/bottom nav modes, and content switching.
 class MainScanScreen extends ConsumerWidget {
@@ -47,6 +53,18 @@ class MainScanScreen extends ConsumerWidget {
       mainContent = const SettingsScreen();
     } else if (navState.activeScreen == ActiveScreen.reports) {
       mainContent = const ReportsScreen();
+    } else if (navState.activeScreen == ActiveScreen.ops) {
+      mainContent = const OpsDashboardScreen();
+    } else if (navState.activeScreen == ActiveScreen.capabilities) {
+      mainContent = const CapabilityExplorerScreen();
+    } else if (navState.activeScreen == ActiveScreen.providers) {
+      mainContent = const ProviderHealthScreen();
+    } else if (navState.activeScreen == ActiveScreen.jobs) {
+      mainContent = const JobsScreen();
+    } else if (navState.activeScreen == ActiveScreen.findings) {
+      mainContent = const FindingsScreen();
+    } else if (navState.activeScreen == ActiveScreen.graph) {
+      mainContent = const AssetGraphScreen();
     } else {
       mainContent = const DashboardScreen();
     }

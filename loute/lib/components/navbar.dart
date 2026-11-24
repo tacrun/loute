@@ -79,7 +79,7 @@ class Navbar extends ConsumerWidget implements PreferredSizeWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'LOE',
+                      'V1.5.5',
                       style: MidnightHacker.labelDim.copyWith(fontSize: 12),
                     ),
                   ],
@@ -116,11 +116,36 @@ class Navbar extends ConsumerWidget implements PreferredSizeWidget {
 
           const Spacer(),
 
-          // Shortcut Icons: Dashboard, Docs, Reports, Settings
+          // Shortcut Icons: Ops Dashboard, Capabilities, Jobs, Findings, Graph, Docs, Reports, Settings
           _NavIcon(
             icon: Icons.dashboard_outlined,
             tooltip: 'Dashboard',
             onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.dashboard),
+          ),
+          _NavIcon(
+            icon: Icons.flash_on_outlined,
+            tooltip: 'Capabilities',
+            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.capabilities),
+          ),
+          _NavIcon(
+            icon: Icons.dns_outlined,
+            tooltip: 'Providers',
+            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.providers),
+          ),
+          _NavIcon(
+            icon: Icons.play_arrow_outlined,
+            tooltip: 'Jobs',
+            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.jobs),
+          ),
+          _NavIcon(
+            icon: Icons.bug_report_outlined,
+            tooltip: 'Findings',
+            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.findings),
+          ),
+          _NavIcon(
+            icon: Icons.account_tree_outlined,
+            tooltip: 'Graph',
+            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.graph),
           ),
           _NavIcon(
             icon: Icons.menu_book_outlined,

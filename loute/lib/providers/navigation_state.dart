@@ -10,6 +10,12 @@ enum ActiveScreen {
   settings,
   reports,
   action,
+  ops,
+  capabilities,
+  providers,
+  jobs,
+  findings,
+  graph,
 }
 
 /// The global navigation state.
