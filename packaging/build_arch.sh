@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-VERSION="1.5.0"
+VERSION="1.5.5"
 PKGREL="1"
 APP_NAME="loute"
 ARCH="$(uname -m)"

@@ -25,7 +25,7 @@ flutter build apk --release
 
 # Copy to packaging directory
 echo "[*] Packaging complete! Moving to outputs..."
-cp build/app/outputs/flutter-apk/app-release.apk ../packaging/loute_v1.5.0.apk
+cp build/app/outputs/flutter-apk/app-release.apk ../packaging/loute_v1.5.5.apk
 
-echo "[*] Success! Application is ready at: packaging/loute_v1.5.0.apk"
+echo "[*] Success! Application is ready at: packaging/loute_v1.5.5.apk"
 echo "=========================================="

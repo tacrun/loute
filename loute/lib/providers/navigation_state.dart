@@ -52,7 +52,7 @@ class NavigationState {
     this.selectedActionId,
     this.sidePanelCollapsed = false,
     this.navBarPreference = 'side',
-    this.systemVersion = '1.5.0',
+    this.systemVersion = '1.5.5',
     this.outputSaveLocation = '/home/iturn/loute/outputs/reports',
     this.reports = const [],
     this.selectedReport,

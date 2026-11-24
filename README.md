@@ -2,7 +2,7 @@
   <img src="loute/assets/icons/logo.png" width="120" alt="LOUTE Logo">
   <h1><b>L O U T E</b></h1>
   <h3>AUTONOMOUS BUG BOUNTY FRAMEWORK</h3>
-  <p><b>V 1.5.0</b></p>
+  <p><b>V 1.5.5</b></p>
   <p><b>© 2026 Funbinet Inc.</b></p>
   <br>
   <a href="https://github.com/funbinet">
@@ -57,24 +57,24 @@ Capabilities:
 LOUTE is distributed as pre-compiled binaries for your target environment.
 
 ### Linux (Debian/Ubuntu - .deb)
-1. Download the `loute_v1.5.0.deb` package from the Releases page.
-2. Install via dpkg: `sudo dpkg -i loute_v1.5.0.deb`
+1. Download the `loute_v1.5.5.deb` package from the Releases page.
+2. Install via dpkg: `sudo dpkg -i loute_v1.5.5.deb`
 3. Launch from your application menu or run `loute` in the terminal.
 
 ### Linux (Arch - .pkg.tar.zst)
 1. Install build dependencies: `sudo pacman -S --needed flutter rust cargo gtk3 base-devel`
 2. Build the package: `cd packaging && ./build_arch.sh`
-3. Install: `sudo pacman -U packaging/loute-v1.5.0-1-x86_64.pkg.tar.zst`
+3. Install: `sudo pacman -U packaging/loute-v1.5.5-1-x86_64.pkg.tar.zst`
 4. Launch from your app launcher as **LOUTE**, or run `loute` in the terminal.
 
 ### Android (.apk)
-1. Download the `loute_v1.5.0.apk` package to your Android device.
+1. Download the `loute_v1.5.5.apk` package to your Android device.
 2. Ensure "Install from Unknown Sources" is enabled.
 3. Tap the APK to install.
 4. Launch LOUTE from your app drawer. (Note: Ensure the app has network and storage permissions).
 
 ### Windows (.exe)
-1. Download the `loute_v1.5.0_windows.zip` package.
+1. Download the `loute_v1.5.5_windows.zip` package.
 2. Extract the contents to your preferred directory.
 3. Run `loute.exe`. No installation required.
 
@@ -117,7 +117,7 @@ This software is provided "as is" without warranty of any kind. Funbinet shall n
 
 <div align="center">
 
-**LOUTE V 1.5.0** 
+**LOUTE V 1.5.5** 
 **© 2026 Funbinet Inc. All Rights Reserved.**
 
 </div>
