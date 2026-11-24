@@ -267,7 +267,6 @@ class DashboardScreen extends ConsumerWidget {
           ),
         ),
       ),
-        ),
       ),
     );
   }

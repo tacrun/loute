@@ -246,6 +246,10 @@ class ReportStorage {
         return record.csvPath;
       case ReportFormat.cve:
         return record.cvePath;
+      case ReportFormat.md:
+      case ReportFormat.sarif:
+      case ReportFormat.pdf:
+        return null;
     }
   }
 }

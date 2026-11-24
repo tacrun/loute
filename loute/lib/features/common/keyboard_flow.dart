@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/navigation_state.dart';
 
@@ -54,7 +55,8 @@ class _KeyboardFlowState extends ConsumerState<KeyboardFlow> {
     if (key == LogicalKeyboardKey.keyG) {
       _gPending = true;
     } else if (key == LogicalKeyboardKey.question ||
-        (key == LogicalKeyboardKey.slash && event.isShiftPressed)) {
+        (key == LogicalKeyboardKey.slash &&
+            HardwareKeyboard.instance.isShiftPressed)) {
       setState(() => _showShortcuts = true);
     } else if (key == LogicalKeyboardKey.escape) {
       nav.setActiveScreen(ActiveScreen.dashboard);

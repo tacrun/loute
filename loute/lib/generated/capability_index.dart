@@ -294,3 +294,16 @@ CapabilityEntry? findCapability(String id) {
   return null;
 }
 List<CapabilityEntry> byPhase(String phase) => kCapabilities.where((c) => c.phase == phase).toList();
+
+class CatalogMeta {
+  static const String version = '1.5.5';
+  static int get totalCapabilities => kCapabilities.length;
+  static int get totalPhases => LoutePhase.values.length;
+  static Map<String, int> get phaseCounts {
+    final counts = <String, int>{};
+    for (final c in kCapabilities) {
+      counts[c.phase] = (counts[c.phase] ?? 0) + 1;
+    }
+    return counts;
+  }
+}
