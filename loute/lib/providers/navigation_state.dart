@@ -1,15 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/phase_model.dart';
-import '../models/phase_registry.dart';
 import '../models/report_model.dart';
+import '../generated/capability_index.dart';
 
-/// Active screens available in LOUTE.
+/// Active screens available in LOUTE. The sidebar is the primary navigation;
+/// the top bar keeps only window controls and quick utility shortcuts.
 enum ActiveScreen {
   dashboard,
   documentation,
   settings,
   reports,
-  action,
+  capability,
+  toolManager,
   ops,
   capabilities,
   providers,
@@ -20,25 +21,23 @@ enum ActiveScreen {
   vault,
   payloads,
   timeline,
-  arena,
 }
 
 /// The global navigation state.
 class NavigationState {
   final ActiveScreen activeScreen;
   final String? selectedPhaseId;
-  final String? selectedModuleId;
-  final String? selectedActionId;
+  final String? selectedCapabilityId;
+  final String? selectedGroupId;
+  final int selectedOperationIndex;
   final bool sidePanelCollapsed;
-  final String navBarPreference; // 'side' or 'bottom'
   final String systemVersion;
   final String outputSaveLocation;
   final List<ReportRecord> reports;
   final ReportRecord? selectedReport;
 
-  // Tree navigation state
+  // Sidebar tree state
   final Set<String> expandedPhases;
-  final Set<String> expandedModules;
 
   // Expanded system configurations
   final int scanConcurrency;
@@ -59,16 +58,15 @@ class NavigationState {
   const NavigationState({
     this.activeScreen = ActiveScreen.dashboard,
     this.selectedPhaseId,
-    this.selectedModuleId,
-    this.selectedActionId,
+    this.selectedCapabilityId,
+    this.selectedGroupId,
+    this.selectedOperationIndex = 0,
     this.sidePanelCollapsed = false,
-    this.navBarPreference = 'side',
     this.systemVersion = '1.5.5',
     this.outputSaveLocation = '/home/iturn/loute/outputs/reports',
     this.reports = const [],
     this.selectedReport,
     this.expandedPhases = const {},
-    this.expandedModules = const {},
     this.scanConcurrency = 200,
     this.requestTimeoutSeconds = 10,
     this.targetScanDelayMs = 100,
@@ -88,17 +86,16 @@ class NavigationState {
   NavigationState copyWith({
     ActiveScreen? activeScreen,
     String? selectedPhaseId,
-    String? selectedModuleId,
-    String? selectedActionId,
+    String? selectedCapabilityId,
+    String? selectedGroupId,
+    int? selectedOperationIndex,
     bool? sidePanelCollapsed,
-    String? navBarPreference,
     String? systemVersion,
     String? outputSaveLocation,
     List<ReportRecord>? reports,
     ReportRecord? selectedReport,
     bool clearSelectedReport = false,
     Set<String>? expandedPhases,
-    Set<String>? expandedModules,
     int? scanConcurrency,
     int? requestTimeoutSeconds,
     int? targetScanDelayMs,
@@ -117,17 +114,16 @@ class NavigationState {
     return NavigationState(
       activeScreen: activeScreen ?? this.activeScreen,
       selectedPhaseId: selectedPhaseId ?? this.selectedPhaseId,
-      selectedModuleId: selectedModuleId ?? this.selectedModuleId,
-      selectedActionId: selectedActionId ?? this.selectedActionId,
+      selectedCapabilityId: selectedCapabilityId ?? this.selectedCapabilityId,
+      selectedGroupId: selectedGroupId ?? this.selectedGroupId,
+      selectedOperationIndex: selectedOperationIndex ?? this.selectedOperationIndex,
       sidePanelCollapsed: sidePanelCollapsed ?? this.sidePanelCollapsed,
-      navBarPreference: navBarPreference ?? this.navBarPreference,
       systemVersion: systemVersion ?? this.systemVersion,
       outputSaveLocation: outputSaveLocation ?? this.outputSaveLocation,
       reports: reports ?? this.reports,
       selectedReport:
           clearSelectedReport ? null : (selectedReport ?? this.selectedReport),
       expandedPhases: expandedPhases ?? this.expandedPhases,
-      expandedModules: expandedModules ?? this.expandedModules,
       scanConcurrency: scanConcurrency ?? this.scanConcurrency,
       requestTimeoutSeconds:
           requestTimeoutSeconds ?? this.requestTimeoutSeconds,
@@ -146,41 +142,38 @@ class NavigationState {
     );
   }
 
-  ActionItem? get currentAction {
-    if (selectedActionId == null) return null;
-    for (final phase in PhaseRegistry.phases) {
-      for (final module in phase.modules) {
-        for (final action in module.actions) {
-          if (action.id == selectedActionId) return action;
-        }
-      }
-    }
-    return null;
+  CapabilityEntry? get currentCapability {
+    if (selectedCapabilityId == null) return null;
+    return findCapability(selectedCapabilityId!);
   }
 }
 
 class NavigationNotifier extends StateNotifier<NavigationState> {
   NavigationNotifier() : super(const NavigationState());
 
-  void selectAction(String phaseId, String moduleId, String actionId) {
+  void selectCapability(String phaseId, String capabilityId) {
     state = state.copyWith(
-      activeScreen: ActiveScreen.action,
+      activeScreen: ActiveScreen.capability,
       selectedPhaseId: phaseId,
-      selectedModuleId: moduleId,
-      selectedActionId: actionId,
+      selectedCapabilityId: capabilityId,
+      selectedGroupId: null,
+      selectedOperationIndex: 0,
     );
   }
 
-  void setActiveScreen(ActiveScreen screen) {
+  void selectGroup(String groupId) {
     state = state.copyWith(
-      activeScreen: screen,
-      selectedPhaseId:
-          screen == ActiveScreen.action ? state.selectedPhaseId : null,
-      selectedModuleId:
-          screen == ActiveScreen.action ? state.selectedModuleId : null,
-      selectedActionId:
-          screen == ActiveScreen.action ? state.selectedActionId : null,
+      selectedGroupId: groupId,
+      selectedOperationIndex: 0,
     );
+  }
+
+  void selectOperation(int index) {
+    state = state.copyWith(selectedOperationIndex: index);
+  }
+
+  void setActiveScreen(ActiveScreen screen) {
+    state = state.copyWith(activeScreen: screen);
   }
 
   void toggleSidePanelCollapsed() {
@@ -197,18 +190,9 @@ class NavigationNotifier extends StateNotifier<NavigationState> {
     state = state.copyWith(expandedPhases: updated);
   }
 
-  void toggleModuleExpanded(String moduleId) {
-    final updated = Set<String>.from(state.expandedModules);
-    if (updated.contains(moduleId)) {
-      updated.remove(moduleId);
-    } else {
-      updated.add(moduleId);
-    }
-    state = state.copyWith(expandedModules: updated);
-  }
-
-  void setNavBarPreference(String pref) {
-    state = state.copyWith(navBarPreference: pref);
+  void expandPhase(String phaseId) {
+    final updated = Set<String>.from(state.expandedPhases)..add(phaseId);
+    state = state.copyWith(expandedPhases: updated);
   }
 
   void setSystemVersion(String version) {

@@ -226,6 +226,50 @@ pub fn create_workspace(name: String, kind: String) -> String {
     }).to_string()
 }
 
+/// List every sub-action (provider operation) of a capability as JSON.
+pub fn list_operations(id: String) -> String {
+    let ops = core::dispatcher::operations_for(&id);
+    serde_json::to_string(&ops).unwrap_or_else(|e| format!("{{\"error\":\"{}\"}}", e))
+}
+
+/// Dry-run a single sub-action by operation index.
+pub fn dry_run_operation(id: String, operation_index: u32, inputs: String, scope: Option<String>) -> String {
+    let inputs_map: BTreeMap<String, String> = serde_json::from_str(&inputs).unwrap_or_default();
+    match core::dispatcher::plan_operation(&id, operation_index as usize, &inputs_map, scope.as_deref()) {
+        Ok(plan) => serde_json::json!({
+            "job_id": plan.job_id.0,
+            "capability": plan.capability.0,
+            "provider": plan.provider.0,
+            "binary_path": plan.binary_path.display().to_string(),
+            "argv": plan.argv,
+            "timeout": plan.timeout.as_secs(),
+            "parser": plan.parser,
+            "command_preview": plan.command_preview,
+        }).to_string(),
+        Err(e) => serde_json::json!({"error": e.to_string()}).to_string(),
+    }
+}
+
+/// Execute a single sub-action (provider operation) end to end.
+pub async fn run_operation(id: String, operation_index: u32, inputs: String, scope: Option<String>) -> String {
+    let inputs_map: BTreeMap<String, String> = serde_json::from_str(&inputs).unwrap_or_default();
+    let plan = match core::dispatcher::plan_operation(&id, operation_index as usize, &inputs_map, scope.as_deref()) {
+        Ok(p) => p,
+        Err(e) => return serde_json::json!({"error": e.to_string(), "capability": id}).to_string(),
+    };
+    let mut result = core::command_runner::CommandRunner::run(&plan).await;
+    result.catalog_hash = crate::CATALOG_HASH.to_string();
+    let parsed = crate::parsers::parse(&plan.parser, &result.stdout);
+    serde_json::json!({
+        "result": result,
+        "parse_stats": {
+            "assets": parsed.assets.len(),
+            "findings": parsed.findings.len(),
+            "unparsed": parsed.unparsed_count,
+        }
+    }).to_string()
+}
+
 /// Run a capability end-to-end through the full runtime (plan → exec → parse → normalize).
 /// No stub fallback: failures return a typed error result (F2).
 pub async fn run_capability(id: String, inputs: String, scope: Option<String>) -> String {

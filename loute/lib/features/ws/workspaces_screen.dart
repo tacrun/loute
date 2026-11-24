@@ -10,7 +10,7 @@ class WorkspacesScreen extends StatelessWidget {
     final workspaces = [
       ['engagement-default', 'engagement', '241 caps · active'],
       ['lab-local', 'lab', 'sandbox · idle'],
-      ['ctf-arena-01', 'ctf', 'challenges · idle'],
+      ['ctf-target-01', 'ctf', 'challenge solving · idle'],
     ];
     return ScreenShell(
       title: 'TARGET WORKSPACES',

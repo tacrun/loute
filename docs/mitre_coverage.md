@@ -1,6 +1,6 @@
 # MITRE ATT&CK Coverage
 
-Generated from `capabilities.toml.txt` (schema 2). 15 unique techniques across 241 capabilities.
+Generated from `capabilities.toml.txt`. 15 unique techniques across 241 capabilities.
 
 | Technique | Capabilities | Count |
 |---|---|---|

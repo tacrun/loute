@@ -19,7 +19,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   // Base controllers
   late TextEditingController _versionController;
   late TextEditingController _locationController;
-  late String _navBarPref;
 
   // Expanded tuning controllers
   late TextEditingController _concurrencyController;
@@ -50,7 +49,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
     _versionController = TextEditingController(text: navState.systemVersion);
     _locationController = TextEditingController(text: navState.outputSaveLocation);
-    _navBarPref = navState.navBarPreference;
 
     _concurrencyController = TextEditingController(text: navState.scanConcurrency.toString());
     _timeoutController = TextEditingController(text: navState.requestTimeoutSeconds.toString());
@@ -129,7 +127,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     // Save base config
     notifier.setSystemVersion(_versionController.text);
     notifier.setOutputSaveLocation(_locationController.text);
-    notifier.setNavBarPreference(_navBarPref);
 
     // Save advanced configs
     final concurrency = int.tryParse(_concurrencyController.text) ?? 200;
@@ -404,25 +401,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ],
                   ),
                 ], breakpoint: 760, gap: 16),
-
-                // ── Nav Prefs ──
-                _buildCategoryHeader('NAVIGATION INTERFACE STYLE'),
-                _responsiveFields([
-                  _RadioOption(
-                    label: 'SIDEBAR PANEL',
-                    icon: Icons.vertical_distribute_outlined,
-                    value: 'side',
-                    groupValue: _navBarPref,
-                    onChanged: (val) => setState(() => _navBarPref = val),
-                  ),
-                  _RadioOption(
-                    label: 'BOTTOM PANEL',
-                    icon: Icons.horizontal_distribute_outlined,
-                    value: 'bottom',
-                    groupValue: _navBarPref,
-                    onChanged: (val) => setState(() => _navBarPref = val),
-                  ),
-                ], breakpoint: 560, gap: 16),
 
                 const SizedBox(height: 32),
 

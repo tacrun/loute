@@ -6,24 +6,96 @@
 import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-Future<String> dnsBruteforce({
-  required String domain,
-  String? wordlistPath,
-  required BigInt concurrency,
-}) => RustLib.instance.api.crateApiDnsBruteforce(
-  domain: domain,
-  wordlistPath: wordlistPath,
-  concurrency: concurrency,
-);
+// These functions are ignored because they are not marked as `pub`: `registry_get_version`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`
+
+/// Initialize the LOUTE runtime - loads the capability catalog.
+Future<String> initRuntime() => RustLib.instance.api.crateApiInitRuntime();
+
+/// List all capabilities with optional phase filter.
+Future<List<CapabilitySummaryFrb>> listCapabilities({String? phaseFilter}) =>
+    RustLib.instance.api.crateApiListCapabilities(phaseFilter: phaseFilter);
+
+/// Get detailed information about a capability.
+Future<CapabilityDetailFrb?> getCapability({required String id}) =>
+    RustLib.instance.api.crateApiGetCapability(id: id);
+
+/// Validate capability inputs.
+Future<String> validateCapability(
+        {required String id, required String inputs}) =>
+    RustLib.instance.api.crateApiValidateCapability(id: id, inputs: inputs);
+
+/// Dry-run a capability - returns the execution plan without running.
+Future<String> dryRunCapability(
+        {required String id, required String inputs, String? scope}) =>
+    RustLib.instance.api
+        .crateApiDryRunCapability(id: id, inputs: inputs, scope: scope);
+
+/// Probe all providers and return a health matrix.
+Future<List<ProviderHealthFrb>> probeProviders() =>
+    RustLib.instance.api.crateApiProbeProviders();
+
+/// Create a workspace.
+Future<String> createWorkspace({required String name, required String kind}) =>
+    RustLib.instance.api.crateApiCreateWorkspace(name: name, kind: kind);
+
+/// List every sub-action (provider operation) of a capability as JSON.
+Future<String> listOperations({required String id}) =>
+    RustLib.instance.api.crateApiListOperations(id: id);
+
+/// Dry-run a single sub-action by operation index.
+Future<String> dryRunOperation(
+        {required String id,
+        required int operationIndex,
+        required String inputs,
+        String? scope}) =>
+    RustLib.instance.api.crateApiDryRunOperation(
+        id: id, operationIndex: operationIndex, inputs: inputs, scope: scope);
+
+/// Execute a single sub-action (provider operation) end to end.
+Future<String> runOperation(
+        {required String id,
+        required int operationIndex,
+        required String inputs,
+        String? scope}) =>
+    RustLib.instance.api.crateApiRunOperation(
+        id: id, operationIndex: operationIndex, inputs: inputs, scope: scope);
+
+/// Run a capability end-to-end through the full runtime (plan → exec → parse → normalize).
+/// No stub fallback: failures return a typed error result (F2).
+Future<String> runCapability(
+        {required String id, required String inputs, String? scope}) =>
+    RustLib.instance.api
+        .crateApiRunCapability(id: id, inputs: inputs, scope: scope);
+
+/// Validate the catalog against all V1-V20 rules; returns a JSON report.
+Future<String> validateCatalog() =>
+    RustLib.instance.api.crateApiValidateCatalog();
+
+/// Get the catalog hash.
+Future<String> getCatalogHash() =>
+    RustLib.instance.api.crateApiGetCatalogHash();
+
+/// Get the LOUTE version.
+Future<String> getVersion() => RustLib.instance.api.crateApiGetVersion();
+
+/// Get the catalog stats (phase counts).
+Future<String> getCatalogStats() =>
+    RustLib.instance.api.crateApiGetCatalogStats();
+
+Future<String> dnsBruteforce(
+        {required String domain,
+        String? wordlistPath,
+        required BigInt concurrency}) =>
+    RustLib.instance.api.crateApiDnsBruteforce(
+        domain: domain, wordlistPath: wordlistPath, concurrency: concurrency);
 
 Future<String> ctLogs({required String domain}) =>
     RustLib.instance.api.crateApiCtLogs(domain: domain);
 
 Future<String> zoneTransfer({required String domain, String? nameserver}) =>
-    RustLib.instance.api.crateApiZoneTransfer(
-      domain: domain,
-      nameserver: nameserver,
-    );
+    RustLib.instance.api
+        .crateApiZoneTransfer(domain: domain, nameserver: nameserver);
 
 Future<String> reverseDns({required String cidr}) =>
     RustLib.instance.api.crateApiReverseDns(cidr: cidr);
@@ -51,3 +123,244 @@ Future<String> networkServicesAudit() =>
 
 Future<String> runStubAction({required String actionId}) =>
     RustLib.instance.api.crateApiRunStubAction(actionId: actionId);
+
+class CapabilityDetailFrb {
+  final String id;
+  final String phase;
+  final String label;
+  final String summary;
+  final String risk;
+  final String noise;
+  final List<String> mitre;
+  final List<String> platforms;
+  final List<String> privileges;
+  final bool network;
+  final List<String> requires;
+  final List<String> provides;
+  final List<InputSpecFrb> inputs;
+  final String provider;
+  final String binary;
+  final String operation;
+  final List<String> args;
+  final String output;
+  final String parser;
+  final BigInt timeout;
+  final int concurrency;
+  final bool native;
+  final bool opsecSafe;
+  final bool reversible;
+  final List<String> chains;
+  final String availability;
+
+  const CapabilityDetailFrb({
+    required this.id,
+    required this.phase,
+    required this.label,
+    required this.summary,
+    required this.risk,
+    required this.noise,
+    required this.mitre,
+    required this.platforms,
+    required this.privileges,
+    required this.network,
+    required this.requires,
+    required this.provides,
+    required this.inputs,
+    required this.provider,
+    required this.binary,
+    required this.operation,
+    required this.args,
+    required this.output,
+    required this.parser,
+    required this.timeout,
+    required this.concurrency,
+    required this.native,
+    required this.opsecSafe,
+    required this.reversible,
+    required this.chains,
+    required this.availability,
+  });
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      phase.hashCode ^
+      label.hashCode ^
+      summary.hashCode ^
+      risk.hashCode ^
+      noise.hashCode ^
+      mitre.hashCode ^
+      platforms.hashCode ^
+      privileges.hashCode ^
+      network.hashCode ^
+      requires.hashCode ^
+      provides.hashCode ^
+      inputs.hashCode ^
+      provider.hashCode ^
+      binary.hashCode ^
+      operation.hashCode ^
+      args.hashCode ^
+      output.hashCode ^
+      parser.hashCode ^
+      timeout.hashCode ^
+      concurrency.hashCode ^
+      native.hashCode ^
+      opsecSafe.hashCode ^
+      reversible.hashCode ^
+      chains.hashCode ^
+      availability.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CapabilityDetailFrb &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          phase == other.phase &&
+          label == other.label &&
+          summary == other.summary &&
+          risk == other.risk &&
+          noise == other.noise &&
+          mitre == other.mitre &&
+          platforms == other.platforms &&
+          privileges == other.privileges &&
+          network == other.network &&
+          requires == other.requires &&
+          provides == other.provides &&
+          inputs == other.inputs &&
+          provider == other.provider &&
+          binary == other.binary &&
+          operation == other.operation &&
+          args == other.args &&
+          output == other.output &&
+          parser == other.parser &&
+          timeout == other.timeout &&
+          concurrency == other.concurrency &&
+          native == other.native &&
+          opsecSafe == other.opsecSafe &&
+          reversible == other.reversible &&
+          chains == other.chains &&
+          availability == other.availability;
+}
+
+class CapabilitySummaryFrb {
+  final String id;
+  final String phase;
+  final String label;
+  final String summary;
+  final String risk;
+  final String noise;
+  final String provider;
+  final bool native;
+  final bool opsecSafe;
+  final String availability;
+
+  const CapabilitySummaryFrb({
+    required this.id,
+    required this.phase,
+    required this.label,
+    required this.summary,
+    required this.risk,
+    required this.noise,
+    required this.provider,
+    required this.native,
+    required this.opsecSafe,
+    required this.availability,
+  });
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      phase.hashCode ^
+      label.hashCode ^
+      summary.hashCode ^
+      risk.hashCode ^
+      noise.hashCode ^
+      provider.hashCode ^
+      native.hashCode ^
+      opsecSafe.hashCode ^
+      availability.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CapabilitySummaryFrb &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          phase == other.phase &&
+          label == other.label &&
+          summary == other.summary &&
+          risk == other.risk &&
+          noise == other.noise &&
+          provider == other.provider &&
+          native == other.native &&
+          opsecSafe == other.opsecSafe &&
+          availability == other.availability;
+}
+
+class InputSpecFrb {
+  final String name;
+  final String kind;
+  final bool required_;
+  final String? default_;
+
+  const InputSpecFrb({
+    required this.name,
+    required this.kind,
+    required this.required_,
+    this.default_,
+  });
+
+  @override
+  int get hashCode =>
+      name.hashCode ^ kind.hashCode ^ required_.hashCode ^ default_.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is InputSpecFrb &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          kind == other.kind &&
+          required_ == other.required_ &&
+          default_ == other.default_;
+}
+
+class ProviderHealthFrb {
+  final String name;
+  final String binary;
+  final String state;
+  final String version;
+  final int capabilityCount;
+  final String installHint;
+
+  const ProviderHealthFrb({
+    required this.name,
+    required this.binary,
+    required this.state,
+    required this.version,
+    required this.capabilityCount,
+    required this.installHint,
+  });
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      binary.hashCode ^
+      state.hashCode ^
+      version.hashCode ^
+      capabilityCount.hashCode ^
+      installHint.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProviderHealthFrb &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          binary == other.binary &&
+          state == other.state &&
+          version == other.version &&
+          capabilityCount == other.capabilityCount &&
+          installHint == other.installHint;
+}

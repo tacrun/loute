@@ -3,9 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/navigation_state.dart';
 
-/// Keyboard-first operator flow (1-5-5.md §11.8).
-/// g-prefix navigation (g c/j/f/w/v/p/t/a), / search, r run, d dry-run,
-/// x cancel, Esc close, ? shortcut sheet.
+/// Keyboard-first operator flow.
+/// g-prefix navigation, ? opens the shortcut sheet, Esc returns to dashboard.
 class KeyboardFlow extends ConsumerStatefulWidget {
   final Widget child;
   const KeyboardFlow({super.key, required this.child});
@@ -24,31 +23,25 @@ class _KeyboardFlowState extends ConsumerState<KeyboardFlow> {
     final nav = ref.read(navigationProvider.notifier);
 
     if (_showShortcuts) {
-      if (key == LogicalKeyboardKey.escape)
+      if (key == LogicalKeyboardKey.escape) {
         setState(() => _showShortcuts = false);
+      }
       return;
     }
 
     if (_gPending) {
       _gPending = false;
-      if (key == LogicalKeyboardKey.keyC)
-        nav.setActiveScreen(ActiveScreen.capabilities);
-      else if (key == LogicalKeyboardKey.keyJ)
-        nav.setActiveScreen(ActiveScreen.jobs);
-      else if (key == LogicalKeyboardKey.keyF)
-        nav.setActiveScreen(ActiveScreen.findings);
-      else if (key == LogicalKeyboardKey.keyW)
-        nav.setActiveScreen(ActiveScreen.workspaces);
-      else if (key == LogicalKeyboardKey.keyV)
-        nav.setActiveScreen(ActiveScreen.vault);
-      else if (key == LogicalKeyboardKey.keyP)
-        nav.setActiveScreen(ActiveScreen.payloads);
-      else if (key == LogicalKeyboardKey.keyT)
-        nav.setActiveScreen(ActiveScreen.timeline);
-      else if (key == LogicalKeyboardKey.keyA)
-        nav.setActiveScreen(ActiveScreen.arena);
-      else if (key == LogicalKeyboardKey.keyO)
-        nav.setActiveScreen(ActiveScreen.ops);
+      if (key == LogicalKeyboardKey.keyD) {
+        nav.setActiveScreen(ActiveScreen.dashboard);
+      } else if (key == LogicalKeyboardKey.keyT) {
+        nav.setActiveScreen(ActiveScreen.toolManager);
+      } else if (key == LogicalKeyboardKey.keyR) {
+        nav.setActiveScreen(ActiveScreen.reports);
+      } else if (key == LogicalKeyboardKey.keyS) {
+        nav.setActiveScreen(ActiveScreen.settings);
+      } else if (key == LogicalKeyboardKey.keyC) {
+        nav.setActiveScreen(ActiveScreen.documentation);
+      }
       return;
     }
 
@@ -61,8 +54,6 @@ class _KeyboardFlowState extends ConsumerState<KeyboardFlow> {
     } else if (key == LogicalKeyboardKey.escape) {
       nav.setActiveScreen(ActiveScreen.dashboard);
     }
-    // r (run), d (dry-run), x (cancel) are delivered to the focused run panel
-    // via FocusNode/Shortcuts in the run configuration widget.
   }
 
   @override
@@ -84,20 +75,12 @@ class _KeyboardFlowState extends ConsumerState<KeyboardFlow> {
 
   Widget _shortcutSheet() {
     final rows = [
-      ['g c', 'Capabilities'],
-      ['g j', 'Jobs'],
-      ['g f', 'Findings'],
-      ['g w', 'Workspaces'],
-      ['g v', 'Vault'],
-      ['g p', 'Payloads'],
-      ['g t', 'Timeline'],
-      ['g a', 'Arena'],
-      ['g o', 'Operations'],
-      ['/', 'Search'],
-      ['r', 'Run'],
-      ['d', 'Dry-run'],
-      ['x', 'Cancel'],
-      ['Esc', 'Close'],
+      ['g d', 'Dashboard'],
+      ['g t', 'Tool Manager'],
+      ['g r', 'Reports'],
+      ['g s', 'Settings'],
+      ['g c', 'Documentation'],
+      ['Esc', 'Dashboard'],
       ['?', 'This sheet'],
     ];
     return Positioned.fill(
@@ -105,12 +88,13 @@ class _KeyboardFlowState extends ConsumerState<KeyboardFlow> {
         color: Colors.black87,
         child: Center(
           child: SizedBox(
-            width: 420,
+            width: 360,
             child: Card(
               color: Colors.black,
               shape: RoundedRectangleBorder(
-                  side: const BorderSide(color: Colors.green),
-                  borderRadius: BorderRadius.zero),
+                side: const BorderSide(color: Colors.green),
+                borderRadius: BorderRadius.zero,
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -124,12 +108,16 @@ class _KeyboardFlowState extends ConsumerState<KeyboardFlow> {
                           padding: const EdgeInsets.symmetric(vertical: 2),
                           child: Row(children: [
                             SizedBox(
-                                width: 48,
-                                child: Text(r[0],
-                                    style: const TextStyle(
-                                        color: Colors.green,
-                                        fontFamily: 'monospace'))),
-                            Expanded(child: Text(r[1])),
+                              width: 48,
+                              child: Text(r[0],
+                                  style: const TextStyle(
+                                      color: Colors.green,
+                                      fontFamily: 'monospace')),
+                            ),
+                            Expanded(
+                              child: Text(r[1],
+                                  style: const TextStyle(color: Colors.green)),
+                            ),
                           ]),
                         )),
                   ],

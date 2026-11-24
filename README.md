@@ -21,7 +21,7 @@ The catalog of 241 capabilities across 11 phases is the source of truth for what
 ## Architecture
 
 - **Native engine (Rust):** capability catalog loading, validation, dispatch, argv-only execution, parsers, job queue, artifact store, audit log, workspace and graph.
-- **Frontend (Flutter and Riverpod):** operator console, capability explorer, provider health, jobs, findings, asset graph, workspaces, credential vault, payload studio, timeline, reports and CTF arena.
+- **Frontend (Flutter and Riverpod):** operator console, capability explorer, provider health, jobs, findings, asset graph, workspaces, credential vault, payload studio, timeline, reports, tool manager and CTF challenge solving.
 - **FFI bridge (flutter_rust_bridge 2.12.0):** communication between Dart and Rust. Bindings are committed, so code generation is not needed for a normal build.
 - **Embedded catalog:** the capability catalog is compiled into the Rust library, so the installed application works without a source checkout.
 

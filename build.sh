@@ -43,6 +43,11 @@ echo "[*] Detected host: $(detect_os) on $(uname -m)"
 require_tool flutter
 require_tool cargo
 
+echo "[*] Provisioning large wordlists (offline safe, repo ships a full corpus)"
+if [ -f "$ROOT/scripts/fetch_wordlists.sh" ]; then
+  bash "$ROOT/scripts/fetch_wordlists.sh" || echo "[!] Wordlist refresh skipped (offline). Shipped corpus remains in use."
+fi
+
 case "$(detect_os)" in
   arch)
     echo "[*] Target: Arch Linux package (.pkg.tar.zst)"

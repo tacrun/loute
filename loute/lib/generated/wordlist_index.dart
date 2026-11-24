@@ -1,0 +1,88 @@
+// wordlist_index.dart - GENERATED from resources/wordlists.
+// DO NOT EDIT.
+
+class WordlistEntry {
+  final String id, category, path, label;
+  const WordlistEntry({required this.id, required this.category, required this.path, required this.label});
+}
+
+const Map<String, String> kWordlistCategoryLabels = {
+  'Wireless': 'Wireless',
+  'ad': 'Active Directory',
+  'cloud': 'Cloud',
+  'creds': 'Credentials',
+  'ctf': 'CTF',
+  'db': 'Databases',
+  'dirs': 'Directories',
+  'dns': 'DNS',
+  'fuzz': 'Fuzzing',
+  'http': 'HTTP',
+  'mobile': 'Mobile',
+  'params': 'Parameters',
+  'passwords': 'Passwords',
+  'payloads': 'Payloads',
+  'rules': 'Rules',
+  'smb': 'SMB',
+  'ssh': 'SSH',
+  'usernames': 'Usernames',
+  'users': 'Usernames',
+  'web': 'Web Content',
+  'wifi': 'Wireless',
+  'wireless': 'Wireless',
+};
+
+const List<WordlistEntry> kWordlists = [
+  WordlistEntry(id: 'ad/passwords.txt', category: 'ad', path: 'ad/passwords.txt', label: 'PASSWORDS'),
+  WordlistEntry(id: 'ad/users.txt', category: 'ad', path: 'ad/users.txt', label: 'USERS'),
+  WordlistEntry(id: 'cloud/keywords.txt', category: 'cloud', path: 'cloud/keywords.txt', label: 'KEYWORDS'),
+  WordlistEntry(id: 'creds/defaults.txt', category: 'creds', path: 'creds/defaults.txt', label: 'DEFAULTS'),
+  WordlistEntry(id: 'ctf/flag-patterns.txt', category: 'ctf', path: 'ctf/flag-patterns.txt', label: 'FLAG PATTERNS'),
+  WordlistEntry(id: 'db/passwords.txt', category: 'db', path: 'db/passwords.txt', label: 'PASSWORDS'),
+  WordlistEntry(id: 'dirs/directories.txt', category: 'dirs', path: 'dirs/directories.txt', label: 'DIRECTORIES'),
+  WordlistEntry(id: 'dns/deepmagic-50000.txt', category: 'dns', path: 'dns/deepmagic-50000.txt', label: 'DEEPMAGIC 50000'),
+  WordlistEntry(id: 'dns/hostnames.txt', category: 'dns', path: 'dns/hostnames.txt', label: 'HOSTNAMES'),
+  WordlistEntry(id: 'dns/subdomains-5000.txt', category: 'dns', path: 'dns/subdomains-5000.txt', label: 'SUBDOMAINS 5000'),
+  WordlistEntry(id: 'fuzz/ids.txt', category: 'fuzz', path: 'fuzz/ids.txt', label: 'IDS'),
+  WordlistEntry(id: 'fuzz/injections.txt', category: 'fuzz', path: 'fuzz/injections.txt', label: 'INJECTIONS'),
+  WordlistEntry(id: 'fuzz/lfi-paths.txt', category: 'fuzz', path: 'fuzz/lfi-paths.txt', label: 'LFI PATHS'),
+  WordlistEntry(id: 'fuzz/lfi.txt', category: 'fuzz', path: 'fuzz/lfi.txt', label: 'LFI'),
+  WordlistEntry(id: 'fuzz/numeric-values.txt', category: 'fuzz', path: 'fuzz/numeric-values.txt', label: 'NUMERIC VALUES'),
+  WordlistEntry(id: 'fuzz/ssrf.txt', category: 'fuzz', path: 'fuzz/ssrf.txt', label: 'SSRF'),
+  WordlistEntry(id: 'fuzz/ssti.txt', category: 'fuzz', path: 'fuzz/ssti.txt', label: 'SSTI'),
+  WordlistEntry(id: 'fuzz/xss-payloads.txt', category: 'fuzz', path: 'fuzz/xss-payloads.txt', label: 'XSS PAYLOADS'),
+  WordlistEntry(id: 'http/methods.txt', category: 'http', path: 'http/methods.txt', label: 'METHODS'),
+  WordlistEntry(id: 'mobile/endpoints.txt', category: 'mobile', path: 'mobile/endpoints.txt', label: 'ENDPOINTS'),
+  WordlistEntry(id: 'params/parameters.txt', category: 'params', path: 'params/parameters.txt', label: 'PARAMETERS'),
+  WordlistEntry(id: 'passwords/4-digit.txt', category: 'passwords', path: 'passwords/4-digit.txt', label: '4 DIGIT'),
+  WordlistEntry(id: 'passwords/6-digit.txt', category: 'passwords', path: 'passwords/6-digit.txt', label: '6 DIGIT'),
+  WordlistEntry(id: 'passwords/8-digit.txt', category: 'passwords', path: 'passwords/8-digit.txt', label: '8 DIGIT'),
+  WordlistEntry(id: 'passwords/common-10k.txt', category: 'passwords', path: 'passwords/common-10k.txt', label: 'COMMON 10K'),
+  WordlistEntry(id: 'passwords/rockyou-75.txt', category: 'passwords', path: 'passwords/rockyou-75.txt', label: 'ROCKYOU 75'),
+  WordlistEntry(id: 'passwords/rockyou.txt', category: 'passwords', path: 'passwords/rockyou.txt', label: 'ROCKYOU'),
+  WordlistEntry(id: 'payloads/payloads.txt', category: 'payloads', path: 'payloads/payloads.txt', label: 'PAYLOADS'),
+  WordlistEntry(id: 'rules/best66.rule', category: 'rules', path: 'rules/best66.rule', label: 'BEST66'),
+  WordlistEntry(id: 'rules/dive.rule', category: 'rules', path: 'rules/dive.rule', label: 'DIVE'),
+  WordlistEntry(id: 'smb/passwords.txt', category: 'smb', path: 'smb/passwords.txt', label: 'PASSWORDS'),
+  WordlistEntry(id: 'smb/users.txt', category: 'smb', path: 'smb/users.txt', label: 'USERS'),
+  WordlistEntry(id: 'ssh/passphrases.txt', category: 'ssh', path: 'ssh/passphrases.txt', label: 'PASSPHRASES'),
+  WordlistEntry(id: 'ssh/passwords.txt', category: 'ssh', path: 'ssh/passwords.txt', label: 'PASSWORDS'),
+  WordlistEntry(id: 'usernames/names.txt', category: 'usernames', path: 'usernames/names.txt', label: 'NAMES'),
+  WordlistEntry(id: 'usernames/usernames.txt', category: 'usernames', path: 'usernames/usernames.txt', label: 'USERNAMES'),
+  WordlistEntry(id: 'users/defaults.txt', category: 'users', path: 'users/defaults.txt', label: 'DEFAULTS'),
+  WordlistEntry(id: 'users/names.txt', category: 'users', path: 'users/names.txt', label: 'NAMES'),
+  WordlistEntry(id: 'web/admin-panels.txt', category: 'web', path: 'web/admin-panels.txt', label: 'ADMIN PANELS'),
+  WordlistEntry(id: 'web/api-endpoints.txt', category: 'web', path: 'web/api-endpoints.txt', label: 'API ENDPOINTS'),
+  WordlistEntry(id: 'web/big.txt', category: 'web', path: 'web/big.txt', label: 'BIG'),
+  WordlistEntry(id: 'web/burp-parameter-names.txt', category: 'web', path: 'web/burp-parameter-names.txt', label: 'BURP PARAMETER NAMES'),
+  WordlistEntry(id: 'web/common.txt', category: 'web', path: 'web/common.txt', label: 'COMMON'),
+  WordlistEntry(id: 'web/httpmethods.txt', category: 'web', path: 'web/httpmethods.txt', label: 'HTTPMETHODS'),
+  WordlistEntry(id: 'web/raft-medium.txt', category: 'web', path: 'web/raft-medium.txt', label: 'RAFT MEDIUM'),
+  WordlistEntry(id: 'web/spring-boot.txt', category: 'web', path: 'web/spring-boot.txt', label: 'SPRING BOOT'),
+  WordlistEntry(id: 'web/wp-plugins.txt', category: 'web', path: 'web/wp-plugins.txt', label: 'WP PLUGINS'),
+  WordlistEntry(id: 'wifi/passphrases.txt', category: 'wifi', path: 'wifi/passphrases.txt', label: 'PASSPHRASES'),
+  WordlistEntry(id: 'wifi/ssid-names.txt', category: 'wifi', path: 'wifi/ssid-names.txt', label: 'SSID NAMES'),
+  WordlistEntry(id: 'wireless/wifi-passphrases.txt', category: 'wireless', path: 'wireless/wifi-passphrases.txt', label: 'WIFI PASSPHRASES'),
+];
+
+List<WordlistEntry> wordlistsForCategory(String category) =>
+  kWordlists.where((w) => w.category == category).toList();

@@ -54,7 +54,9 @@ done
 section "Resources"
 [ -f resources/manifest.toml ] && pass "manifest present" || fail "manifest missing"
 WL=$(grep -c '^\[\[wordlist\]\]' resources/manifest.toml)
-[ "$WL" = "36" ] && pass "36 wordlists" || fail "wordlist count ($WL)"
+[ "$WL" -ge 45 ] && pass "$WL real wordlists" || fail "wordlist count ($WL)"
+WLLINES=$(cat resources/wordlists/*/* 2>/dev/null | wc -l)
+[ "$WLLINES" -ge 1000000 ] && pass "large wordlist corpus ($WLLINES lines)" || fail "wordlist corpus too small ($WLLINES lines)"
 CH=$(ls resources/chains/*.toml 2>/dev/null | wc -l)
 [ "$CH" = "10" ] && pass "10 chains" || fail "chain count ($CH)"
 
