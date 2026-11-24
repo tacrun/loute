@@ -1,0 +1,5 @@
+[[profile]]
+id = 'default-beacon'
+callback = 'https'
+jitter_pct = 20
+sleep_secs = 60

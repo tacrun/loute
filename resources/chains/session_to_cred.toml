@@ -1,0 +1,6 @@
+[[chain]]
+id = 'session_to_cred'
+on_finding = 'smb-exec'
+when = 'confidence >= 0.7'
+then = ['cred-harvest-local', 'hash-crack']
+stop_on = 'session.active > 0'

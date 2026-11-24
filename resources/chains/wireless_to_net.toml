@@ -1,0 +1,6 @@
+[[chain]]
+id = 'wireless_to_net'
+on_finding = 'ap-discovery'
+when = 'confidence >= 0.7'
+then = ['handshake-capture', 'wpa-crack']
+stop_on = 'session.active > 0'

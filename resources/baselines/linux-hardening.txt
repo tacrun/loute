@@ -1,0 +1,4 @@
+permit_root_login=no
+password_auth=no
+ssh_protocol=2
+perm_etc_shadow=640

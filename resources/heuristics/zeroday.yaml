@@ -1,0 +1,6 @@
+differential_response_clustering: true
+error_signature_drift: true
+version_patch_skew: true
+parameter_grammar_mutation: true
+anomalous_header_delta: true
+score_as_hypothesis: true

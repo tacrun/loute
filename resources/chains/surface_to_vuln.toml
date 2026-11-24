@@ -1,0 +1,6 @@
+[[chain]]
+id = 'surface_to_vuln'
+on_finding = 'port-discovery'
+when = 'confidence >= 0.7'
+then = ['service-fingerprint', 'template-scan']
+stop_on = 'session.active > 0'

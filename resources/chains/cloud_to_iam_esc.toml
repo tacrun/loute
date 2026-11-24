@@ -1,0 +1,6 @@
+[[chain]]
+id = 'cloud_to_iam_esc'
+on_finding = 'cloud-exposure'
+when = 'confidence >= 0.7'
+then = ['cloud-credential-probe', 'cloud-iam-escalation']
+stop_on = 'session.active > 0'

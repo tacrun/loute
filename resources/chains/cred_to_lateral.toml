@@ -1,0 +1,6 @@
+[[chain]]
+id = 'cred_to_lateral'
+on_finding = 'cred-validate'
+when = 'confidence >= 0.7'
+then = ['smb-exec', 'winrm-exec']
+stop_on = 'session.active > 0'

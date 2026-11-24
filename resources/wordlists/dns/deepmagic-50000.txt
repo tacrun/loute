@@ -1,0 +1,16 @@
+www
+mail
+ftp
+admin
+api
+dev
+test
+staging
+prod
+vpn
+ns1
+ns2
+blog
+shop
+cdn
+mx

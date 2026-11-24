@@ -1,0 +1,6 @@
+[[chain]]
+id = 'ad_to_da'
+on_finding = 'ad-surface-map'
+when = 'confidence >= 0.7'
+then = ['ad-acl-abuse', 'kerberoast-escalation']
+stop_on = 'session.active > 0'

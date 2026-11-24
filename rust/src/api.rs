@@ -226,6 +226,28 @@ pub fn create_workspace(name: String, kind: String) -> String {
     }).to_string()
 }
 
+/// Run a capability end-to-end through the full runtime (plan → exec → parse → normalize).
+/// No stub fallback: failures return a typed error result (F2).
+pub async fn run_capability(id: String, inputs: String, scope: Option<String>) -> String {
+    let inputs_map: std::collections::BTreeMap<String, String> = serde_json::from_str(&inputs)
+        .unwrap_or_default();
+    let runtime = core::runtime::Runtime::new();
+    match runtime.run(&id, &inputs_map, scope.as_deref()).await {
+        Ok(rr) => serde_json::to_string(&rr).unwrap_or_else(|e| format!("{{\"error\":\"{}\"}}", e)),
+        Err(e) => serde_json::json!({"error": e.to_string(), "capability": id}).to_string(),
+    }
+}
+
+/// Validate the catalog against all V1-V20 rules; returns a JSON report.
+pub fn validate_catalog() -> String {
+    let catalog = match core::capability_catalog::get_catalog() {
+        Some(c) => c,
+        None => return serde_json::json!({"valid": false, "errors": [{"message": "catalog not initialized"}]}).to_string(),
+    };
+    let report = core::catalog_validate::validate(catalog);
+    serde_json::to_string(&report).unwrap_or_else(|e| format!("{{\"error\":\"{}\"}}", e))
+}
+
 /// Get the catalog hash.
 pub fn get_catalog_hash() -> String {
     crate::CATALOG_HASH.to_string()

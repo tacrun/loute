@@ -1,0 +1,6 @@
+[[chain]]
+id = 'ctf_full_solve'
+on_finding = 'flag-hunt'
+when = 'confidence >= 0.7'
+then = ['web-app-security', 'flag-scanning']
+stop_on = 'session.active > 0'

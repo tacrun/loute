@@ -1,0 +1,53 @@
+# OPSEC profiles — 1-5-5.md §13.1. Profiles filter/rank plans; they never block execution.
+
+[[profile]]
+id = 'ghost'
+risk_max = 'R1'
+passive_first = true
+concurrency_per_provider = 1
+timeout_multiplier = 1.5
+jitter_pct = 20
+do_tls = true
+request_rate = 'passive-only'
+
+[[profile]]
+id = 'stealth'
+risk_max = 'R2'
+passive_first = true
+concurrency_per_provider = 1
+timeout_multiplier = 1.2
+jitter_pct = 30
+do_tls = true
+request_rate = '1/s'
+
+[[profile]]
+id = 'balanced'
+risk_max = 'R4'
+passive_first = false
+concurrency_per_provider = 4
+timeout_multiplier = 1.0
+jitter_pct = 0
+do_tls = false
+request_rate = 'unlimited'
+
+[[profile]]
+id = 'aggressive'
+risk_max = 'R4'
+passive_first = false
+concurrency_per_provider = 16
+timeout_multiplier = 0.75
+jitter_pct = 0
+do_tls = false
+request_rate = 'unlimited'
+widest_wordlists = true
+
+[[profile]]
+id = 'loud'
+risk_max = 'R4'
+passive_first = false
+concurrency_per_provider = 16
+timeout_multiplier = 0.5
+jitter_pct = 0
+do_tls = false
+request_rate = 'unlimited'
+decoy_traffic = true

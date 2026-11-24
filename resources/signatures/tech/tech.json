@@ -1,0 +1,1 @@
+{"signatures":[{"name":"nginx","header":"server","pattern":"nginx"},{"name":"Apache","header":"server","pattern":"Apache"},{"name":"React","body":"__REACT_DEVTOOLS"},{"name":"WordPress","body":"wp-content"}]}

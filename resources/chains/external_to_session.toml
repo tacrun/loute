@@ -1,0 +1,6 @@
+[[chain]]
+id = 'external_to_session'
+on_finding = 'subdomain-discovery'
+when = 'confidence >= 0.7'
+then = ['tech-fingerprint', 'port-discovery', 'template-scan']
+stop_on = 'session.active > 0'

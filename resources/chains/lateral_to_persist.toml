@@ -1,0 +1,6 @@
+[[chain]]
+id = 'lateral_to_persist'
+on_finding = 'smb-exec'
+when = 'confidence >= 0.7'
+then = ['windows-run-key-persist', 'windows-service-persist']
+stop_on = 'session.active > 0'

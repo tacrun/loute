@@ -1,0 +1,8 @@
+id: loute-basic-exposure
+info:
+  name: Basic Exposure Check
+  severity: info
+requests:
+  - method: GET
+    path:
+      - "{{BaseURL}}/.git/config"
