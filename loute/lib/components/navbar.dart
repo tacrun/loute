@@ -44,10 +44,11 @@ class Navbar extends ConsumerWidget implements PreferredSizeWidget {
             _NavIcon(
               icon: Icons.menu_outlined,
               tooltip: 'Toggle Side Panel',
-              onTap: () => ref.read(navigationProvider.notifier).toggleSidePanelCollapsed(),
+              onTap: () => ref
+                  .read(navigationProvider.notifier)
+                  .toggleSidePanelCollapsed(),
             ),
-          if (navState.navBarPreference == 'side')
-            const SizedBox(width: 12),
+          if (navState.navBarPreference == 'side') const SizedBox(width: 12),
 
           // Logo Image in perfect usable dimension (28x28)
           Image.asset(
@@ -61,8 +62,11 @@ class Navbar extends ConsumerWidget implements PreferredSizeWidget {
           // Title
           Tooltip(
             message: 'View System Identity',
-            textStyle: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.primary),
-            decoration: BoxDecoration(color: MidnightHacker.panelBg, border: Border.all(color: MidnightHacker.primary)),
+            textStyle: MidnightHacker.monoSmall
+                .copyWith(color: MidnightHacker.primary),
+            decoration: BoxDecoration(
+                color: MidnightHacker.panelBg,
+                border: Border.all(color: MidnightHacker.primary)),
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
@@ -93,8 +97,11 @@ class Navbar extends ConsumerWidget implements PreferredSizeWidget {
           // Centered Host Environment Indicator
           Tooltip(
             message: 'View Architecture Details',
-            textStyle: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.primary),
-            decoration: BoxDecoration(color: MidnightHacker.panelBg, border: Border.all(color: MidnightHacker.primary)),
+            textStyle: MidnightHacker.monoSmall
+                .copyWith(color: MidnightHacker.primary),
+            decoration: BoxDecoration(
+                color: MidnightHacker.panelBg,
+                border: Border.all(color: MidnightHacker.primary)),
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
@@ -120,47 +127,100 @@ class Navbar extends ConsumerWidget implements PreferredSizeWidget {
           _NavIcon(
             icon: Icons.dashboard_outlined,
             tooltip: 'Dashboard',
-            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.dashboard),
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.dashboard),
           ),
           _NavIcon(
             icon: Icons.flash_on_outlined,
             tooltip: 'Capabilities',
-            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.capabilities),
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.capabilities),
           ),
           _NavIcon(
             icon: Icons.dns_outlined,
             tooltip: 'Providers',
-            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.providers),
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.providers),
           ),
           _NavIcon(
             icon: Icons.play_arrow_outlined,
             tooltip: 'Jobs',
-            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.jobs),
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.jobs),
           ),
           _NavIcon(
             icon: Icons.bug_report_outlined,
             tooltip: 'Findings',
-            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.findings),
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.findings),
           ),
           _NavIcon(
             icon: Icons.account_tree_outlined,
             tooltip: 'Graph',
-            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.graph),
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.graph),
+          ),
+          _NavIcon(
+            icon: Icons.folder_outlined,
+            tooltip: 'Workspaces',
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.workspaces),
+          ),
+          _NavIcon(
+            icon: Icons.key_outlined,
+            tooltip: 'Credential Vault',
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.vault),
+          ),
+          _NavIcon(
+            icon: Icons.construction_outlined,
+            tooltip: 'Payload Studio',
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.payloads),
+          ),
+          _NavIcon(
+            icon: Icons.timeline_outlined,
+            tooltip: 'Campaign Timeline',
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.timeline),
+          ),
+          _NavIcon(
+            icon: Icons.emoji_events_outlined,
+            tooltip: 'CTF Arena',
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.arena),
           ),
           _NavIcon(
             icon: Icons.menu_book_outlined,
             tooltip: 'Documentation',
-            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.documentation),
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.documentation),
           ),
           _NavIcon(
             icon: Icons.assessment_outlined,
             tooltip: 'Reports',
-            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.reports),
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.reports),
           ),
           _NavIcon(
             icon: Icons.settings_outlined,
             tooltip: 'Settings',
-            onTap: () => ref.read(navigationProvider.notifier).setActiveScreen(ActiveScreen.settings),
+            onTap: () => ref
+                .read(navigationProvider.notifier)
+                .setActiveScreen(ActiveScreen.settings),
           ),
 
           const SizedBox(width: 12),
@@ -209,32 +269,45 @@ class Navbar extends ConsumerWidget implements PreferredSizeWidget {
               children: [
                 Image.asset('assets/icons/logo.png', height: 80, width: 80),
                 const SizedBox(height: 16),
-                Text('LOUTE', style: MidnightHacker.headingLarge.copyWith(fontSize: 32, letterSpacing: 4)),
+                Text('LOUTE',
+                    style: MidnightHacker.headingLarge
+                        .copyWith(fontSize: 32, letterSpacing: 4)),
                 const SizedBox(height: 6),
-                Text('v${navState.systemVersion}', style: MidnightHacker.monoStyle.copyWith(color: MidnightHacker.dimGreen, fontSize: 12)),
+                Text('v${navState.systemVersion}',
+                    style: MidnightHacker.monoStyle.copyWith(
+                        color: MidnightHacker.dimGreen, fontSize: 12)),
                 const SizedBox(height: 12),
                 Divider(color: MidnightHacker.dimGreen.withOpacity(0.4)),
                 const SizedBox(height: 12),
 
                 // Author
-                Text('funbinet', style: MidnightHacker.heading.copyWith(color: MidnightHacker.primary, fontSize: 16)),
+                Text('funbinet',
+                    style: MidnightHacker.heading
+                        .copyWith(color: MidnightHacker.primary, fontSize: 16)),
                 const SizedBox(height: 4),
-                Text('Security Engineer', style: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.dimGreen)),
+                Text('Security Engineer',
+                    style: MidnightHacker.monoSmall
+                        .copyWith(color: MidnightHacker.dimGreen)),
                 const SizedBox(height: 16),
 
                 // Social Icons Row — Real brand icons, clickable
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildClickableSocial(FontAwesomeIcons.github, 'GitHub', 'https://github.com/funbinet'),
+                    _buildClickableSocial(FontAwesomeIcons.github, 'GitHub',
+                        'https://github.com/funbinet'),
                     const SizedBox(width: 14),
-                    _buildClickableSocial(FontAwesomeIcons.gitlab, 'GitLab', 'https://gitlab.com/funbinet'),
+                    _buildClickableSocial(FontAwesomeIcons.gitlab, 'GitLab',
+                        'https://gitlab.com/funbinet'),
                     const SizedBox(width: 14),
-                    _buildClickableSocial(FontAwesomeIcons.codepen, 'Codeberg', 'https://codeberg.org/funbinet'),
+                    _buildClickableSocial(FontAwesomeIcons.codepen, 'Codeberg',
+                        'https://codeberg.org/funbinet'),
                     const SizedBox(width: 14),
-                    _buildClickableSocial(FontAwesomeIcons.envelope, 'Email', 'mailto:funbinet@gmail.com'),
+                    _buildClickableSocial(FontAwesomeIcons.envelope, 'Email',
+                        'mailto:funbinet@gmail.com'),
                     const SizedBox(width: 14),
-                    _buildClickableSocial(FontAwesomeIcons.globe, 'Website', 'http://funbinet.dev'),
+                    _buildClickableSocial(FontAwesomeIcons.globe, 'Website',
+                        'http://funbinet.dev'),
                   ],
                 ),
 
@@ -248,7 +321,8 @@ class Navbar extends ConsumerWidget implements PreferredSizeWidget {
                   'It orchestrates multi-phase penetration testing workflows — from passive '
                   'reconnaissance through active exploitation — powered by a native Rust engine '
                   'and a zero-dependency Flutter command interface.',
-                  style: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.dimGreen, height: 1.5),
+                  style: MidnightHacker.monoSmall
+                      .copyWith(color: MidnightHacker.dimGreen, height: 1.5),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -262,8 +336,11 @@ class Navbar extends ConsumerWidget implements PreferredSizeWidget {
   Widget _buildClickableSocial(dynamic icon, String tooltip, String url) {
     return Tooltip(
       message: tooltip,
-      textStyle: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.primary),
-      decoration: BoxDecoration(color: MidnightHacker.panelBg, border: Border.all(color: MidnightHacker.primary)),
+      textStyle:
+          MidnightHacker.monoSmall.copyWith(color: MidnightHacker.primary),
+      decoration: BoxDecoration(
+          color: MidnightHacker.panelBg,
+          border: Border.all(color: MidnightHacker.primary)),
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
@@ -318,7 +395,8 @@ class _EnvironmentDialogState extends State<_EnvironmentDialog> {
   Future<void> _fetchNetworkInfo() async {
     // Private IP
     try {
-      final interfaces = await NetworkInterface.list(type: InternetAddressType.IPv4);
+      final interfaces =
+          await NetworkInterface.list(type: InternetAddressType.IPv4);
       for (final iface in interfaces) {
         for (final addr in iface.addresses) {
           if (!addr.isLoopback) {
@@ -332,7 +410,9 @@ class _EnvironmentDialogState extends State<_EnvironmentDialog> {
 
     // Public IP + Geolocation via ip-api.com (free, no key)
     try {
-      final response = await http.get(Uri.parse('http://ip-api.com/json')).timeout(const Duration(seconds: 5));
+      final response = await http
+          .get(Uri.parse('http://ip-api.com/json'))
+          .timeout(const Duration(seconds: 5));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         _publicIp = data['query'] ?? '—';
@@ -355,8 +435,16 @@ class _EnvironmentDialogState extends State<_EnvironmentDialog> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(width: 140, child: Text(label, style: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.dimGreen))),
-          Expanded(child: Text(value, style: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.primary, fontWeight: FontWeight.bold))),
+          SizedBox(
+              width: 140,
+              child: Text(label,
+                  style: MidnightHacker.monoSmall
+                      .copyWith(color: MidnightHacker.dimGreen))),
+          Expanded(
+              child: Text(value,
+                  style: MidnightHacker.monoSmall.copyWith(
+                      color: MidnightHacker.primary,
+                      fontWeight: FontWeight.bold))),
         ],
       ),
     );
@@ -379,9 +467,15 @@ class _EnvironmentDialogState extends State<_EnvironmentDialog> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 24),
-                    SizedBox(width: 32, height: 32, child: CircularProgressIndicator(color: MidnightHacker.primary, strokeWidth: 2)),
+                    SizedBox(
+                        width: 32,
+                        height: 32,
+                        child: CircularProgressIndicator(
+                            color: MidnightHacker.primary, strokeWidth: 2)),
                     const SizedBox(height: 16),
-                    Text('Resolving host environment...', style: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.dimGreen)),
+                    Text('Resolving host environment...',
+                        style: MidnightHacker.monoSmall
+                            .copyWith(color: MidnightHacker.dimGreen)),
                     const SizedBox(height: 24),
                   ],
                 )
@@ -391,23 +485,37 @@ class _EnvironmentDialogState extends State<_EnvironmentDialog> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        Platform.isLinux ? Icons.terminal_outlined : Icons.computer_outlined,
+                        Platform.isLinux
+                            ? Icons.terminal_outlined
+                            : Icons.computer_outlined,
                         color: MidnightHacker.primary,
                         size: 48,
                       ),
                       const SizedBox(height: 12),
-                      Text('HOST ENVIRONMENT', style: MidnightHacker.heading.copyWith(color: MidnightHacker.primary, letterSpacing: 2, fontSize: 16)),
+                      Text('HOST ENVIRONMENT',
+                          style: MidnightHacker.heading.copyWith(
+                              color: MidnightHacker.primary,
+                              letterSpacing: 2,
+                              fontSize: 16)),
                       const SizedBox(height: 12),
                       Divider(color: MidnightHacker.dimGreen.withOpacity(0.4)),
 
                       // System Section
                       const SizedBox(height: 8),
-                      Align(alignment: Alignment.centerLeft, child: Text('SYSTEM', style: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.primary, fontSize: 10, letterSpacing: 2))),
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('SYSTEM',
+                              style: MidnightHacker.monoSmall.copyWith(
+                                  color: MidnightHacker.primary,
+                                  fontSize: 10,
+                                  letterSpacing: 2))),
                       const SizedBox(height: 6),
-                      _row('OS / Platform', Platform.operatingSystem.toUpperCase()),
+                      _row('OS / Platform',
+                          Platform.operatingSystem.toUpperCase()),
                       _row('OS Version', Platform.operatingSystemVersion),
                       _row('Architecture', 'x86_64'),
-                      _row('Processors', Platform.numberOfProcessors.toString()),
+                      _row(
+                          'Processors', Platform.numberOfProcessors.toString()),
                       _row('Locale', Platform.localeName),
                       _row('Executable', Platform.resolvedExecutable),
 
@@ -416,10 +524,17 @@ class _EnvironmentDialogState extends State<_EnvironmentDialog> {
 
                       // Engine Section
                       const SizedBox(height: 8),
-                      Align(alignment: Alignment.centerLeft, child: Text('ENGINE', style: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.primary, fontSize: 10, letterSpacing: 2))),
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('ENGINE',
+                              style: MidnightHacker.monoSmall.copyWith(
+                                  color: MidnightHacker.primary,
+                                  fontSize: 10,
+                                  letterSpacing: 2))),
                       const SizedBox(height: 6),
                       _row('Backend', 'Native Rust / Tokio'),
-                      _row('GUI Renderer', 'Flutter / ${Platform.isLinux ? "Wayland" : "Native"}'),
+                      _row('GUI Renderer',
+                          'Flutter / ${Platform.isLinux ? "Wayland" : "Native"}'),
                       _row('Dart Version', Platform.version.split(' ').first),
 
                       const SizedBox(height: 12),
@@ -427,7 +542,13 @@ class _EnvironmentDialogState extends State<_EnvironmentDialog> {
 
                       // Network Section
                       const SizedBox(height: 8),
-                      Align(alignment: Alignment.centerLeft, child: Text('NETWORK', style: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.primary, fontSize: 10, letterSpacing: 2))),
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('NETWORK',
+                              style: MidnightHacker.monoSmall.copyWith(
+                                  color: MidnightHacker.primary,
+                                  fontSize: 10,
+                                  letterSpacing: 2))),
                       const SizedBox(height: 6),
                       _row('Private IP', _privateIp),
                       _row('Public IP', _publicIp),
@@ -438,7 +559,13 @@ class _EnvironmentDialogState extends State<_EnvironmentDialog> {
 
                       // Location Section
                       const SizedBox(height: 8),
-                      Align(alignment: Alignment.centerLeft, child: Text('GEOLOCATION', style: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.primary, fontSize: 10, letterSpacing: 2))),
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('GEOLOCATION',
+                              style: MidnightHacker.monoSmall.copyWith(
+                                  color: MidnightHacker.primary,
+                                  fontSize: 10,
+                                  letterSpacing: 2))),
                       const SizedBox(height: 6),
                       _row('City', _city),
                       _row('Region', _region),
@@ -460,7 +587,8 @@ class _NavIcon extends StatefulWidget {
   final String tooltip;
   final VoidCallback onTap;
 
-  const _NavIcon({required this.icon, required this.tooltip, required this.onTap});
+  const _NavIcon(
+      {required this.icon, required this.tooltip, required this.onTap});
 
   @override
   State<_NavIcon> createState() => _NavIconState();

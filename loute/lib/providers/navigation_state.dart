@@ -16,6 +16,11 @@ enum ActiveScreen {
   jobs,
   findings,
   graph,
+  workspaces,
+  vault,
+  payloads,
+  timeline,
+  arena,
 }
 
 /// The global navigation state.
@@ -119,11 +124,13 @@ class NavigationState {
       systemVersion: systemVersion ?? this.systemVersion,
       outputSaveLocation: outputSaveLocation ?? this.outputSaveLocation,
       reports: reports ?? this.reports,
-      selectedReport: clearSelectedReport ? null : (selectedReport ?? this.selectedReport),
+      selectedReport:
+          clearSelectedReport ? null : (selectedReport ?? this.selectedReport),
       expandedPhases: expandedPhases ?? this.expandedPhases,
       expandedModules: expandedModules ?? this.expandedModules,
       scanConcurrency: scanConcurrency ?? this.scanConcurrency,
-      requestTimeoutSeconds: requestTimeoutSeconds ?? this.requestTimeoutSeconds,
+      requestTimeoutSeconds:
+          requestTimeoutSeconds ?? this.requestTimeoutSeconds,
       targetScanDelayMs: targetScanDelayMs ?? this.targetScanDelayMs,
       userAgent: userAgent ?? this.userAgent,
       enableProxy: enableProxy ?? this.enableProxy,
@@ -167,9 +174,12 @@ class NavigationNotifier extends StateNotifier<NavigationState> {
   void setActiveScreen(ActiveScreen screen) {
     state = state.copyWith(
       activeScreen: screen,
-      selectedPhaseId: screen == ActiveScreen.action ? state.selectedPhaseId : null,
-      selectedModuleId: screen == ActiveScreen.action ? state.selectedModuleId : null,
-      selectedActionId: screen == ActiveScreen.action ? state.selectedActionId : null,
+      selectedPhaseId:
+          screen == ActiveScreen.action ? state.selectedPhaseId : null,
+      selectedModuleId:
+          screen == ActiveScreen.action ? state.selectedModuleId : null,
+      selectedActionId:
+          screen == ActiveScreen.action ? state.selectedActionId : null,
     );
   }
 

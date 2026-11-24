@@ -17,6 +17,11 @@ import '../features/providers/provider_health_screen.dart';
 import '../features/jobs/jobs_screen.dart';
 import '../features/findings/findings_screen.dart';
 import '../features/graph/asset_graph_screen.dart';
+import '../features/ws/workspaces_screen.dart';
+import '../features/vault/credential_vault_screen.dart';
+import '../features/payloads/payload_studio_screen.dart';
+import '../features/timeline/timeline_screen.dart';
+import '../features/arena/arena_screen.dart';
 
 /// Main scan screen — coordinates main layout, sidebar/bottom nav modes, and content switching.
 class MainScanScreen extends ConsumerWidget {
@@ -65,11 +70,22 @@ class MainScanScreen extends ConsumerWidget {
       mainContent = const FindingsScreen();
     } else if (navState.activeScreen == ActiveScreen.graph) {
       mainContent = const AssetGraphScreen();
+    } else if (navState.activeScreen == ActiveScreen.workspaces) {
+      mainContent = const WorkspacesScreen();
+    } else if (navState.activeScreen == ActiveScreen.vault) {
+      mainContent = const CredentialVaultScreen();
+    } else if (navState.activeScreen == ActiveScreen.payloads) {
+      mainContent = const PayloadStudioScreen();
+    } else if (navState.activeScreen == ActiveScreen.timeline) {
+      mainContent = const TimelineScreen();
+    } else if (navState.activeScreen == ActiveScreen.arena) {
+      mainContent = const ArenaScreen();
     } else {
       mainContent = const DashboardScreen();
     }
 
-    final showSidebar = navState.navBarPreference == 'side'; // never hide side panel completely
+    final showSidebar =
+        navState.navBarPreference == 'side'; // never hide side panel completely
     final showBottomNav = navState.navBarPreference == 'bottom';
 
     return Scaffold(
@@ -91,33 +107,33 @@ class MainScanScreen extends ConsumerWidget {
           final scaleFactor = (constraints.maxWidth / 1280.0).clamp(0.75, 1.25);
 
           return MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaler: TextScaler.linear(scaleFactor),
-            ),
-            child: Column(
-              children: [
-              // ── Header Navbar ──
-              const Navbar(),
-
-              // ── Body Layout ──
-              Expanded(
-                child: Row(
-                  children: [
-                    // Left Side Panel
-                    if (showSidebar) const SidePanel(),
-
-                    // Central Workspace Area
-                    Expanded(
-                      child: mainContent,
-                    ),
-                  ],
-                ),
+              data: MediaQuery.of(context).copyWith(
+                textScaler: TextScaler.linear(scaleFactor),
               ),
+              child: Column(
+                children: [
+                  // ── Header Navbar ──
+                  const Navbar(),
 
-              // ── Bottom Nav ──
-              if (showBottomNav) const _HoverBottomNavBar(),
-            ],
-          ));
+                  // ── Body Layout ──
+                  Expanded(
+                    child: Row(
+                      children: [
+                        // Left Side Panel
+                        if (showSidebar) const SidePanel(),
+
+                        // Central Workspace Area
+                        Expanded(
+                          child: mainContent,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // ── Bottom Nav ──
+                  if (showBottomNav) const _HoverBottomNavBar(),
+                ],
+              ));
         },
       ),
     );
@@ -178,7 +194,7 @@ class _HoverBottomNavBarState extends ConsumerState<_HoverBottomNavBar> {
 
     // The maximum width of the cascading popup is 320 (160 for modules + 160 for actions)
     double popupWidth = 320;
-    
+
     double clampedDx = offset.dx;
     if (clampedDx + popupWidth > screenWidth) {
       clampedDx = screenWidth - popupWidth - 8; // 8px padding from right edge
@@ -186,7 +202,6 @@ class _HoverBottomNavBarState extends ConsumerState<_HoverBottomNavBar> {
     if (clampedDx < 8) {
       clampedDx = 8; // 8px padding from left edge
     }
-
 
     _popupOverlay = OverlayEntry(
       builder: (context) {
@@ -214,7 +229,9 @@ class _HoverBottomNavBarState extends ConsumerState<_HoverBottomNavBar> {
                   _popupOverlay?.markNeedsBuild();
                 },
                 onActionSelect: (moduleId, actionId) {
-                  ref.read(navigationProvider.notifier).selectAction(phase.id, moduleId, actionId);
+                  ref
+                      .read(navigationProvider.notifier)
+                      .selectAction(phase.id, moduleId, actionId);
                   _removePopup();
                 },
               ),
@@ -435,45 +452,59 @@ class _CascadingPopupContent extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(border: Border(bottom: MidnightHacker.greenBorder)),
-                    child: Text(
-                      phase.name.toUpperCase(),
-                      style: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.primary, fontWeight: FontWeight.bold),
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                          border: Border(bottom: MidnightHacker.greenBorder)),
+                      child: Text(
+                        phase.name.toUpperCase(),
+                        style: MidnightHacker.monoSmall.copyWith(
+                            color: MidnightHacker.primary,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  ...phase.modules.map((m) {
-                    final isHovered = m.id == initialModuleId;
-                    return MouseRegion(
-                      onEnter: (_) => onModuleHover(m.id),
-                      child: GestureDetector(
-                        onTap: () => onModuleHover(m.id),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                          color: isHovered ? MidnightHacker.primary.withOpacity(0.1) : Colors.transparent,
-                          child: Row(
-                            children: [
-                              Icon(m.icon, color: MidnightHacker.dimGreen, size: 16),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  m.name,
-                                  style: MidnightHacker.monoSmall.copyWith(color: isHovered ? MidnightHacker.primary : MidnightHacker.dimGreen),
+                    ...phase.modules.map((m) {
+                      final isHovered = m.id == initialModuleId;
+                      return MouseRegion(
+                        onEnter: (_) => onModuleHover(m.id),
+                        child: GestureDetector(
+                          onTap: () => onModuleHover(m.id),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10),
+                            color: isHovered
+                                ? MidnightHacker.primary.withOpacity(0.1)
+                                : Colors.transparent,
+                            child: Row(
+                              children: [
+                                Icon(m.icon,
+                                    color: MidnightHacker.dimGreen, size: 16),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    m.name,
+                                    style: MidnightHacker.monoSmall.copyWith(
+                                        color: isHovered
+                                            ? MidnightHacker.primary
+                                            : MidnightHacker.dimGreen),
+                                  ),
                                 ),
-                              ),
-                              Icon(Icons.keyboard_arrow_right, color: isHovered ? MidnightHacker.primary : MidnightHacker.dimGreen, size: 16),
-                            ],
+                                Icon(Icons.keyboard_arrow_right,
+                                    color: isHovered
+                                        ? MidnightHacker.primary
+                                        : MidnightHacker.dimGreen,
+                                    size: 16),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
-                ],
+                      );
+                    }),
+                  ],
+                ),
               ),
             ),
-          ),
 
             // Right Column: Actions (only if a module is hovered)
             if (activeModule != null)
@@ -489,10 +520,12 @@ class _CascadingPopupContent extends StatelessWidget {
                     children: [
                       Container(
                         padding: const EdgeInsets.all(8),
-                        decoration: const BoxDecoration(border: Border(bottom: MidnightHacker.greenBorder)),
+                        decoration: const BoxDecoration(
+                            border: Border(bottom: MidnightHacker.greenBorder)),
                         child: Text(
                           'ACTIONS',
-                          style: MidnightHacker.monoSmall.copyWith(color: MidnightHacker.dimGreen),
+                          style: MidnightHacker.monoSmall
+                              .copyWith(color: MidnightHacker.dimGreen),
                         ),
                       ),
                       ...activeModule.actions.map((a) {
@@ -534,16 +567,24 @@ class _ActionHoverItemState extends State<_ActionHoverItem> {
         onTap: widget.onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          color: _hover ? MidnightHacker.primary.withOpacity(0.1) : Colors.transparent,
+          color: _hover
+              ? MidnightHacker.primary.withOpacity(0.1)
+              : Colors.transparent,
           child: Row(
             children: [
-              Icon(widget.action.icon, color: _hover ? MidnightHacker.positive : MidnightHacker.dimGreen, size: 16),
+              Icon(widget.action.icon,
+                  color: _hover
+                      ? MidnightHacker.positive
+                      : MidnightHacker.dimGreen,
+                  size: 16),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   widget.action.name,
                   style: MidnightHacker.monoSmall.copyWith(
-                    color: _hover ? MidnightHacker.positive : MidnightHacker.dimGreen,
+                    color: _hover
+                        ? MidnightHacker.positive
+                        : MidnightHacker.dimGreen,
                   ),
                 ),
               ),

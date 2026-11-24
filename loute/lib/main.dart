@@ -4,6 +4,7 @@ import 'themes/midnight_hacker.dart';
 import 'screens/main_scan_screen.dart';
 import 'src/rust/frb_generated.dart';
 import 'services/connectivity_service.dart';
+import 'features/common/keyboard_flow.dart';
 
 import 'package:window_manager/window_manager.dart';
 
@@ -12,7 +13,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
-  
+
   WindowOptions windowOptions = const WindowOptions(
     size: Size(1280, 720),
     center: true,
@@ -20,7 +21,7 @@ void main() async {
     skipTaskbar: false,
     titleBarStyle: TitleBarStyle.normal,
   );
-  
+
   windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();
     await windowManager.focus();
@@ -41,7 +42,7 @@ class LouteApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: MidnightHacker.themeData,
-      home: const MainScanScreen(),
+      home: const KeyboardFlow(child: MainScanScreen()),
     );
   }
 }
