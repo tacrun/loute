@@ -1,4 +1,4 @@
-// core/mod.rs — Module declarations for the LOUTE Rust core engine.
+// core/mod.rs - Module declarations for the LOUTE Rust core engine.
 
 pub mod capability_catalog;
 pub mod capability_model;

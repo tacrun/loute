@@ -1,4 +1,4 @@
-// ldap.rs — LDAP query output (§6.7).
+// ldap.rs - LDAP query output (§6.7).
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {

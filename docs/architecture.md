@@ -1,12 +1,12 @@
-# LOUTE V1.5.5 — Architecture
+# LOUTE V1.5.5 - Architecture
 
 ## Overview
 
 LOUTE V1.5.5 is a bifurcated architecture:
 
-1. **Rust Core Engine** — capability catalog, dispatcher, command runner, provider registry, job queue, artifact store, audit log, output parsers, finding normalizer, asset graph, telemetry bus, workspace manager, wordlist registry, OPSEC profiles.
-2. **Flutter Frontend** — operator console with Midnight Hacker theme, capability explorer, provider health matrix, job queue, findings/evidence viewer, asset graph, reports center.
-3. **FFI Bridge** — flutter_rust_bridge connects Dart to Rust.
+1. **Rust Core Engine** - capability catalog, dispatcher, command runner, provider registry, job queue, artifact store, audit log, output parsers, finding normalizer, asset graph, telemetry bus, workspace manager, wordlist registry, OPSEC profiles.
+2. **Flutter Frontend** - operator console with Midnight Hacker theme, capability explorer, provider health matrix, job queue, findings/evidence viewer, asset graph, reports center.
+3. **FFI Bridge** - flutter_rust_bridge connects Dart to Rust.
 
 ## Runtime Layering
 

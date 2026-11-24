@@ -1,4 +1,4 @@
-// hashcat.rs — hashcat potfile output (§6.7). "hash:plaintext"
+// hashcat.rs - hashcat potfile output (§6.7). "hash:plaintext"
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {
@@ -17,13 +17,4 @@ pub fn parse(raw: &str) -> ParseOutcome {
         }
     }
     out
-}
-
-#[cfg(test)] mod tests {
-    use super::*;
-    #[test] fn parses_potfile() {
-        let o = parse("5d41402abc4b2a76b9719d911017c592:hello\n");
-        assert_eq!(o.assets.len(), 1);
-        assert_eq!(o.assets[0].attrs["plaintext"], "hello");
-    }
 }

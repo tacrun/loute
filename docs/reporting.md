@@ -12,5 +12,5 @@ byte-identical command preview, artifact hashes, and MITRE coverage. Workspaces
 export as signed archives with a hash manifest.
 
 Redaction (§15.5): credential masking, hostname masking and screenshot exclusion
-toggles for client-facing output. Secrets in env are `Redacted<T>` — logs render
+toggles for client-facing output. Secrets in env are `Redacted<T>` - logs render
 `***`, audit stores fingerprints only.

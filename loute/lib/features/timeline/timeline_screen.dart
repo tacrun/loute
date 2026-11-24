@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../common/screen_shell.dart';
 
-/// Campaign Timeline — chronological operator + system events (§11.1, /timeline).
+/// Campaign Timeline - chronological operator + system events (§11.1, /timeline).
 class TimelineScreen extends StatelessWidget {
   const TimelineScreen({super.key});
 
@@ -11,7 +11,7 @@ class TimelineScreen extends StatelessWidget {
       [
         '09:12:01',
         'SYSTEM',
-        'Runtime initialized — 241 capabilities, hash verified'
+        'Runtime initialized - 241 capabilities, hash verified'
       ],
       ['09:12:04', 'JOB', 'recon.subdomain-discovery queued (interactive)'],
       ['09:12:09', 'FINDING', '12 subdomain assets normalized'],

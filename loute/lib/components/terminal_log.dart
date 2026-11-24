@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../themes/midnight_hacker.dart';
 
-/// Scrollable terminal log viewer — real-time scan output.
+/// Scrollable terminal log viewer - real-time scan output.
 class TerminalLog extends StatelessWidget {
   final List<String> lines;
   final ScrollController? scrollController;

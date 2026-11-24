@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../themes/midnight_hacker.dart';
 
-/// Provider Health Matrix — per-provider availability, versions, install hints.
+/// Provider Health Matrix - per-provider availability, versions, install hints.
 /// Per 1-5-5.md §11.4.
 class ProviderHealthScreen extends ConsumerWidget {
   const ProviderHealthScreen({super.key});

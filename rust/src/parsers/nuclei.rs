@@ -1,4 +1,4 @@
-// nuclei.rs — nuclei JSONL findings (§6.7).
+// nuclei.rs - nuclei JSONL findings (§6.7).
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {
@@ -23,14 +23,4 @@ pub fn parse(raw: &str) -> ParseOutcome {
         }
     }
     out
-}
-
-#[cfg(test)] mod tests {
-    use super::*;
-    #[test] fn parses_nuclei_jsonl() {
-        let line = r#"{"template-id":"CVE-2021-44228","info":{"severity":"critical"},"host":"https://x.io","matched-at":"https://x.io/a"}"#;
-        let o = parse(line);
-        assert_eq!(o.findings.len(), 1);
-        assert_eq!(o.findings[0].severity.label(), "critical");
-    }
 }

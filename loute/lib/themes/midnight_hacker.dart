@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Midnight Hacker Theme — the only theme for LOUTE.
+/// Midnight Hacker Theme - the only theme for LOUTE.
 /// Pitch black (#000000) background, hacker green text, no rounded corners, outline-only icons.
 class MidnightHacker {
   MidnightHacker._();

@@ -1,6 +1,6 @@
 #!/usr/bin/env dart
 //
-// LOUTE version sync script — reads version.json and writes version
+// LOUTE version sync script - reads version.json and writes version
 // strings into all downstream files.  Run in check mode (`--check`) to
 // fail with exit code 1 when any file is out of sync (CI gate).
 //
@@ -122,7 +122,7 @@ void main(List<String> args) {
   }
 
   if (drift) {
-    stderr.writeln('VERSION DRIFT DETECTED — run `dart scripts/sync_version.dart` to fix');
+    stderr.writeln('VERSION DRIFT DETECTED - run `dart scripts/sync_version.dart` to fix');
     exit(1);
   }
 

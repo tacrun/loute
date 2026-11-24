@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../themes/midnight_hacker.dart';
 
-/// Documentation Screen — structured manual detailing all features, modules, inputs, fallbacks, and expected outputs.
+/// Documentation Screen - structured manual detailing all features, modules, inputs, fallbacks, and expected outputs.
 /// Production-grade documentation for LOUTE Phase 1 Reconnaissance System
 class DocumentationScreen extends StatefulWidget {
   const DocumentationScreen({super.key});
@@ -20,7 +20,7 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
 ### System Overview
 Phase 1 (Reconnaissance) is a production-grade, non-intrusive discovery module that executes real-world network scanning operations. It coordinates simultaneous probing of DNS records, SSL certificates, cloud infrastructure, and host services without triggering alarms or causing service disruption.
 
-**Execution Model:** All actions are asynchronous, high-concurrency, with genuine network I/O via Rust FFI. Output formats support HTML (interactive), JSON (programmatic), CSV (data analysis), and TXT (logs). This is NOT a simulation—all operations are authentic network queries against real targets.
+**Execution Model:** All actions are asynchronous, high-concurrency, with genuine network I/O via Rust FFI. Output formats support HTML (interactive), JSON (programmatic), CSV (data analysis), and TXT (logs). This is NOT a simulation-all operations are authentic network queries against real targets.
 
 ---
 
@@ -32,7 +32,7 @@ Phase 1 (Reconnaissance) is a production-grade, non-intrusive discovery module t
 **Input Parameters:**
 - `domain` (String, Required): Target domain (e.g., "google.com"). Input sanitization strips protocols, ports, paths.
 - `wordlist_path` (String, Optional): File path to custom subdomain wordlist (one per line, comments as #lines).
-- `concurrency` (Integer, default 100): Parallel query threads (range: 1–1000). Higher values scan faster but risk rate-limiting.
+- `concurrency` (Integer, default 100): Parallel query threads (range: 1-1000). Higher values scan faster but risk rate-limiting.
 
 **Execution Flow:**
 1. Input validation: Parse domain, validate FQDN format (e.g., must contain at least one dot), strip protocols/ports.
@@ -54,7 +54,7 @@ Phase 1 (Reconnaissance) is a production-grade, non-intrusive discovery module t
 - `DNS_BRUTE_INVALID_DOMAIN`: Domain is empty or malformed after sanitization.
 - `DNS_BRUTE_NXDOMAIN`: Base domain itself does not resolve (target unreachable).
 - `DNS_BRUTE_TIMEOUT`: Individual queries exceeded 10s window (may indicate rate-limiting).
-- `DNS_BRUTE_CONCURRENCY_LIMIT`: Concurrency parameter out of safe range (1–1000).
+- `DNS_BRUTE_CONCURRENCY_LIMIT`: Concurrency parameter out of safe range (1-1000).
 - `DNS_BRUTE_WORDLIST_INVALID`: Custom wordlist file not readable or missing.
 
 ---
@@ -107,8 +107,8 @@ Phase 1 (Reconnaissance) is a production-grade, non-intrusive discovery module t
 6. Output: Report vulnerabilities (successful transfers) and secure configurations (refused).
 
 **Expected Output Format:**
-- **Vulnerable:** "Nameserver ns1.example.com (198.51.100.1) – AXFR SUCCESSFUL. Zone records retrieved."
-- **Secure:** "Nameserver ns1.example.com (198.51.100.1) – AXFR REFUSED (secure configuration)."
+- **Vulnerable:** "Nameserver ns1.example.com (198.51.100.1) - AXFR SUCCESSFUL. Zone records retrieved."
+- **Secure:** "Nameserver ns1.example.com (198.51.100.1) - AXFR REFUSED (secure configuration)."
 - **Stats:** "Tested: 4 nameservers | Vulnerable: 0 | Duration: 3.21s"
 
 **Potential Error Codes:**
@@ -187,7 +187,7 @@ Phase 1 (Reconnaissance) is a production-grade, non-intrusive discovery module t
 3. Header inspection: Check for cloud-specific headers (x-amz-*, cf-*, x-azure-*, gce-*, etc.).
 4. SSL certificate analysis: Parse Subject, Issuer, CN fields for vendor keywords.
 5. CNAME chain resolution: Follow CNAME records to identify infrastructure domain patterns.
-6. Confidence scoring: Assign confidence score (10–100%) based on evidence strength.
+6. Confidence scoring: Assign confidence score (10-100%) based on evidence strength.
 7. Output: Vendor name, confidence, and evidence list.
 
 **Expected Output Format:**
@@ -196,7 +196,7 @@ Phase 1 (Reconnaissance) is a production-grade, non-intrusive discovery module t
   - "Server header: Amazon ALB"
   - "x-amz-request-id header present"
   - "SSL certificate issued by Amazon"
-- **Alternative:** "Unknown / On-Premise — No cloud signatures detected."
+- **Alternative:** "Unknown / On-Premise - No cloud signatures detected."
 
 **Potential Error Codes:**
 - `CLOUD_PROVIDER_INVALID_TARGET`: Target URL/IP malformed.
@@ -229,8 +229,8 @@ Phase 1 (Reconnaissance) is a production-grade, non-intrusive discovery module t
 
 **Potential Error Codes:**
 - `S3_INVALID_BUCKET_NAME`: Bucket name doesn't comply with S3 naming rules.
-- `S3_BUCKET_NOT_FOUND`: HTTP 404 – Bucket does not exist or is in different region.
-- `S3_FORBIDDEN`: HTTP 403 – Bucket exists but is private (SECURE).
+- `S3_BUCKET_NOT_FOUND`: HTTP 404 - Bucket does not exist or is in different region.
+- `S3_FORBIDDEN`: HTTP 403 - Bucket exists but is private (SECURE).
 - `S3_TIMEOUT`: Request exceeded timeout window (default 5s).
 - `S3_UPLOAD_TEST_FAILED`: Cleanup of test file unsuccessful (rare).
 
@@ -281,13 +281,13 @@ Phase 1 (Reconnaissance) is a production-grade, non-intrusive discovery module t
 5. Output: Report security posture and sample exposed data (if any).
 
 **Expected Output Format:**
-- **Secure:** "Firebase DB [PROTECTED] — Anonymous access denied (HTTP 401)."
-- **Vulnerable:** "Firebase DB [EXPOSED] — Anonymous read access enabled! Sample data keys: users, messages, config, etc."
+- **Secure:** "Firebase DB [PROTECTED] - Anonymous access denied (HTTP 401)."
+- **Vulnerable:** "Firebase DB [EXPOSED] - Anonymous read access enabled! Sample data keys: users, messages, config, etc."
 - **Not Found:** "Firebase instance not found (HTTP 404). Project ID may be incorrect."
 
 **Potential Error Codes:**
 - `FIREBASE_INVALID_PROJECT_ID`: Project ID format invalid.
-- `FIREBASE_PROJECT_NOT_FOUND`: HTTP 404 – Project doesn't exist.
+- `FIREBASE_PROJECT_NOT_FOUND`: HTTP 404 - Project doesn't exist.
 - `FIREBASE_PERMISSION_DENIED`: HTTP 401/403 (SECURE, expected).
 - `FIREBASE_TIMEOUT`: Request exceeded timeout.
 - `FIREBASE_MALFORMED_RESPONSE`: Unexpected response format.
@@ -316,7 +316,7 @@ Phase 1 (Reconnaissance) is a production-grade, non-intrusive discovery module t
 **Expected Output Format:**
 - "Detected CDN: Cloudflare | Confidence: 99%"
 - "Evidence: cf-ray header detected, SSL certificate issued by Cloudflare"
-- **No CDN:** "Direct hosting — No CDN detected. Target connects directly to origin server."
+- **No CDN:** "Direct hosting - No CDN detected. Target connects directly to origin server."
 
 **Potential Error Codes:**
 - `CDN_INVALID_TARGET`: Target URL malformed.
@@ -376,7 +376,7 @@ Example: "DNS Brute-Force: Tested 150 subdomains | Live: 23 | Duration: 5.42s | 
       title: 'ERROR CODE REFERENCE',
       icon: Icons.error_outline,
       content: '''
-### Phase 1 Error Codes — Production Debugging Guide
+### Phase 1 Error Codes - Production Debugging Guide
 
 This section details all error codes encountered during Phase 1 Reconnaissance actions. Errors are organized by action, with severity levels, root causes, and remediation steps.
 
@@ -397,7 +397,7 @@ This section details all error codes encountered during Phase 1 Reconnaissance a
 
 **Remediation:**
 1. Verify the domain format: should be "domain.tld" (e.g., "google.com")
-2. Do NOT include protocols (http://) or paths (/path) — only the domain
+2. Do NOT include protocols (http://) or paths (/path) - only the domain
 3. Check for accidental leading/trailing whitespace
 
 **Example Correct Inputs:**
@@ -470,7 +470,7 @@ Adjusted: `concurrency=50` → More conservative, avoids rate limits
 **Severity:** LOW | **HTTP Equivalent:** N/A
 **Category:** DNS_BRUTE → Input Validation
 
-**Description:** Concurrency parameter is outside the safe range (1–1000). The system auto-corrects to a safe value.
+**Description:** Concurrency parameter is outside the safe range (1-1000). The system auto-corrects to a safe value.
 
 **Root Causes:**
 1. User specified concurrency > 1000 (too many parallel threads)
@@ -478,9 +478,9 @@ Adjusted: `concurrency=50` → More conservative, avoids rate limits
 
 **Remediation:**
 1. Set concurrency between 1 and 1000
-2. Recommended values: 50–200 for most networks
-3. Higher values (500–1000) risk rate-limiting; use only on high-speed networks
-4. Lower values (10–50) conservative; use on slow or rate-limited networks
+2. Recommended values: 50-200 for most networks
+3. Higher values (500-1000) risk rate-limiting; use only on high-speed networks
+4. Lower values (10-50) conservative; use on slow or rate-limited networks
 
 ---
 
@@ -520,7 +520,7 @@ Adjusted: `concurrency=50` → More conservative, avoids rate limits
 **Severity:** MEDIUM | **HTTP Equivalent:** 429 Too Many Requests
 **Category:** CT_LOGS → API Rate Limiting
 
-**Description:** crt.sh server is rate-limiting client requests. Typically occurs after 3–5 rapid requests from the same IP.
+**Description:** crt.sh server is rate-limiting client requests. Typically occurs after 3-5 rapid requests from the same IP.
 
 **Root Causes:**
 1. User ran CT_LOGS action multiple times in quick succession
@@ -729,7 +729,7 @@ Adjusted: `concurrency=50` → More conservative, avoids rate limits
 
 ### S3_INVALID_BUCKET_NAME
 **Severity:** CRITICAL
-**Description:** Bucket name violates S3 naming rules (must be 3–63 chars, lowercase alphanumeric/hyphens, no consecutive hyphens, not IP-like).
+**Description:** Bucket name violates S3 naming rules (must be 3-63 chars, lowercase alphanumeric/hyphens, no consecutive hyphens, not IP-like).
 
 ---
 
@@ -876,7 +876,7 @@ dig {domain} @{custom-nameserver}
 ### Strategy 3: Rate Limiting Mitigation
 If rate-limit errors occur:
 1. Reduce concurrency (if applicable)
-2. Wait 60–300 seconds
+2. Wait 60-300 seconds
 3. Retry with conservative settings
 4. Use different source IP (VPN, proxy)
 

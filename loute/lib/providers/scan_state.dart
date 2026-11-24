@@ -4,7 +4,7 @@ enum ScanStatus { idle, running, complete, error }
 
 class ScanState {
   final ScanStatus status;
-  final double progress; // 0.0 – 1.0
+  final double progress; // 0.0 - 1.0
   final String? htmlOutput;
   final List<String> logs;
   final String? errorMessage;

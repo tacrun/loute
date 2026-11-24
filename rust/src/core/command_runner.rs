@@ -1,5 +1,5 @@
-// command_runner.rs — argv-only execution per 1-5-5.md §6.4.
-// Uses std::process::Command with arg() per element — never a joined string.
+// command_runner.rs - argv-only execution per 1-5-5.md §6.4.
+// Uses std::process::Command with arg() per element - never a joined string.
 // No shell. Ever.
 
 use std::process::Stdio;
@@ -11,7 +11,7 @@ use super::capability_model::*;
 pub struct CommandRunner;
 
 impl CommandRunner {
-    /// Execute an ExecutionPlan — runs the binary with argv, captures stdout/stderr,
+    /// Execute an ExecutionPlan - runs the binary with argv, captures stdout/stderr,
     /// enforces timeout, classifies exit code.
     pub async fn run(plan: &ExecutionPlan) -> ExecutionResult {
         let start = std::time::Instant::now();
@@ -36,7 +36,7 @@ impl CommandRunner {
             };
         }
 
-        // Build the command — explicit argv, no shell
+        // Build the command - explicit argv, no shell
         let mut cmd = Command::new(&plan.binary_path);
         cmd.args(&plan.argv);
         cmd.stdout(Stdio::piped());

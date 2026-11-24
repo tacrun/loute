@@ -1,70 +1,61 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # LOUTE Windows EXE Build Script
-# This script builds the production Windows app and packages it.
-# NOTE: To run this successfully, you must be on a Windows host or using a configured 
-# cross-compilation environment (like Wine + MinGW) for Flutter Windows builds.
-
-set -e
+# Builds the production Windows app and packages it as a release archive.
+# Requires a Windows host (or a configured Flutter Windows build environment).
+set -euo pipefail
 
 VERSION="1.5.5"
 APP_NAME="loute"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+APP_DIR="$REPO_ROOT/loute"
 
 echo "=========================================="
 echo "    Building LOUTE Windows EXE (Release)  "
 echo "=========================================="
 
-cd ../loute
+require_tool() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "[!] Required tool not found: $1" >&2
+    exit 1
+  fi
+}
 
-# --- Catalog shipping gate (1-5-5.md S4): fail if the capability bible is absent ---
+require_tool flutter
+require_tool cargo
+require_tool zip
+
 echo "[*] Verifying capability catalog is bundled..."
-if [ ! -f "assets/capabilities/capabilities.toml.txt" ]; then
-  echo "[!] FATAL: capabilities.toml.txt missing from assets — refusing to package." >&2
-  exit 1
-fi
-echo "[+] Catalog present: $(sha256sum assets/capabilities/capabilities.toml.txt | cut -d' ' -f1)"
+CATALOG="$APP_DIR/assets/capabilities/capabilities.toml.txt"
+[ -f "$CATALOG" ] || { echo "[!] FATAL: $CATALOG is missing." >&2; exit 1; }
+echo "[+] Catalog present: $(sha256sum "$CATALOG" | cut -d' ' -f1)"
 
-# Ensure Windows platform is initialized
+cd "$APP_DIR"
 if [ ! -d "windows" ]; then
-    echo "[*] Windows platform not initialized. Creating it now..."
-    flutter create --platforms windows .
+  echo "[*] Windows platform not initialized. Creating it now..."
+  flutter create --platforms windows .
 fi
 
-# Clean previous builds
-echo "[*] Cleaning old builds..."
+echo "[*] Preparing Flutter workspace..."
 flutter clean
 flutter pub get
 
-# Ensure rust code is updated
-echo "[*] Updating flutter_rust_bridge bindings..."
-flutter_rust_bridge_codegen generate
+echo "[*] Building native Rust library..."
+cd "$REPO_ROOT/rust"
+cargo build --release
 
-# Build Windows App
-echo "[*] Compiling Flutter App for Windows..."
+echo "[*] Compiling Flutter app for Windows..."
+cd "$APP_DIR"
 flutter build windows --release
 
-# Note: The output will be in build/windows/runner/Release/
-# To create a standalone installer (.exe), you typically use Inno Setup.
-# We will copy the output to a packaging directory and zip it for easy distribution, 
-# as creating an Inno Setup installer requires ISCC (Inno Setup Compiler) to be installed.
-
-echo "[*] Packaging Release directory..."
-PACKAGE_DIR="../packaging/${APP_NAME}_windows_v${VERSION}"
+PACKAGE_DIR="$SCRIPT_DIR/${APP_NAME}_windows_v${VERSION}"
+rm -rf "$PACKAGE_DIR"
 mkdir -p "$PACKAGE_DIR"
+cp -r build/windows/runner/Release/* "$PACKAGE_DIR/"
 
-if [ -d "build/windows/runner/Release" ]; then
-    cp -r build/windows/runner/Release/* "$PACKAGE_DIR/"
-    cd ../packaging
-    
-    # We zip it as the base distribution.
-    zip -r "${APP_NAME}_v${VERSION}_windows.zip" "${APP_NAME}_windows_v${VERSION}"
-    
-    # If ISCC is available via Wine, we could run it here.
-    # For now, the executable is available in the zip file.
-    
-    rm -rf "${APP_NAME}_windows_v${VERSION}"
-    echo "[*] Success! Windows build is ready at: packaging/${APP_NAME}_v${VERSION}_windows.zip"
-else
-    echo "[!] Windows build directory not found. Please ensure you are compiling on a supported environment."
-fi
+(cd "$SCRIPT_DIR" && zip -r "${APP_NAME}_v${VERSION}_windows.zip" "${APP_NAME}_windows_v${VERSION}")
+rm -rf "$PACKAGE_DIR"
 
+echo "[*] Success! Windows build ready at: packaging/${APP_NAME}_v${VERSION}_windows.zip"
 echo "=========================================="

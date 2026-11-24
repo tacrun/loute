@@ -1,5 +1,5 @@
-# LOUTE CAPABILITY CATALOG — schema 2
-# phases: 11 — capabilities: 241
+# LOUTE CAPABILITY CATALOG - schema 2
+# phases: 11 - capabilities: 241
 # recon 22 · surface 22 · vulnerability 22 · payload 21 · escalation 24
 # credentials 22 · lateral 26 · persistence 19 · exploitation 27 · wireless 21 · ctf 15
 # Execution model: explicit argv vectors. Nothing here runs through a shell.
@@ -2899,7 +2899,7 @@ output = 'lines'
 network = false
 
 # ==========================================================================
-# PHASE 2 — ATTACK SURFACE
+# PHASE 2 - ATTACK SURFACE
 # ==========================================================================
 
 [[capability]]
@@ -5742,7 +5742,7 @@ output = 'lines'
 network = true
 
 # ==========================================================================
-# PHASE 3 — VULNERABILITY
+# PHASE 3 - VULNERABILITY
 # ==========================================================================
 
 [[capability]]
@@ -8637,7 +8637,7 @@ output = 'json'
 network = true
 
 # ==========================================================================
-# PHASE 4 — PAYLOAD
+# PHASE 4 - PAYLOAD
 [[capability]]
 id = 'payload.shellcode-generation'
 schema = 2
@@ -10827,7 +10827,7 @@ output = 'lines'
 network = true
 
 # ==========================================================================
-# PHASE 5 — ESCALATION
+# PHASE 5 - ESCALATION
 # ==========================================================================
 [[capability]]
 id = 'payload.payload-delivery'
@@ -10972,7 +10972,7 @@ args = ['-tnp']
 output = 'lines'
 network = false
 # ==========================================================================
-# PHASE 5 — ESCALATION
+# PHASE 5 - ESCALATION
 # ==========================================================================
 
 [[capability]]
@@ -14397,7 +14397,7 @@ output = 'lines'
 network = true
 
 # ==========================================================================
-# PHASE 6 — CREDENTIALS
+# PHASE 6 - CREDENTIALS
 # ==========================================================================
 
 [[capability]]
@@ -17613,7 +17613,7 @@ output = 'lines'
 network = false
 
 # ==========================================================================
-# PHASE 7 — LATERAL
+# PHASE 7 - LATERAL
 [[capability]]
 id = 'lateral.network-discovery'
 schema = 2
@@ -20393,7 +20393,7 @@ output = 'lines'
 network = false
 
 # ==========================================================================
-# PHASE 8 — PERSISTENCE
+# PHASE 8 - PERSISTENCE
 # ==========================================================================
 [[capability]]
 id = 'lateral.dns-discovery'
@@ -20683,7 +20683,7 @@ args = ['/mnt/pivot_share']
 output = 'lines'
 network = false
 # ==========================================================================
-# PHASE 8 — PERSISTENCE
+# PHASE 8 - PERSISTENCE
 # ==========================================================================
 
 [[capability]]
@@ -22908,7 +22908,7 @@ output = 'json'
 network = false
 
 # ==========================================================================
-# PHASE 9 — EXPLOITATION
+# PHASE 9 - EXPLOITATION
 # ==========================================================================
 
 [[capability]]
@@ -29658,7 +29658,7 @@ network = false
 
 # ==========================================================================
 # ==========================================================================
-# PHASE 11 — CTF CHALLENGES
+# PHASE 11 - CTF CHALLENGES
 # ==========================================================================
 
 [[capability]]

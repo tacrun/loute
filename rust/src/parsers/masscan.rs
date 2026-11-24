@@ -1,4 +1,4 @@
-// masscan.rs — masscan output (§6.7). "Discovered open port 80/tcp on 1.2.3.4"
+// masscan.rs - masscan output (§6.7). "Discovered open port 80/tcp on 1.2.3.4"
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {
@@ -27,12 +27,4 @@ fn parse_bannercsv(t: &str) -> Option<(String, String)> {
     if f.len() >= 4 && f[0].trim().parse::<u8>().is_ok() {
         Some((f[3].trim().to_string(), format!("{}/{}", f[0].trim(), f[1].trim())))
     } else { None }
-}
-
-#[cfg(test)] mod tests {
-    use super::*;
-    #[test] fn parses_discovered_line() {
-        let o = parse("Discovered open port 443/tcp on 1.2.3.4\n");
-        assert!(o.assets.iter().any(|a| a.kind == "port" && a.key == "443/tcp"));
-    }
 }

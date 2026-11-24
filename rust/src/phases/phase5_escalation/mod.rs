@@ -1,4 +1,4 @@
-// phase5_escalation/mod.rs — ESCALATION phase (24 capabilities)
+// phase5_escalation/mod.rs - ESCALATION phase (24 capabilities)
 // Capability IDs mirror the shipped catalog (capabilities.toml.txt, schema v1).
 // Per 1-5-5.md §10 phase modules.
 

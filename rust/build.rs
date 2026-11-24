@@ -1,8 +1,8 @@
-// build.rs — Embeds catalog SHA-256 hash per 1-5-5.md §2.3 S2.
+// build.rs - Embeds catalog SHA-256 hash per 1-5-5.md §2.3 S2.
 // Computes SHA-256 of the master catalog and emits CATALOG_HASH.
 
 fn main() {
-    // Path to catalog — try multiple locations
+    // Path to catalog - try multiple locations
     let catalog_paths = [
         "../capabilities.toml.txt",
         "../../capabilities.toml.txt",
@@ -15,7 +15,7 @@ fn main() {
         .unwrap_or_default();
 
     if catalog_content.is_empty() {
-        println!("cargo:warning=LOUTE catalog not found — building without hash");
+        println!("cargo:warning=LOUTE catalog not found - building without hash");
         println!("cargo:rustc-env=CATALOG_HASH=unavailable");
     } else {
         let hash = sha256_hex(catalog_content.as_bytes());

@@ -1,4 +1,4 @@
-// phase6_credentials/mod.rs — CREDENTIALS phase (22 capabilities)
+// phase6_credentials/mod.rs - CREDENTIALS phase (22 capabilities)
 // Capability IDs mirror the shipped catalog (capabilities.toml.txt, schema v1).
 // Per 1-5-5.md §10 phase modules.
 

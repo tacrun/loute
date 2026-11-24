@@ -10,9 +10,20 @@ pub use frb_generated::*;
 /// Catalog hash embedded at build time by build.rs
 pub const CATALOG_HASH: &str = env!("CATALOG_HASH", "unavailable");
 
+/// Full catalog embedded at compile time. This keeps the runtime functional
+/// after install, when no source checkout or asset path is available.
+pub const EMBEDDED_CATALOG: &str = include_str!("../../capabilities.toml.txt");
+
 /// Initialize the catalog from the embedded content or a file path.
 pub fn init_catalog() -> Result<(), String> {
-    // Try to load from the repo root or asset path
+    // The embedded catalog is the primary source. It is present in every build
+    // regardless of the current working directory or install layout.
+    if !EMBEDDED_CATALOG.is_empty() {
+        crate::core::capability_catalog::init_catalog(EMBEDDED_CATALOG)?;
+        return Ok(());
+    }
+
+    // Fallback for unusual layouts where the catalog was not embedded.
     let paths = [
         "capabilities.toml.txt",
         "../capabilities.toml.txt",
@@ -29,7 +40,6 @@ pub fn init_catalog() -> Result<(), String> {
         }
     }
 
-    // If no file found, initialize with empty catalog
     crate::core::capability_catalog::init_catalog("# empty catalog\n")?;
     Ok(())
 }

@@ -1,4 +1,4 @@
-// phase7_lateral/mod.rs — LATERAL phase (26 capabilities)
+// phase7_lateral/mod.rs - LATERAL phase (26 capabilities)
 // Capability IDs mirror the shipped catalog (capabilities.toml.txt, schema v1).
 // Per 1-5-5.md §10 phase modules.
 

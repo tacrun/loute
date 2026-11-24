@@ -1,39 +1,65 @@
-#!/bin/bash
-# LOUTE Master Build Script
-# This script executes all packaging scripts to generate the APK, DEB, and EXE.
-
-set -e
-
-echo "=========================================="
-echo "    Initiating LOUTE Multi-Platform Build  "
-echo "=========================================="
+#!/usr/bin/env bash
+# LOUTE platform-aware build driver.
+# Builds only the target that matches the current host and reports every other
+# target as skipped. This avoids the hard failures seen when a single machine
+# tried to produce Android, DEB, Windows and Arch artifacts at once.
+set -euo pipefail
 
 cd "$(dirname "$0")"
 
-if [ -f "build_android_apk.sh" ]; then
-    ./build_android_apk.sh
-else
-    echo "[!] build_android_apk.sh not found."
-fi
+echo "=========================================="
+echo "    LOUTE Multi-Platform Build Driver     "
+echo "=========================================="
 
-if [ -f "build_linux_deb.sh" ]; then
-    ./build_linux_deb.sh
-else
-    echo "[!] build_linux_deb.sh not found."
-fi
+detect_os() {
+  case "$(uname -s)" in
+    Linux)
+      if [ -f /etc/os-release ]; then
+        # shellcheck disable=SC1091
+        . /etc/os-release
+        case "${ID:-}" in
+          arch|manjaro|artix|endeavouros) echo arch ;;
+          *) echo linux ;;
+        esac
+      else
+        echo linux
+      fi
+      ;;
+    MINGW*|MSYS*|CYGWIN*) echo windows ;;
+    *) echo unknown ;;
+  esac
+}
 
-if [ -f "build_windows_exe.sh" ]; then
-    ./build_windows_exe.sh
-else
-    echo "[!] build_windows_exe.sh not found."
-fi
+OS="$(detect_os)"
+echo "[*] Host: $OS ($(uname -m))"
 
-if [ -f "build_arch.sh" ]; then
-    ./build_arch.sh
-else
-    echo "[!] build_arch.sh not found."
-fi
+skip() { echo "[SKIP] $1 on this host ($OS)."; }
+
+case "$OS" in
+  arch)
+    bash ./build_arch.sh
+    skip "DEB build (Arch is the native target)"
+    skip "Windows EXE build"
+    skip "Android APK build"
+    ;;
+  linux)
+    bash ./build_linux_deb.sh
+    skip "Arch package build"
+    skip "Windows EXE build"
+    skip "Android APK build"
+    ;;
+  windows)
+    bash ./build_windows_exe.sh
+    skip "DEB build"
+    skip "Arch package build"
+    skip "Android APK build"
+    ;;
+  *)
+    skip "all native builds"
+    echo "[!] Run the Android script on a host with the Android SDK configured."
+    ;;
+esac
 
 echo "=========================================="
-echo "    Multi-Platform Build Complete!        "
+echo "    Build driver finished                 "
 echo "=========================================="

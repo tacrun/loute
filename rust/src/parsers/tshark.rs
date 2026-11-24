@@ -1,4 +1,4 @@
-// tshark.rs — tshark PDML/field output (§6.7).
+// tshark.rs - tshark PDML/field output (§6.7).
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {

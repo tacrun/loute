@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../themes/midnight_hacker.dart';
 
-/// Collapsible accordion — outline icon toggle for phase/module trees.
+/// Collapsible accordion - outline icon toggle for phase/module trees.
 class CollapsibleAccordion extends StatefulWidget {
   final String title;
   final List<Widget> children;

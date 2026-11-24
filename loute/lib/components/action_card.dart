@@ -19,7 +19,7 @@ import 'terminal_log.dart';
 import 'output_viewer.dart';
 import 'system_alert.dart';
 
-/// Action card — displays inputs, execute button, and output for a selected action.
+/// Action card - displays inputs, execute button, and output for a selected action.
 class ActionCard extends ConsumerStatefulWidget {
   final ActionItem action;
   final String moduleName;

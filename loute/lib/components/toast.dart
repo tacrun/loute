@@ -3,7 +3,7 @@ import '../themes/midnight_hacker.dart';
 
 enum ToastType { info, success, error }
 
-/// Show a toast notification — top-right, auto-dismiss 3s.
+/// Show a toast notification - top-right, auto-dismiss 3s.
 void showLouteToast(BuildContext context, String message, {ToastType type = ToastType.info}) {
   final overlay = Overlay.of(context);
   late OverlayEntry entry;

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../themes/midnight_hacker.dart';
 import '../../generated/capability_index.dart';
 
-/// Capability Explorer — searchable catalog with facets per 1-5-5.md §11.1.
+/// Capability Explorer - searchable catalog with facets per 1-5-5.md §11.1.
 /// Phase · provider · availability · risk · noise · network · MITRE facets.
 class CapabilityExplorerScreen extends ConsumerStatefulWidget {
   const CapabilityExplorerScreen({super.key});
@@ -117,7 +117,7 @@ class _CapabilityExplorerScreenState
   }
 
   Widget _buildCapabilityList() {
-    // Show a placeholder list — in production this would come from the Rust API
+    // Show a placeholder list - in production this would come from the Rust API
     final phases = LoutePhase.values;
     return ListView.builder(
       itemCount: phases.length,

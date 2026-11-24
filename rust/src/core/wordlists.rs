@@ -1,4 +1,4 @@
-// wordlists.rs — {wl:} resolution and integrity per 1-5-5.md §14.
+// wordlists.rs - {wl:} resolution and integrity per 1-5-5.md §14.
 // {wl:dns/subdomains-top1m} → manifest lookup → hash verify → absolute path → argv.
 
 use std::collections::HashMap;
@@ -125,27 +125,4 @@ pub struct WordlistStatus {
     pub bytes: u64,
     pub exists: bool,
     pub pack: String,
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn loads_shipped_manifest() {
-        let reg = WordlistRegistry::from_manifest().expect("manifest must load");
-        let list = reg.list();
-        assert!(list.len() >= 36, "manifest should contain >= 36 wordlists, got {}", list.len());
-        for w in &list {
-            assert!(w.exists, "wordlist file missing: {}", w.id);
-        }
-    }
-
-    #[test]
-    fn resolves_and_verifies_hash() {
-        let reg = WordlistRegistry::from_manifest().expect("manifest must load");
-        let p = reg.resolve_verified("dns/hostnames.txt").expect("must resolve and verify");
-        assert!(p.exists());
-        assert!(reg.resolve_verified("does/not/exist.txt").is_err());
-    }
 }

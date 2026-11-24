@@ -1,4 +1,4 @@
-// phase10_wireless/mod.rs — WIRELESS phase (21 capabilities)
+// phase10_wireless/mod.rs - WIRELESS phase (21 capabilities)
 // Capability IDs mirror the shipped catalog (capabilities.toml.txt, schema v1).
 // Per 1-5-5.md §10 phase modules.
 

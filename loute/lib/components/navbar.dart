@@ -10,7 +10,7 @@ import '../themes/midnight_hacker.dart';
 import '../providers/navigation_state.dart';
 import '../providers/settings_state.dart';
 
-/// Top navbar — hamburger toggle, LOUTE logo image, screen selector, and window controls.
+/// Top navbar - hamburger toggle, LOUTE logo image, screen selector, and window controls.
 class Navbar extends ConsumerWidget implements PreferredSizeWidget {
   const Navbar({super.key});
 
@@ -290,7 +290,7 @@ class Navbar extends ConsumerWidget implements PreferredSizeWidget {
                         .copyWith(color: MidnightHacker.dimGreen)),
                 const SizedBox(height: 16),
 
-                // Social Icons Row — Real brand icons, clickable
+                // Social Icons Row - Real brand icons, clickable
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -318,8 +318,8 @@ class Navbar extends ConsumerWidget implements PreferredSizeWidget {
                 // System Description
                 Text(
                   'LOUTE is an autonomous bug bounty and security reconnaissance framework. '
-                  'It orchestrates multi-phase penetration testing workflows — from passive '
-                  'reconnaissance through active exploitation — powered by a native Rust engine '
+                  'It orchestrates multi-phase penetration testing workflows - from passive '
+                  'reconnaissance through active exploitation - powered by a native Rust engine '
                   'and a zero-dependency Flutter command interface.',
                   style: MidnightHacker.monoSmall
                       .copyWith(color: MidnightHacker.dimGreen, height: 1.5),
@@ -376,15 +376,15 @@ class _EnvironmentDialog extends StatefulWidget {
 
 class _EnvironmentDialogState extends State<_EnvironmentDialog> {
   bool _loading = true;
-  String _publicIp = '—';
-  String _isp = '—';
-  String _city = '—';
-  String _region = '—';
-  String _country = '—';
-  String _lat = '—';
-  String _lon = '—';
-  String _timezone = '—';
-  String _privateIp = '—';
+  String _publicIp = '-';
+  String _isp = '-';
+  String _city = '-';
+  String _region = '-';
+  String _country = '-';
+  String _lat = '-';
+  String _lon = '-';
+  String _timezone = '-';
+  String _privateIp = '-';
 
   @override
   void initState() {
@@ -404,7 +404,7 @@ class _EnvironmentDialogState extends State<_EnvironmentDialog> {
             break;
           }
         }
-        if (_privateIp != '—') break;
+        if (_privateIp != '-') break;
       }
     } catch (_) {}
 
@@ -415,14 +415,14 @@ class _EnvironmentDialogState extends State<_EnvironmentDialog> {
           .timeout(const Duration(seconds: 5));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        _publicIp = data['query'] ?? '—';
-        _isp = data['isp'] ?? '—';
-        _city = data['city'] ?? '—';
-        _region = data['regionName'] ?? '—';
-        _country = data['country'] ?? '—';
-        _lat = (data['lat'] ?? '—').toString();
-        _lon = (data['lon'] ?? '—').toString();
-        _timezone = data['timezone'] ?? '—';
+        _publicIp = data['query'] ?? '-';
+        _isp = data['isp'] ?? '-';
+        _city = data['city'] ?? '-';
+        _region = data['regionName'] ?? '-';
+        _country = data['country'] ?? '-';
+        _lat = (data['lat'] ?? '-').toString();
+        _lon = (data['lon'] ?? '-').toString();
+        _timezone = data['timezone'] ?? '-';
       }
     } catch (_) {}
 

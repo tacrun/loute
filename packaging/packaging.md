@@ -3,110 +3,136 @@
   <h1><b>L O U T E</b></h1>
   <h3>AUTONOMOUS BUG BOUNTY FRAMEWORK</h3>
   <p><b>V 1.5.5</b></p>
-  <p><b>© 2026 Funbinet Inc.</b></p>
-  <br>
-  <a href="https://github.com/funbinet">
-    <img src="https://img.shields.io/badge/GitHub-funbinet-blue?style=for-the-badge&logo=github&logoColor=%2300FF41&color=%23000000" alt="GitHub"/>
-  </a>
-  <a href="https://codeberg.org/funbinet">
-    <img src="https://img.shields.io/badge/Codeberg-funbinet-blue?style=for-the-badge&logo=codeberg&logoColor=%2300FF41&color=%23000000" alt="Codeberg"/>
-  </a>
 </div>
 
-
 ---
 
-# LOUTE Packaging & Distribution Guide
+# LOUTE Packaging and Distribution
 
-This document explains how to build, modify, and troubleshoot the distribution packages for the LOUTE framework. The system is designed to be packaged as `.apk` (Android), `.deb` (Linux Debian-based), `.pkg.tar.zst` (Arch Linux), and `.exe` (Windows).
-
-All generated packages should be named according to the system version, e.g., `loute_v1.5.5.apk` or `loute-v1.5.5-1-x86_64.pkg.tar.zst`.
-
----
+This document explains how to build LOUTE packages from source. Outputs are named with the system version, for example `loute_v1.5.5.apk` or `loute-v1.5.5-1-x86_64.pkg.tar.zst`.
 
 ## 1. Prerequisites
-- **Flutter SDK**: Ensure you have the stable channel of Flutter installed.
-- **Rust Toolchain**: `rustup`, `cargo`, and the necessary cross-compilation targets.
-- **Flutter Rust Bridge (FRB)**: Used to generate the FFI bindings.
 
-## 2. Linux (.deb)
-### Creation
-1. Compile the Rust backend: `cargo build --release`
-2. Build the Flutter app: `flutter build linux --release`
-3. Use a tool like `flutter_deb` or `dpkg-deb` to package the contents of `build/linux/x64/release/bundle`.
-4. Name the output `loute_vX.X.X.deb`.
+Install the Flutter SDK (stable channel, Dart 3.13 or newer) and the Rust toolchain (`rustup`, `cargo`) before building. The Flutter Rust Bridge bindings are committed to the repository, so `flutter_rust_bridge_codegen` is not required for a normal build.
 
-### Troubleshooting
-- *Missing GLIBC*: Ensure the build machine's glibc version matches or is older than the target machines.
-- *FFI Not Found*: Verify `libnative.so` is correctly placed in the `/lib` directory of the bundle.
+## 2. Build from a fresh clone
+
+From the repository root:
+
+```bash
+./build.sh
+```
+
+The script detects the host operating system and runs only the matching native build. On Arch Linux it produces an Arch package. On Debian or Ubuntu it produces a DEB. On Windows it produces a release ZIP. Unsupported hosts exit with a clear message instead of a hard failure.
+
+To build every supported target explicitly, use `packaging/build_all.sh`, which also builds only the native target and reports the others as skipped.
 
 ## 3. Arch Linux (.pkg.tar.zst)
-Arch does not install `.deb` packages natively. LOUTE provides a native Arch package build.
 
-### Build & Install
-1. Install build dependencies:
-   ```bash
-   sudo pacman -S --needed flutter rust cargo gtk3 base-devel
-   ```
-2. Run the Arch build script from the repository:
-   ```bash
-   cd packaging
-   ./build_arch.sh
-   ```
-3. Install the generated package:
-   ```bash
-   sudo pacman -U loute-v1.5.5-1-x86_64.pkg.tar.zst
-   ```
+### Build
 
-### After Install
-- Launch from your app launcher/menu: **LOUTE**
-- Or launch from terminal:
-  ```bash
-  loute
-  ```
+```bash
+sudo pacman -S --needed flutter rust cargo gtk3 base-devel libarchive zstd
+cd packaging
+./build_arch.sh
+```
 
-### PKGBUILD (Alternative)
+This produces `loute-v1.5.5-1-<arch>.pkg.tar.zst` in the `packaging` directory.
+
+### Install
+
+```bash
+sudo pacman -U packaging/loute-v1.5.5-1-x86_64.pkg.tar.zst
+```
+
+Launch from the application menu, or run `loute` in a terminal.
+
+### PKGBUILD alternative
+
 A `packaging/PKGBUILD` is included for the standard Arch workflow. Build the Linux bundle first, then run `makepkg -f --noextract` from `packaging/`.
 
 ### Troubleshooting
-- *flutter not found*: Install Flutter via Arch packages/AUR and ensure it is on `PATH`.
-- *Missing GTK/glibc deps*: Install runtime deps with `sudo pacman -S gtk3 glibc`.
-- *Desktop entry not showing*: Run `update-desktop-database` or log out/in; the package installs to `/usr/share/applications/loute.desktop`.
 
-## 4. Windows (.exe)
-### Creation
-1. Compile Rust: `cargo build --target x86_64-pc-windows-msvc --release`
-2. Build Flutter: `flutter build windows --release`
-3. Use Inno Setup or a similar installer generator to package the `build\windows\runner\Release` directory.
-4. Name the output `loute_vX.X.X.exe`.
+- `flutter` not found: install Flutter from the Arch repositories or the AUR and make sure it is on `PATH`.
+- `bsdtar` or `zstd` not found: install `libarchive` and `zstd`.
+- Missing GTK or glibc: install runtime dependencies with `sudo pacman -S gtk3 glibc`.
+
+## 4. Debian and Ubuntu (.deb)
+
+### Build
+
+```bash
+sudo apt-get install -y flutter rustc cargo dpkg-deb libgtk-3-dev
+cd packaging
+./build_linux_deb.sh
+```
+
+The output is `packaging/loute_v1.5.5_<arch>.deb`.
+
+### Install
+
+```bash
+sudo dpkg -i packaging/loute_v1.5.5_amd64.deb
+```
 
 ### Troubleshooting
-- *Visual Studio Build Tools*: Required for building the C++ runner.
-- *DLL Missing*: Ensure the compiled Rust `.dll` is included alongside the Flutter `.exe`.
 
-## 5. Android (.apk)
-### Creation
-1. Ensure Android NDK is installed.
-2. Add Rust Android targets: `rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android`
-3. Build Flutter APK: `flutter build apk --release` (this automatically triggers gradle to build the Rust library if configured correctly with `cargo-ndk`).
-4. Name the output `loute_vX.X.X.apk`.
+- GLIBC mismatch: build on a machine with a glibc version equal to or older than the target.
+- FFI library not found: confirm `libloute_core.so` is present in `/usr/lib/loute/lib` after install.
+
+## 5. Windows (.exe)
+
+Flutter Windows builds require a Windows host with Visual Studio Build Tools. From a Windows shell with Bash available:
+
+```bash
+cd packaging
+./build_windows_exe.sh
+```
+
+The output is `packaging/loute_v1.5.5_windows.zip`. Extract it and run `loute.exe`. No installer is required.
+
+To produce a standalone installer, use Inno Setup with the extracted release directory.
 
 ### Troubleshooting
-- *Permissions*: Android restricts access to `/proc/net/tcp` and binaries like `ss`. Ensure the Rust backend uses the safe fallback paths as implemented in Phase 1.
-- *NDK Version Mismatch*: Ensure your NDK version matches the one configured in `android/app/build.gradle`.
 
----
+- Visual Studio Build Tools: required for the C++ runner.
+- Missing DLL: confirm the Rust `.dll` is in the release directory next to `loute.exe`.
 
-## Releasing
-Upon successful build of the packages, they should be uploaded to the Git releases on:
-- Github: `https://github.com/funbinet`
-- Codeberg: `https://codeberg.org/funbinet`
+## 6. Android (.apk)
 
----
+Android builds require the Android SDK and NDK. From a configured host:
 
-<div align="center">
+```bash
+cd packaging
+./build_android_apk.sh
+```
 
-**LOUTE V 1.5.5** 
-**© 2026 Funbinet Inc. All Rights Reserved.**
+The output is `packaging/loute_v1.5.5.apk`.
 
-</div>
+If `android/app/release.keystore` is present the APK is signed with it. Otherwise the release build is signed with the default debug key, which is sufficient for local testing but not for the Play Store.
+
+### Troubleshooting
+
+- NDK version mismatch: align the NDK version in `android/app/build.gradle.kts` with the installed SDK.
+- Permissions: Android restricts access to `/proc/net/tcp` and tools such as `ss`. The Rust backend uses safe fallback paths.
+
+## 7. Supported architectures
+
+| Platform | Architecture | Package |
+| --- | --- | --- |
+| Arch Linux | x86_64, aarch64 | .pkg.tar.zst |
+| Debian/Ubuntu | amd64, arm64 | .deb |
+| Windows | x86_64 | .zip |
+| Android | arm64, armv7, x86_64 | .apk |
+
+macOS and iOS are not currently packaged. Builds for those targets are not supported.
+
+## 8. Verification
+
+Run the build and asset integrity checks at any time:
+
+```bash
+bash scripts/verify.sh
+```
+
+This checks the Rust release build, catalog structure and hash parity, codegen idempotence, identity strings, version consistency and resource integrity.

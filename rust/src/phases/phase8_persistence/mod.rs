@@ -1,4 +1,4 @@
-// phase8_persistence/mod.rs — PERSISTENCE phase (19 capabilities)
+// phase8_persistence/mod.rs - PERSISTENCE phase (19 capabilities)
 // Capability IDs mirror the shipped catalog (capabilities.toml.txt, schema v1).
 // Per 1-5-5.md §10 phase modules.
 

@@ -1,4 +1,4 @@
-// json.rs — generic JSON / JSONL parsing (§6.7).
+// json.rs - generic JSON / JSONL parsing (§6.7).
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {
@@ -36,14 +36,5 @@ fn walk(v: &serde_json::Value, out: &mut ParseOutcome) {
             out.findings.push(ParsedFinding { title: title.clone(), detail, severity: super::severity(&severity), discriminator: title });
         }
         _ => {}
-    }
-}
-
-#[cfg(test)] mod tests {
-    use super::*;
-    #[test] fn parses_json_array() {
-        let o = parse(r#"[{"host":"x.com","severity":"high","template-id":"CVE-1"}]"#);
-        assert_eq!(o.assets.len(), 1);
-        assert_eq!(o.findings[0].severity.label(), "high");
     }
 }

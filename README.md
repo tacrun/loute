@@ -5,11 +5,8 @@
   <p><b>V 1.5.5</b></p>
   <p><b>© 2026 Funbinet Inc.</b></p>
   <br>
-  <a href="https://github.com/funbinet">
-    <img src="https://img.shields.io/badge/GitHub-funbinet-blue?style=for-the-badge&logo=github&logoColor=%2300FF41&color=%23000000" alt="GitHub"/>
-  </a>
-  <a href="https://codeberg.org/funbinet">
-    <img src="https://img.shields.io/badge/Codeberg-funbinet-blue?style=for-the-badge&logo=codeberg&logoColor=%2300FF41&color=%23000000" alt="Codeberg"/>
+  <a href="https://github.com/tacrun/loute">
+    <img src="https://img.shields.io/badge/GitHub-tacrun%2Floute-blue?style=for-the-badge&logo=github&logoColor=%2300FF41&color=%23000000" alt="GitHub"/>
   </a>
 </div>
 
@@ -17,107 +14,162 @@
 
 ## Overview
 
-LOUTE is a modern, production-grade **Autonomous Bug Bounty Framework** that orchestrates complex reconnaissance and security assessment workflows. Built with a lightning-fast Rust native backend and a cross-platform Flutter frontend (Midnight Hacker Theme UI), LOUTE provides a unified interface for conducting comprehensive security assessments.
+LOUTE is an autonomous bug bounty framework that organizes reconnaissance and security assessment workflows in one application. A Rust native backend performs network and system operations; a Flutter frontend provides the interface with the Midnight Hacker theme (pure black backgrounds and neon green accents).
 
-LOUTE solves the problem of fragmented tools in bug bounty hunting by providing a single, integrated platform that handles the entire offensive security lifecycle—from initial reconnaissance to report generation.
-
-## Core Purpose
-
-LOUTE addresses the fundamental challenges in modern bug bounty and penetration testing:
-- **Tool Fragmentation:** Eliminates the need to switch between dozens of CLI tools and interfaces.
-- **Workflow Automation:** Handles asynchronous, multi-threaded operations automatically.
-- **Reporting Complexity:** Dynamically generates pristine HTML, JSON, CSV, and TXT reports with a unified aesthetic.
-- **Cross-Platform Delivery:** Runs natively on Linux, Windows, and Android.
+The catalog of 241 capabilities across 11 phases is the source of truth for what the framework can run. Execution is argv-only: commands are built as argument vectors and never passed through a shell.
 
 ## Architecture
 
-LOUTE operates on a high-performance bifurcated architecture:
-1. **The Native Engine (Rust & Tokio):** Handles network requests, concurrent execution, system-level interactions, and heavy data processing. It is designed for memory safety and zero-cost abstractions.
-2. **The Frontend Engine (Flutter & Riverpod):** Delivers a state-of-the-art responsive UI dynamically scaling from desktop to mobile interfaces, maintaining a strict pure black (`#000000`) and neon green (`#00FF41`) aesthetic.
-3. **The FFI Bridge (flutter_rust_bridge):** Facilitates seamless, high-speed communication between Dart and Rust.
+- **Native engine (Rust):** capability catalog loading, validation, dispatch, argv-only execution, parsers, job queue, artifact store, audit log, workspace and graph.
+- **Frontend (Flutter and Riverpod):** operator console, capability explorer, provider health, jobs, findings, asset graph, workspaces, credential vault, payload studio, timeline, reports and CTF arena.
+- **FFI bridge (flutter_rust_bridge 2.12.0):** communication between Dart and Rust. Bindings are committed, so code generation is not needed for a normal build.
+- **Embedded catalog:** the capability catalog is compiled into the Rust library, so the installed application works without a source checkout.
 
-## Phases & Capabilities
+## Prerequisites
 
-LOUTE organizes offensive operations into logical phases. Phase 1 is currently active:
+Install these before building from source:
 
-### Phase 1: Reconnaissance (Information Gathering)
-Purpose: Gather intelligence about target infrastructure without direct exploitation.
-Capabilities:
-- **DNS Bruteforce:** Multi-threaded sub-domain discovery.
-- **Certificate Transparency Logs:** Extracts hostnames from `crt.sh`.
-- **Cloud Provider Check:** Identifies whether targets are hosted on AWS, GCP, Azure, or Cloudflare.
-- **Wayback Machine Archives:** Retrieves historical endpoints and parameters.
-- **Port Scanning:** Asynchronous port discovery.
-- **WAF Detection:** Fingerprints Web Application Firewalls.
-- **Tech Stack Identification:** Identifies frameworks and backend languages.
-- **Directory Bruteforce:** Discovers hidden paths and administrative panels.
+- **Flutter SDK**, stable channel, Dart 3.13 or newer (Flutter 3.38.4 or newer)
+- **Rust toolchain**, with `cargo` and `rustc` on `PATH`
 
-## Installation & Startup
+Platform-specific packages are listed in the sections below. The Rust backend compiles on Linux, Windows and Android targets.
 
-LOUTE is distributed as pre-compiled binaries for your target environment.
+## Build from source
 
-### Linux (Debian/Ubuntu - .deb)
-1. Download the `loute_v1.5.5.deb` package from the Releases page.
-2. Install via dpkg: `sudo dpkg -i loute_v1.5.5.deb`
-3. Launch from your application menu or run `loute` in the terminal.
-
-### Linux (Arch - .pkg.tar.zst)
-1. Install build dependencies: `sudo pacman -S --needed flutter rust cargo gtk3 base-devel`
-2. Build the package: `cd packaging && ./build_arch.sh`
-3. Install: `sudo pacman -U packaging/loute-v1.5.5-1-x86_64.pkg.tar.zst`
-4. Launch from your app launcher as **LOUTE**, or run `loute` in the terminal.
-
-### Android (.apk)
-1. Download the `loute_v1.5.5.apk` package to your Android device.
-2. Ensure "Install from Unknown Sources" is enabled.
-3. Tap the APK to install.
-4. Launch LOUTE from your app drawer. (Note: Ensure the app has network and storage permissions).
-
-### Windows (.exe)
-1. Download the `loute_v1.5.5_windows.zip` package.
-2. Extract the contents to your preferred directory.
-3. Run `loute.exe`. No installation required.
-
-## Building from Source
+Clone the repository and run the root build script. It detects the host operating system and produces the matching native package. Unsupported hosts exit with a clear message instead of a hard failure.
 
 ```bash
-# Run Linux desktop mode
+git clone https://github.com/tacrun/loute.git
 cd loute
-flutter run -d linux
-
-# Check Rust backend
-cd rust
-cargo check
+./build.sh
 ```
 
-## Proprietary Software License
+The script does not create branches, pull or merge. It builds directly from the checked-out `main` tree.
 
-Copyright (c) 2026 Funbinet Inc.
-All rights reserved.
+The generated package is written to `packaging/`. See the sections below for the exact file name and install command for each platform.
 
-This software is the property of Funbinet and is protected by copyright laws and international copyright treaties. No part of this software may be reproduced, distributed, or transmitted in any form or by any means, without the prior written permission of Funbinet.
+## Build and install by platform
 
-### Restrictions:
-1. **No Redistribution:** You may not redistribute this software to any third party.
-2. **No Modification:** You may not modify, adapt, reverse engineer, or disassemble this software.
-3. **No Commercial Use:** You may not use this software for commercial purposes.
+### Arch Linux
 
-### Disclaimer:
-This software is provided "as is" without warranty of any kind. Funbinet shall not be liable for any damages arising from the use of this software.
+Dependencies:
 
-## About the Author
+```bash
+sudo pacman -S --needed flutter rust cargo gtk3 base-devel libarchive zstd
+```
 
-**Funbinet (Dominic Dancan)** is a Computer Scientist specializing in Cybersecurity, focusing on the intersection of offensive security and automation. He develops custom toolsets and frameworks designed to streamline reconnaissance, vulnerability assessment, and post-exploitation workflows.
+Build and install:
 
-- **Email:** funbinet@gmail.com
-- **Codeberg:** [https://codeberg.org/funbinet](https://codeberg.org/funbinet)
-- **GitHub:** [https://github.com/funbinet](https://github.com/funbinet)
+```bash
+cd packaging
+./build_arch.sh
+sudo pacman -U loute-v1.5.5-1-x86_64.pkg.tar.zst
+```
+
+Launch from the application menu as **LOUTE**, or run `loute` in a terminal. An alternative `packaging/PKGBUILD` supports the standard `makepkg` workflow.
+
+### Debian, Ubuntu and other dpkg-based Linux
+
+Dependencies:
+
+```bash
+sudo apt-get install -y flutter rustc cargo dpkg-deb libgtk-3-dev
+```
+
+Build and install:
+
+```bash
+cd packaging
+./build_linux_deb.sh
+sudo dpkg -i loute_v1.5.5_amd64.deb
+```
+
+### Other Linux distributions
+
+Build the native Rust library and Flutter Linux bundle directly:
+
+```bash
+cd rust && cargo build --release
+cd ../loute
+flutter pub get
+flutter build linux --release
+```
+
+The bundle is at `loute/build/linux/x64/release/bundle` on x86_64, or `loute/build/linux/arm64/release/bundle` on aarch64. Copy `rust/target/release/libloute_core.so` into the bundle's `lib/` directory before running the `loute` executable. GTK 3 and glibc are required at runtime.
+
+### Windows
+
+A Windows host with Visual Studio Build Tools and Flutter Windows support is required. From a Bash shell on Windows:
+
+```bash
+cd packaging
+./build_windows_exe.sh
+```
+
+Extract `packaging/loute_v1.5.5_windows.zip` and run `loute.exe`. No installer is required. Keep the Rust DLL next to the executable.
+
+### Android
+
+Android builds require the Android SDK and NDK. From a configured host:
+
+```bash
+cd packaging
+./build_android_apk.sh
+```
+
+Install `packaging/loute_v1.5.5.apk` on the device. Enable installation from unknown sources if prompted.
+
+If `loute/android/app/release.keystore` exists, the APK is signed with it. Otherwise the release build uses the default debug key, which is suitable for local testing but not for the Play Store.
+
+## Supported architectures
+
+| Platform | Architecture | Package |
+| --- | --- | --- |
+| Arch Linux | x86_64, aarch64 | .pkg.tar.zst |
+| Debian/Ubuntu | amd64, arm64 | .deb |
+| Linux (generic) | x86_64, aarch64 | release bundle |
+| Windows | x86_64 | .zip |
+| Android | arm64, armv7, x86_64 | .apk |
+
+macOS and iOS are not currently packaged.
+
+## Verify the build
+
+```bash
+bash scripts/verify.sh
+```
+
+This checks the Rust release build, catalog structure and hash parity, codegen idempotence, identity strings, version consistency and resource integrity. It does not require Flutter.
+
+## Documentation
+
+- `packaging/packaging.md`: build and distribution details
+- `docs/architecture.md`: system architecture
+- `docs/catalog.md`: capability catalog format and validation rules
+- `docs/reporting.md`: report formats
+- `docs/opsec.md`: OPSEC profiles
+- `docs/wordlists.md`: bundled wordlists
+- `docs/ctf.md`: CTF and lab usage
+- `docs/legal.md`: legal notice
+
+## License
+
+Copyright (c) 2026 Funbinet Inc. All rights reserved.
+
+This software is proprietary. No part of it may be reproduced, distributed or transmitted without prior written permission from Funbinet. It is provided "as is" without warranty of any kind.
+
+## About the author
+
+**Funbinet (Dominic Dancan)** is a computer scientist specializing in cybersecurity, focused on offensive security and automation.
+
+- Email: funbinet@gmail.com
+- GitHub: [tacrun](https://github.com/tacrun)
 
 ---
 
 <div align="center">
 
-**LOUTE V 1.5.5** 
+**LOUTE V 1.5.5**
 **© 2026 Funbinet Inc. All Rights Reserved.**
 
 </div>

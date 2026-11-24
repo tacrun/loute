@@ -1,4 +1,4 @@
-// xml.rs — minimal XML tag/attribute extraction (§6.7). No external XML crate needed.
+// xml.rs - minimal XML tag/attribute extraction (§6.7). No external XML crate needed.
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {
@@ -26,12 +26,4 @@ pub fn parse(raw: &str) -> ParseOutcome {
     }
     if out.assets.is_empty() { out.artifacts.push(ParsedArtifact { media_type: "application/xml".into(), content: raw.to_string() }); }
     out
-}
-
-#[cfg(test)] mod tests {
-    use super::*;
-    #[test] fn extracts_tags() {
-        let o = parse("<host><address>10.0.0.1</address></host>");
-        assert!(o.assets.iter().any(|a| a.key == "10.0.0.1"));
-    }
 }

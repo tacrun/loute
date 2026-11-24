@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../themes/midnight_hacker.dart';
 
-/// Jobs / Live Runs — queue, running, streaming, cancel/retry.
+/// Jobs / Live Runs - queue, running, streaming, cancel/retry.
 /// Per 1-5-5.md §11.6.
 class JobsScreen extends ConsumerWidget {
   const JobsScreen({super.key});

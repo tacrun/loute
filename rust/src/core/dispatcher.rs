@@ -1,4 +1,4 @@
-// dispatcher.rs — CapabilityId → ExecutionPlan per 1-5-5.md §6.3.
+// dispatcher.rs - CapabilityId → ExecutionPlan per 1-5-5.md §6.3.
 // Performs: catalog lookup → input validation → placeholder substitution →
 // wordlist resolution → provider resolution → availability check → argv materialization.
 
@@ -74,20 +74,20 @@ impl Dispatcher {
             match provider_state {
                 super::provider_registry::ProviderState::Available(ref path) => path.clone(),
                 _ => {
-                    // Still plan it — execution will handle the missing provider
+                    // Still plan it - execution will handle the missing provider
                     PathBuf::from(&cap.binary)
                 }
             }
         };
 
-        // Argv materialization — substitute {placeholder} values
+        // Argv materialization - substitute {placeholder} values
         let argv: Vec<String> = cap
             .args
             .iter()
             .map(|arg| substitute_placeholders(arg, &resolved_inputs))
             .collect();
 
-        // Command preview — byte-identical to argv
+        // Command preview - byte-identical to argv
         let command_preview = if cap.native {
             format!("(native) {} {:?}", cap.id.0, argv)
         } else {
@@ -120,7 +120,7 @@ fn substitute_placeholders(arg: &str, inputs: &BTreeMap<String, String>) -> Stri
         let placeholder = format!("{{{}}}", key);
         result = result.replace(&placeholder, val);
     }
-    // Resolve {wl:...} placeholders — for now just leave the path reference
+    // Resolve {wl:...} placeholders - for now just leave the path reference
     // In full implementation this would look up the wordlist manifest
     // {artifacts} → temp dir
     result = result.replace("{artifacts}", "/tmp/loute_artifacts");

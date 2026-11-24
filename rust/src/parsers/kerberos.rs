@@ -1,4 +1,4 @@
-// kerberos.rs — Kerberos ticket / hash output (§6.7).
+// kerberos.rs - Kerberos ticket / hash output (§6.7).
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {

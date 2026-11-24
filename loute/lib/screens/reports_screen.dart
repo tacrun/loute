@@ -12,7 +12,7 @@ import '../components/system_alert.dart';
 import '../components/terminal_log.dart';
 import '../components/green_button.dart';
 
-/// Reports Screen — allows exploration, rendering, and deletion of saved outputs.
+/// Reports Screen - allows exploration, rendering, and deletion of saved outputs.
 class ReportsScreen extends ConsumerStatefulWidget {
   const ReportsScreen({super.key});
 

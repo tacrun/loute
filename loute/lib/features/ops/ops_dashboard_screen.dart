@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../themes/midnight_hacker.dart';
 
-/// Operations Dashboard — live campaign state, active jobs, top findings, provider health.
+/// Operations Dashboard - live campaign state, active jobs, top findings, provider health.
 /// Per 1-5-5.md §11.1.
 class OpsDashboardScreen extends ConsumerWidget {
   const OpsDashboardScreen({super.key});

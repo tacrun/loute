@@ -1,4 +1,4 @@
-// audit_log.rs — Hash-chained append-only log per 1-5-5.md §6.12.
+// audit_log.rs - Hash-chained append-only log per 1-5-5.md §6.12.
 // Each record carries prev_hash. Fields: ts, actor, workspace, job, capability,
 // argv, provider version, catalog hash, exit code, artifact hashes, finding ids.
 

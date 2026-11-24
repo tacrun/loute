@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../themes/midnight_hacker.dart';
 
-/// Linear progress bar — green fill, no rounded ends, 1px border.
+/// Linear progress bar - green fill, no rounded ends, 1px border.
 class ProgressBar extends StatelessWidget {
-  final double value; // 0.0 – 1.0
+  final double value; // 0.0 - 1.0
   final bool showPercentage;
   final double height;
 

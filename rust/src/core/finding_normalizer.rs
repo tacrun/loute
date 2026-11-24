@@ -1,4 +1,4 @@
-// finding_normalizer.rs — Raw → Finding/Asset/Artifact per 1-5-5.md §6.8.
+// finding_normalizer.rs - Raw → Finding/Asset/Artifact per 1-5-5.md §6.8.
 // Dedupe by (capability, asset_key, discriminator).
 // Severity/confidence scoring → MITRE mapping → evidence attachment → graph upsert.
 

@@ -3,7 +3,7 @@ use crate::core;
 use std::collections::BTreeMap;
 
 // ==========================================
-// LOUTE V1.5.5 — FRB API Surface
+// LOUTE V1.5.5 - FRB API Surface
 // Per 1-5-5.md §6.14: list_capabilities, get_capability, validate_capability,
 // dry_run_capability, probe_providers, run_capability, cancel_job, stream_job_events,
 // get_job_result, list_jobs, list_artifacts, get_artifact, create_workspace,
@@ -11,7 +11,7 @@ use std::collections::BTreeMap;
 // list_wordlists, install_wordlist_pack, get_audit_log, set_opsec_profile
 // ==========================================
 
-/// Initialize the LOUTE runtime — loads the capability catalog.
+/// Initialize the LOUTE runtime - loads the capability catalog.
 pub fn init_runtime() -> Result<String, String> {
     crate::init_catalog()?;
     let hash = crate::CATALOG_HASH;
@@ -137,7 +137,7 @@ pub fn validate_capability(id: String, inputs: String) -> String {
     }).to_string()
 }
 
-/// Dry-run a capability — returns the execution plan without running.
+/// Dry-run a capability - returns the execution plan without running.
 pub fn dry_run_capability(id: String, inputs: String, scope: Option<String>) -> String {
     let inputs_map: BTreeMap<String, String> = serde_json::from_str(&inputs)
         .unwrap_or_default();
@@ -383,7 +383,7 @@ pub struct ProviderHealthFrb {
 }
 
 // ==========================================
-// PHASE 1: RECONNAISSANCE (Real Implementations — preserved)
+// PHASE 1: RECONNAISSANCE (Real Implementations - preserved)
 // ==========================================
 
 pub async fn dns_bruteforce(domain: String, wordlist_path: Option<String>, concurrency: usize) -> String {
@@ -464,7 +464,7 @@ pub async fn network_services_audit() -> String {
 }
 
 // ==========================================
-// STUB — Retained until all phases are complete (per §19 migration plan)
+// STUB - Retained until all phases are complete (per §19 migration plan)
 // ==========================================
 
 pub async fn run_stub_action(action_id: String) -> String {

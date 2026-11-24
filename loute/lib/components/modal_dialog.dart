@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../themes/midnight_hacker.dart';
 
-/// Modal dialog — rectangular, green border, black bg.
+/// Modal dialog - rectangular, green border, black bg.
 class LouteDialog extends StatelessWidget {
   final String title;
   final String message;

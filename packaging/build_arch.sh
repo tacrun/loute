@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # LOUTE Arch Linux Package Build Script
 # Builds the production Linux app and packages it as an Arch package (.pkg.tar.zst).
-
 set -euo pipefail
 
 VERSION="1.5.5"
@@ -14,63 +13,73 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 APP_DIR="$REPO_ROOT/loute"
 PKGDIR="$SCRIPT_DIR/.archpkg/pkg"
-BUILDDIR="$SCRIPT_DIR/.archpkg/build"
 
 echo "=========================================="
 echo "   Building LOUTE Arch Package (Release)  "
 echo "=========================================="
 
-command -v flutter >/dev/null || { echo "[!] flutter not found in PATH"; exit 1; }
-command -v cargo >/dev/null || { echo "[!] cargo/rust toolchain not found in PATH"; exit 1; }
+require_tool() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "[!] Required tool not found: $1" >&2
+    exit 1
+  fi
+}
 
-cd "$APP_DIR"
+require_tool flutter
+require_tool cargo
+require_tool bsdtar
+require_tool zstd
 
-# --- Catalog shipping gate (1-5-5.md S4): fail if the capability bible is absent ---
+# Flutter names its Linux bundle directory x64 on x86_64 and arm64 on aarch64.
+case "$ARCH" in
+  x86_64) FLUTTER_ARCH="x64" ;;
+  aarch64|arm64) FLUTTER_ARCH="arm64" ;;
+  *) FLUTTER_ARCH="$ARCH" ;;
+esac
+
 echo "[*] Verifying capability catalog is bundled..."
-if [ ! -f "assets/capabilities/capabilities.toml.txt" ]; then
-  echo "[!] FATAL: capabilities.toml.txt missing from assets — refusing to package." >&2
+CATALOG="$APP_DIR/assets/capabilities/capabilities.toml.txt"
+if [ ! -f "$CATALOG" ]; then
+  echo "[!] FATAL: $CATALOG is missing - refusing to package." >&2
   exit 1
 fi
-echo "[+] Catalog present: $(sha256sum assets/capabilities/capabilities.toml.txt | cut -d' ' -f1)"
+echo "[+] Catalog present: $(sha256sum "$CATALOG" | cut -d' ' -f1)"
 
-echo "[*] Cleaning old builds..."
+echo "[*] Preparing Flutter workspace..."
+cd "$APP_DIR"
 flutter clean
 flutter pub get
 
-if command -v flutter_rust_bridge_codegen >/dev/null; then
-  echo "[*] Updating flutter_rust_bridge bindings..."
-  flutter_rust_bridge_codegen generate
-else
-  echo "[*] Skipping flutter_rust_bridge_codegen (not installed); using existing bindings"
-fi
-
-echo "[*] Compiling Flutter App for Linux..."
-flutter build linux --release
-
-echo "[*] Ensuring Rust library is up to date..."
+echo "[*] Building native Rust library..."
 cd "$REPO_ROOT/rust"
 cargo build --release
 
+echo "[*] Compiling Flutter app for Linux ($FLUTTER_ARCH)..."
+cd "$APP_DIR"
+flutter build linux --release
+
 echo "[*] Staging Arch package..."
 rm -rf "$SCRIPT_DIR/.archpkg"
-mkdir -p "$PKGDIR/usr/bin" "$PKGDIR/usr/lib/$APP_NAME" "$PKGDIR/usr/share/applications" \
-         "$PKGDIR/usr/share/icons/hicolor/128x128/apps" "$BUILDDIR"
+mkdir -p "$PKGDIR/usr/bin" "$PKGDIR/usr/lib/$APP_NAME/lib" \
+         "$PKGDIR/usr/share/applications" \
+         "$PKGDIR/usr/share/icons/hicolor/128x128/apps"
 
-BUNDLE_DIR="$APP_DIR/build/linux/x64/release/bundle"
+BUNDLE_DIR="$APP_DIR/build/linux/$FLUTTER_ARCH/release/bundle"
 if [ ! -d "$BUNDLE_DIR" ]; then
-  BUNDLE_DIR="$APP_DIR/build/linux/${ARCH}/release/bundle"
+  BUNDLE_DIR="$(find "$APP_DIR/build/linux" -type d -path '*/release/bundle' 2>/dev/null | head -n1)"
 fi
 if [ ! -d "$BUNDLE_DIR" ]; then
-  BUNDLE_DIR="$(find "$APP_DIR/build/linux" -type d -path '*/release/bundle' | head -n1)"
+  echo "[!] Linux bundle not found under $APP_DIR/build/linux" >&2
+  exit 1
 fi
-[ -d "$BUNDLE_DIR" ] || { echo "[!] Linux bundle not found under $APP_DIR/build/linux"; exit 1; }
 cp -r "$BUNDLE_DIR/"* "$PKGDIR/usr/lib/$APP_NAME/"
 
-# Include Rust FRB shared library (not always bundled by Flutter linux build)
 RUST_LIB="$REPO_ROOT/rust/target/release/libloute_core.so"
-if [ -f "$RUST_LIB" ]; then
-  cp "$RUST_LIB" "$PKGDIR/usr/lib/$APP_NAME/lib/"
+if [ ! -f "$RUST_LIB" ]; then
+  echo "[!] Rust library not found: $RUST_LIB" >&2
+  exit 1
 fi
+cp "$RUST_LIB" "$PKGDIR/usr/lib/$APP_NAME/lib/"
 
 cat > "$PKGDIR/usr/bin/$APP_NAME" <<'EOF'
 #!/bin/bash
@@ -96,9 +105,8 @@ if [ -f "$APP_DIR/assets/icons/logo.png" ]; then
   cp "$APP_DIR/assets/icons/logo.png" "$PKGDIR/usr/share/icons/hicolor/128x128/apps/$APP_NAME.png"
 fi
 
-# Ensure bundled libs/binaries are readable/executable as needed
-find "$PKGDIR/usr/lib/$APP_NAME" -type f -name '*.so*' -exec chmod 755 {} \; || true
-chmod 755 "$PKGDIR/usr/lib/$APP_NAME/$APP_NAME" || true
+find "$PKGDIR/usr/lib/$APP_NAME" -type f -name '*.so*' -exec chmod 755 {} \; 2>/dev/null || true
+chmod 755 "$PKGDIR/usr/lib/$APP_NAME/$APP_NAME" 2>/dev/null || true
 
 INSTALLED_SIZE=$(du -sk "$PKGDIR" | cut -f1)
 
@@ -107,9 +115,9 @@ pkgname = $APP_NAME
 pkgbase = $APP_NAME
 pkgver = $VERSION-$PKGREL
 pkgdesc = LOUTE - Autonomous Bug Bounty Framework
-url = https://github.com/funbinet
+url = https://github.com/tacrun/loute
 builddate = $(date +%s)
-packager = Funbinet <funbinet@gmail.com>
+packager = LOUTE Build <noreply@github.com>
 size = $((INSTALLED_SIZE * 1024))
 arch = $ARCH
 license = custom:proprietary
@@ -118,14 +126,18 @@ depend = glibc
 EOF
 
 echo "[*] Generating package metadata..."
-cd "$PKGDIR"
-# MTREE as expected by pacman
-LANG=C bsdtar -czf .MTREE --format=mtree   --options='!all,use-set,type,uid,gid,mode,time,size,md5,sha256,link'   .PKGINFO usr
+(cd "$PKGDIR" && LANG=C bsdtar -czf .MTREE --format=mtree \
+  --options='!all,use-set,type,uid,gid,mode,time,size,md5,sha256,link' .PKGINFO usr)
 
 echo "[*] Creating package archive..."
-LANG=C bsdtar -cf - .PKGINFO .MTREE usr | zstd -c -z -q -T0 - > "$SCRIPT_DIR/$PKGNAME"
+(cd "$PKGDIR" && LANG=C bsdtar -cf - .PKGINFO .MTREE usr | zstd -c -z -q -T0 -) > "$SCRIPT_DIR/$PKGNAME"
 
 rm -rf "$SCRIPT_DIR/.archpkg"
+
+if [ ! -s "$SCRIPT_DIR/$PKGNAME" ]; then
+  echo "[!] Package archive was not created." >&2
+  exit 1
+fi
 
 echo "[*] Success! Arch package ready at: packaging/$PKGNAME"
 echo "[*] Install with: sudo pacman -U packaging/$PKGNAME"

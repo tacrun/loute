@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../common/screen_shell.dart';
 
-/// CTF / Lab Arena — challenges, flags, score, hint ladder (§11.1, /arena).
+/// CTF / Lab Arena - challenges, flags, score, hint ladder (§11.1, /arena).
 /// CTF is a first-class phase; all other phases stay available while active.
 class ArenaScreen extends StatelessWidget {
   const ArenaScreen({super.key});

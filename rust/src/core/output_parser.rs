@@ -1,4 +1,4 @@
-// output_parser.rs — Parser dispatch per 1-5-5.md §6.7.
+// output_parser.rs - Parser dispatch per 1-5-5.md §6.7.
 // ParserId → fn(&str) -> ParseOutcome.
 // lines → one Asset/Finding candidate per line.
 // json → serde into the capability's json_schema.

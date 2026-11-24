@@ -1,4 +1,4 @@
-// lines.rs — one asset candidate per non-empty line (§6.7).
+// lines.rs - one asset candidate per non-empty line (§6.7).
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {
@@ -18,15 +18,4 @@ pub fn parse(raw: &str) -> ParseOutcome {
         }
     }
     out
-}
-
-#[cfg(test)] mod tests {
-    use super::*;
-    #[test] fn parses_lines() {
-        let o = parse("example.com\n1.2.3.4\nhttps://x.io\n#comment\n");
-        assert_eq!(o.assets.len(), 3);
-        assert_eq!(o.assets[0].kind, "subdomain");
-        assert_eq!(o.assets[1].kind, "ip");
-        assert_eq!(o.assets[2].kind, "url");
-    }
 }

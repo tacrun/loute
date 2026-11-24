@@ -1,4 +1,4 @@
-// workspace.rs — Workspace lifecycle per 1-5-5.md §6.10.
+// workspace.rs - Workspace lifecycle per 1-5-5.md §6.10.
 // create_workspace(name, kind) where kind ∈ engagement|lab|ctf|research.
 
 use std::sync::Mutex;

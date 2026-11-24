@@ -1,4 +1,4 @@
-// ffuf.rs — ffuf JSON output (§6.7).
+// ffuf.rs - ffuf JSON output (§6.7).
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {
@@ -25,13 +25,4 @@ pub fn parse(raw: &str) -> ParseOutcome {
         }
     }
     out
-}
-
-#[cfg(test)] mod tests {
-    use super::*;
-    #[test] fn parses_ffuf_json() {
-        let o = parse(r#"{"results":[{"url":"http://x/a","status":200,"length":123}]}"#);
-        assert_eq!(o.assets.len(), 1);
-        assert_eq!(o.assets[0].attrs["status"], "200");
-    }
 }

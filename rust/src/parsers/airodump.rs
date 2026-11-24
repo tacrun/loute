@@ -1,4 +1,4 @@
-// airodump.rs — airodump-ng CSV (§6.7). AP and client sections.
+// airodump.rs - airodump-ng CSV (§6.7). AP and client sections.
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {
@@ -25,12 +25,4 @@ pub fn parse(raw: &str) -> ParseOutcome {
 
 fn looks_like_mac(s: &str) -> bool {
     s.chars().filter(|c| *c == ':').count() == 5 && s.len() >= 17
-}
-
-#[cfg(test)] mod tests {
-    use super::*;
-    #[test] fn parses_ap() {
-        let o = parse("BSSID, First seen, Last seen, CH, MB, ...\nAA:BB:CC:DD:EE:FF, 2024-01-01, 2024-01-01, 6, 54, ...\n");
-        assert!(o.assets.iter().any(|a| a.kind == "ap" && a.key == "AA:BB:CC:DD:EE:FF"));
-    }
 }

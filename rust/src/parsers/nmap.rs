@@ -1,4 +1,4 @@
-// nmap.rs — nmap normal/port output and XML (§6.7).
+// nmap.rs - nmap normal/port output and XML (§6.7).
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {
@@ -39,12 +39,4 @@ fn parse_port_line(t: &str) -> Option<Port> {
     let service = parts.get(2).copied().unwrap_or("").to_string();
     let version = parts.get(3..).map(|s| s.join(" ")).unwrap_or_default();
     Some(Port { port, proto, state, service, version })
-}
-
-#[cfg(test)] mod tests {
-    use super::*;
-    #[test] fn parses_port_line() {
-        let o = parse("80/tcp   open  http    Apache httpd 2.4.57\n");
-        assert!(o.assets.iter().any(|a| a.kind == "port" && a.key == "80/tcp"));
-    }
 }

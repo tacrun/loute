@@ -1,4 +1,4 @@
-// smb.rs — SMB share/session enumeration output (§6.7).
+// smb.rs - SMB share/session enumeration output (§6.7).
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {

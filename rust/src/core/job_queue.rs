@@ -1,4 +1,4 @@
-// job_queue.rs — Bounded priority queue per 1-5-5.md §6.5.
+// job_queue.rs - Bounded priority queue per 1-5-5.md §6.5.
 // Priority bands: interactive > chained > scheduled > background.
 
 use std::collections::HashMap;

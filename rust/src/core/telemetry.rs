@@ -1,4 +1,4 @@
-// telemetry.rs — Event bus to Flutter per 1-5-5.md §6.15.
+// telemetry.rs - Event bus to Flutter per 1-5-5.md §6.15.
 // JobEvent stream: queued · planned · started · stdout(line) · stderr(line) ·
 // progress(pct, phase) · parsed(counts) · artifact(id) · finding(id) ·
 // provider_state · heartbeat · completed(status) · cancelled(mode) · failed(error).

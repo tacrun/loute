@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../themes/midnight_hacker.dart';
 
-/// Asset Graph — canvas + list, pivot actions.
+/// Asset Graph - canvas + list, pivot actions.
 /// Per 1-5-5.md §11.7.
 class AssetGraphScreen extends ConsumerWidget {
   const AssetGraphScreen({super.key});

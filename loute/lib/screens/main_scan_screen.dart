@@ -23,7 +23,7 @@ import '../features/payloads/payload_studio_screen.dart';
 import '../features/timeline/timeline_screen.dart';
 import '../features/arena/arena_screen.dart';
 
-/// Main scan screen — coordinates main layout, sidebar/bottom nav modes, and content switching.
+/// Main scan screen - coordinates main layout, sidebar/bottom nav modes, and content switching.
 class MainScanScreen extends ConsumerWidget {
   const MainScanScreen({super.key});
 

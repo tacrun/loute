@@ -1,4 +1,4 @@
-// capability_model.rs — Typed structs and enums for the LOUTE capability schema.
+// capability_model.rs - Typed structs and enums for the LOUTE capability schema.
 // Schema v1 (compatible) + v2 extensions per 1-5-5.md §7.
 
 use std::collections::BTreeMap;
@@ -523,7 +523,7 @@ pub struct Capability {
     pub opsec_safe: bool,
     pub native: bool,
     /// True when a capability declares its own pre-escaped single-string args
-    /// (payload/regex data). Execution is still argv-only — never a shell (I1).
+    /// (payload/regex data). Execution is still argv-only - never a shell (I1).
     pub shell_escape: bool,
 }
 

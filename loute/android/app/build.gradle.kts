@@ -25,18 +25,26 @@ android {
         versionName = flutter.versionName
     }
 
+    val releaseKeystore = file("release.keystore")
+
     signingConfigs {
-        create("release") {
-            keyAlias = "loute"
-            keyPassword = "loute2026"
-            storeFile = file("release.keystore")
-            storePassword = "loute2026"
+        if (releaseKeystore.exists()) {
+            create("release") {
+                keyAlias = "loute"
+                keyPassword = "loute2026"
+                storeFile = releaseKeystore
+                storePassword = "loute2026"
+            }
         }
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+            // Use the release keystore only when it exists. Otherwise Android
+            // signs with the default debug key so a release build still succeeds.
+            if (releaseKeystore.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
 }

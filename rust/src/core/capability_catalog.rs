@@ -1,4 +1,4 @@
-// capability_catalog.rs — Load, hash-verify, and index the capability catalog.
+// capability_catalog.rs - Load, hash-verify, and index the capability catalog.
 // Per 1-5-5.md §8.1: asset bundle → SHA-256 verify → TOML parse → index.
 
 use std::collections::HashMap;
@@ -22,7 +22,7 @@ impl CapabilityCatalog {
     pub fn from_toml(raw: &str) -> Result<Self, String> {
         let hash = sha256_hex(raw.as_bytes());
 
-        // Parse with a lightweight TOML parser — we use toml crate
+        // Parse with a lightweight TOML parser - we use toml crate
         let parsed: toml::Value = toml::from_str(raw)
             .map_err(|e| format!("TOML parse error: {}", e))?;
 
@@ -178,7 +178,7 @@ fn parse_capability(val: &toml::Value) -> Result<Capability, String> {
         })
         .unwrap_or_default();
 
-    // Parse provider — schema v1 uses [[capability.provider]] blocks
+    // Parse provider - schema v1 uses [[capability.provider]] blocks
     // For the catalog, we take the first provider + first operation
     let (provider, binary, operation, args, output, probe, timeout) =
         if let Some(providers) = val.get("provider").and_then(|v| v.as_array()) {
@@ -246,7 +246,7 @@ fn parse_capability(val: &toml::Value) -> Result<Capability, String> {
                 (provider_id, binary, operation, args, output_mode, probe, timeout)
             }
         } else {
-            // Schema v2 style — flat provider/binary/args
+            // Schema v2 style - flat provider/binary/args
             let binary = val
                 .get("binary")
                 .and_then(|v| v.as_str())

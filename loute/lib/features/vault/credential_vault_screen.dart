@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../common/screen_shell.dart';
 
-/// Credential Vault — secret index, hash table, validation state (§11.1, route /vault).
+/// Credential Vault - secret index, hash table, validation state (§11.1, route /vault).
 class CredentialVaultScreen extends StatelessWidget {
   const CredentialVaultScreen({super.key});
 

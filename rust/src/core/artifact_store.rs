@@ -1,4 +1,4 @@
-// artifact_store.rs — Content-addressed writes per 1-5-5.md §6.9.
+// artifact_store.rs - Content-addressed writes per 1-5-5.md §6.9.
 // ~/.local/share/loute/workspaces/<ws>/artifacts/<sha256[0:2]>/<sha256>
 // Write is atomic (temp + rename). Nothing is ever overwritten.
 

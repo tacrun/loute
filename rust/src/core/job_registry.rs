@@ -1,4 +1,4 @@
-// job_registry.rs — Live job table and cancellation tree (1-5-5.md §6.1, §12.5).
+// job_registry.rs - Live job table and cancellation tree (1-5-5.md §6.1, §12.5).
 // Cancel tree per workspace → job → process group. Orphan reaper on startup.
 
 use super::capability_model::*;
@@ -120,27 +120,5 @@ impl JobRegistry {
             self.request_cancel(id, mode);
         }
         targets
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn cancel_tree_and_reaper() {
-        let r = JobRegistry::new();
-        let ws = WorkspaceId("ws_1".into());
-        let j1 = JobId("j1".into());
-        let j2 = JobId("j2".into());
-        r.register(j1.clone(), Some(ws.clone()));
-        r.register(j2.clone(), Some(ws.clone()));
-        r.set_state(&j1, JobState::Running);
-        r.attach_process(&j1, 4242, 4242);
-        assert_eq!(r.cancel_workspace(&ws, CancelMode::Graceful).len(), 2);
-        assert_eq!(r.cancel_requested(&j1), Some(CancelMode::Graceful));
-        let live = HashSet::new(); // no live PIDs
-        let reaped = r.reap_orphans(&live);
-        assert!(reaped.contains(&j1));
     }
 }

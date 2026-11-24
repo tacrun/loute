@@ -1,11 +1,11 @@
 import '../models/report_model.dart';
 
-/// Markdown report engine — repo/PR friendly (1-5-5.md §15.1).
+/// Markdown report engine - repo/PR friendly (1-5-5.md §15.1).
 /// Includes provenance appendix (§15.4).
 class MdEngine {
   static String render(ReportPayload payload) {
     final b = StringBuffer();
-    b.writeln('# LOUTE Report — ${payload.actionName}');
+    b.writeln('# LOUTE Report - ${payload.actionName}');
     b.writeln();
     b.writeln(
         '> LOUTE V${payload.systemVersion} · Generated ${payload.timestamp.toIso8601String()}');

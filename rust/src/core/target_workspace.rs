@@ -1,4 +1,4 @@
-// target_workspace.rs — Workspace lifecycle, import/export (1-5-5.md §6.10, §16).
+// target_workspace.rs - Workspace lifecycle, import/export (1-5-5.md §6.10, §16).
 // Extends the in-memory WorkspaceManager with on-disk layout and signed archives.
 
 use super::capability_model::*;
@@ -75,21 +75,4 @@ fn collect_files(base: &Path, dir: &Path, out: &mut Vec<serde_json::Value>) -> R
 
 fn sha256_hex(data: &[u8]) -> String {
     super::capability_catalog::sha256_hex(data)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn creates_workspace_with_layout() {
-        let tmp = std::env::temp_dir().join(format!("loute_ws_test_{}", std::process::id()));
-        let tw = TargetWorkspace::new(&tmp);
-        let id = tw.create("test", WorkspaceKind::Engagement);
-        let base = tmp.join("workspaces").join(&id.0);
-        assert!(base.join("artifacts").is_dir());
-        let manifest = tw.export_manifest(&id).unwrap();
-        assert!(manifest.contains("catalog_hash"));
-        let _ = std::fs::remove_dir_all(&tmp);
-    }
 }

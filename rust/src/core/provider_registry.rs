@@ -1,5 +1,5 @@
-// provider_registry.rs — Provider binary allowlist and version ranges.
-// provider_probe.rs — Availability probes per 1-5-5.md §6.6.
+// provider_registry.rs - Provider binary allowlist and version ranges.
+// provider_probe.rs - Availability probes per 1-5-5.md §6.6.
 
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -43,7 +43,7 @@ impl ProviderRegistry {
         bins
     }
 
-    /// Probe a provider binary — check if it exists in PATH.
+    /// Probe a provider binary - check if it exists in PATH.
     pub fn probe(&self, binary: &str) -> ProviderState {
         // Native providers are always "available"
         if binary == "native" || binary == "(native)" {
@@ -73,7 +73,7 @@ impl ProviderRegistry {
     }
 
     fn do_probe(&self, binary: &str) -> ProviderState {
-        // Use `which` equivalent — check common PATH locations
+        // Use `which` equivalent - check common PATH locations
         let path_var = std::env::var("PATH").unwrap_or_default();
         let path_dirs: Vec<&str> = path_var.split(':').collect();
 

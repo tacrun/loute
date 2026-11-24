@@ -1,4 +1,4 @@
-// generic_table.rs — whitespace/CSV table heuristic parser (§6.7).
+// generic_table.rs - whitespace/CSV table heuristic parser (§6.7).
 use super::*;
 
 pub fn parse(raw: &str) -> ParseOutcome {

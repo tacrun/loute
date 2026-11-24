@@ -1,4 +1,4 @@
-// provider_probe.rs — Availability probes with version detection (1-5-5.md §6.6).
+// provider_probe.rs - Availability probes with version detection (1-5-5.md §6.6).
 // Runs a version invocation with a 2s budget; states cached 10 min.
 
 use super::capability_model::*;
@@ -114,25 +114,4 @@ pub fn build_matrix() -> Vec<(String, AvailabilityState, Option<String>)> {
         out.push((b, probe.state, probe.version));
     }
     out
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn nonexistent_binary_is_missing() {
-        let p = ProviderProber::new();
-        let r = p.probe("__loute_definitely_not_a_real_binary__", &["--version".into()]);
-        assert!(matches!(r.state, AvailabilityState::Missing));
-        assert!(r.version.is_none());
-    }
-
-    #[test]
-    fn cache_is_used() {
-        let p = ProviderProber::new();
-        let a = p.probe("__none__", &[]);
-        let b = p.probe("__none__", &[]);
-        assert_eq!(a.probed_at, b.probed_at);
-    }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../common/screen_shell.dart';
 
-/// Target Workspaces — create/switch/import/export workspaces (§11.1, route /ws).
+/// Target Workspaces - create/switch/import/export workspaces (§11.1, route /ws).
 class WorkspacesScreen extends StatelessWidget {
   const WorkspacesScreen({super.key});
 

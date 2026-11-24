@@ -3,9 +3,9 @@
 LOUTE is an offensive security testing framework intended for authorized engagements,
 labs, CTFs and research only.
 
-Execution model (§5.1): unrestricted by design — no scope allowlists, no target
+Execution model (§5.1): unrestricted by design - no scope allowlists, no target
 validation gates, no confirmation dialogs. Scope is opt-in advisory metadata that
-annotates and filters the plan, never a hard wall (D1–D7). Safety is *reporting*,
+annotates and filters the plan, never a hard wall (D1-D7). Safety is *reporting*,
 not blocking: warnings surface as annotations.
 
 Operators are solely responsible for obtaining written authorization before testing

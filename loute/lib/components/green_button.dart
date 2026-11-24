@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../themes/midnight_hacker.dart';
 import 'spinning_dots.dart';
 
-/// Green outlined button — the standard LOUTE button.
+/// Green outlined button - the standard LOUTE button.
 /// Variants: primary (green), danger (red), positive (amber).
 class GreenButton extends StatefulWidget {
   final String label;

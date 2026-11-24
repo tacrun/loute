@@ -1,4 +1,4 @@
-// graph.rs — Asset/evidence graph, pivots per 1-5-5.md §6.10, §9.5.
+// graph.rs - Asset/evidence graph, pivots per 1-5-5.md §6.10, §9.5.
 // Nodes = assets. Edges = resolves_to · hosts · exposes · authenticates_to · trusts ·
 // pivots_to · escalates_via · persists_via · derived_from.
 

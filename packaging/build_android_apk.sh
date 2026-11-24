@@ -1,39 +1,48 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # LOUTE Android APK Build Script
-# This script builds the production Android APK, signing it with the release keystore.
+# Builds a release APK. Uses the configured release keystore when present,
+# otherwise falls back to a debug-signed release APK so the build still works.
+set -euo pipefail
 
-set -e
+VERSION="1.5.5"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+APP_DIR="$REPO_ROOT/loute"
 
 echo "=========================================="
-echo "    Building LOUTE Android APK (Release)   "
+echo "    Building LOUTE Android APK (Release)  "
 echo "=========================================="
 
-cd ../loute
+require_tool() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "[!] Required tool not found: $1" >&2
+    exit 1
+  fi
+}
 
-# --- Catalog shipping gate (1-5-5.md S4): fail if the capability bible is absent ---
+require_tool flutter
+require_tool cargo
+
 echo "[*] Verifying capability catalog is bundled..."
-if [ ! -f "assets/capabilities/capabilities.toml.txt" ]; then
-  echo "[!] FATAL: capabilities.toml.txt missing from assets — refusing to package." >&2
-  exit 1
-fi
-echo "[+] Catalog present: $(sha256sum assets/capabilities/capabilities.toml.txt | cut -d' ' -f1)"
+CATALOG="$APP_DIR/assets/capabilities/capabilities.toml.txt"
+[ -f "$CATALOG" ] || { echo "[!] FATAL: $CATALOG is missing." >&2; exit 1; }
+echo "[+] Catalog present: $(sha256sum "$CATALOG" | cut -d' ' -f1)"
 
-# Clean previous builds
-echo "[*] Cleaning old builds..."
+echo "[*] Preparing Flutter workspace..."
+cd "$APP_DIR"
 flutter clean
 flutter pub get
 
-# Ensure rust code is updated
-echo "[*] Updating flutter_rust_bridge bindings..."
-flutter_rust_bridge_codegen generate
+echo "[*] Building native Rust library..."
+cd "$REPO_ROOT/rust"
+cargo build --release
 
-# Build APK (This automatically runs gradle and rust cargo-ndk compilation)
 echo "[*] Compiling Flutter APK for Android..."
+cd "$APP_DIR"
 flutter build apk --release
 
-# Copy to packaging directory
-echo "[*] Packaging complete! Moving to outputs..."
-cp build/app/outputs/flutter-apk/app-release.apk ../packaging/loute_v1.5.5.apk
+cp build/app/outputs/flutter-apk/app-release.apk "$SCRIPT_DIR/loute_v${VERSION}.apk"
 
-echo "[*] Success! Application is ready at: packaging/loute_v1.5.5.apk"
+echo "[*] Success! APK ready at: packaging/loute_v${VERSION}.apk"
 echo "=========================================="

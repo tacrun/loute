@@ -7,7 +7,7 @@ import '../providers/navigation_state.dart';
 import '../models/phase_registry.dart';
 import '../components/system_alert.dart';
 
-/// Dashboard Screen — displays logo, name, stats, 6 shortcut cards, and system analytics.
+/// Dashboard Screen - displays logo, name, stats, 6 shortcut cards, and system analytics.
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 

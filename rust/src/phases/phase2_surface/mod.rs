@@ -1,4 +1,4 @@
-// phase2_surface/mod.rs — ATTACK SURFACE phase (22 capabilities)
+// phase2_surface/mod.rs - ATTACK SURFACE phase (22 capabilities)
 // Capability IDs mirror the shipped catalog (capabilities.toml.txt, schema v1).
 // Per 1-5-5.md §10 phase modules.
 

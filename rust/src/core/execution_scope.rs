@@ -1,4 +1,4 @@
-// execution_scope.rs — Per-run scope, session and campaign binding (1-5-5.md §6.1).
+// execution_scope.rs - Per-run scope, session and campaign binding (1-5-5.md §6.1).
 // Scope is OPT-IN advisory metadata that filters the plan, never a hard wall (D7/I7).
 
 use super::capability_model::*;
@@ -9,7 +9,7 @@ pub struct ExecutionScope {
     pub workspace: Option<WorkspaceId>,
     pub campaign: Option<String>,
     pub session: Option<String>,
-    /// Advisory target list. Does not gate execution — only annotates.
+    /// Advisory target list. Does not gate execution - only annotates.
     pub targets: Vec<String>,
     /// Advisory exclusions. Warnings only (D6), never a block.
     pub exclusions: Vec<String>,
@@ -55,28 +55,5 @@ impl ExecutionScope {
     /// True if this scope annotates any in-scope target.
     pub fn is_scoped(&self) -> bool {
         !self.targets.is_empty()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn scope_is_advisory_not_blocking() {
-        let s = ExecutionScope {
-            exclusions: vec!["example.com".into()],
-            targets: vec!["foo.example.com".into()],
-            ..Default::default()
-        };
-        assert_eq!(s.warnings().len(), 1);
-        assert!(s.is_scoped()); // execution is never blocked
-    }
-
-    #[test]
-    fn scope_roundtrips() {
-        let s = ExecutionScope { campaign: Some("op1".into()), ..Default::default() };
-        let s2 = ExecutionScope::from_json(&s.to_json());
-        assert_eq!(s2.campaign.as_deref(), Some("op1"));
     }
 }

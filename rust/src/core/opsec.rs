@@ -1,4 +1,4 @@
-// opsec.rs — OPSEC profile application per 1-5-5.md §13.
+// opsec.rs - OPSEC profile application per 1-5-5.md §13.
 // Profiles: ghost · stealth · balanced · aggressive · loud.
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -22,7 +22,7 @@ impl OpsecProfile {
         }
     }
 
-    /// Timeout multiplier — ghost=1.5, stealth=1.25, balanced=1.0, aggressive=0.75, loud=0.5
+    /// Timeout multiplier - ghost=1.5, stealth=1.25, balanced=1.0, aggressive=0.75, loud=0.5
     pub fn timeout_multiplier(&self) -> f32 {
         match self {
             Self::Ghost => 1.5,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../common/screen_shell.dart';
 
-/// Payload Studio — builder canvas, artifact preview, delivery binding (§11.1, /payloads).
+/// Payload Studio - builder canvas, artifact preview, delivery binding (§11.1, /payloads).
 class PayloadStudioScreen extends StatelessWidget {
   const PayloadStudioScreen({super.key});
 

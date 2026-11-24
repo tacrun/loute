@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../themes/midnight_hacker.dart';
 
-/// Midnight Hacker text input — black bg, green border, floating label.
+/// Midnight Hacker text input - black bg, green border, floating label.
 class GreenInput extends StatelessWidget {
   final String label;
   final String hint;

@@ -1,4 +1,4 @@
-// catalog_validate.rs — Validation rules V1-V20 per 1-5-5.md §8.3.
+// catalog_validate.rs - Validation rules V1-V20 per 1-5-5.md §8.3.
 // Any rule failure aborts validation; release builds cannot ship an invalid catalog (§8.4).
 
 use super::capability_catalog::CapabilityCatalog;
@@ -87,7 +87,7 @@ pub fn validate(catalog: &CapabilityCatalog) -> ValidationReport {
         }
         // V5: each required input must be referenced somewhere. If a required input
         // is not referenced by a well-formed placeholder, declare it implicitly used
-        // (advisory) — many capabilities consume it via a positional operation arg.
+        // (advisory) - many capabilities consume it via a positional operation arg.
         for input in cap.inputs.iter().filter(|i| i.required) {
             if !referenced.contains(&input.name) {
                 warn(&mut warnings, "V5", &cap.id.0, &format!("required input '{}' not matched to a named placeholder (may be positional)", input.name));

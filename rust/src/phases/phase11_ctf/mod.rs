@@ -1,4 +1,4 @@
-// phase11_ctf/mod.rs — CTF phase (15 capabilities)
+// phase11_ctf/mod.rs - CTF phase (15 capabilities)
 // Capability IDs mirror the shipped catalog (capabilities.toml.txt, schema v1).
 // Per 1-5-5.md §10 phase modules.
 

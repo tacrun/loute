@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../themes/midnight_hacker.dart';
 
-/// Findings & Evidence — triage, evidence viewer, severity board.
+/// Findings & Evidence - triage, evidence viewer, severity board.
 /// Per 1-5-5.md §11.7.
 class FindingsScreen extends ConsumerWidget {
   const FindingsScreen({super.key});

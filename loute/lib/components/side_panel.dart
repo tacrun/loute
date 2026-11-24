@@ -4,7 +4,7 @@ import '../themes/midnight_hacker.dart';
 import '../models/phase_registry.dart';
 import '../providers/navigation_state.dart';
 
-/// Left side panel — 280px when expanded, 60px when collapsed to a thin icon segment.
+/// Left side panel - 280px when expanded, 60px when collapsed to a thin icon segment.
 class SidePanel extends ConsumerWidget {
   const SidePanel({super.key});
 

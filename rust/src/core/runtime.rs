@@ -1,4 +1,4 @@
-// runtime.rs — Full execution lifecycle orchestrator (1-5-5.md §12.1).
+// runtime.rs - Full execution lifecycle orchestrator (1-5-5.md §12.1).
 // validate → plan → enqueue → dispatch → stream → parse → normalize → persist → complete.
 // Every capability runs through this path; no silent stub fallback (F2/I8).
 

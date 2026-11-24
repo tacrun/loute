@@ -38,7 +38,7 @@ class LouteApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'LOUTE — Autonomous Bug Bounty Framework',
+      title: 'LOUTE - Autonomous Bug Bounty Framework',
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: MidnightHacker.themeData,

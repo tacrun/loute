@@ -57,10 +57,10 @@ args, output, risk, noise, mitre, platforms, privileges, timeout, parser.
 4. No shell metacharacters in args unless the data is pre-escaped, then set
    `shell_escape = true` (V6/I1). Execution is always `argv`-only.
 5. Run `cargo run --bin catalog_codegen` to regenerate the 4 artifacts.
-6. Run `cargo test` — validation V1–V20 must pass before commit.
+6. Run `bash scripts/verify.sh` - validation V1-V20, build and asset integrity must pass before commit.
 
 ## Validation
-`catalog_validate` enforces V1–V20 (see `rust/src/core/catalog_validate.rs`).
+`catalog_validate` enforces V1-V20 (see `rust/src/core/catalog_validate.rs`).
 Any failure aborts the build; release builds cannot ship an invalid catalog.
 
 ## Codegen artifacts

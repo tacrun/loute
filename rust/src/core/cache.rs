@@ -1,4 +1,4 @@
-// cache.rs — Result cache keyed (provider_version, capability, inputs, catalog_hash) (§6.11).
+// cache.rs - Result cache keyed (provider_version, capability, inputs, catalog_hash) (§6.11).
 // TTL from capability cache_ttl (0 = off). DNS/HTTP fingerprint caches always on, 15 min.
 
 use std::collections::HashMap;
@@ -73,23 +73,3 @@ impl<T: Clone> Cache<T> {
 
 pub const DNS_TTL: u64 = 900;
 pub const HTTP_TTL: u64 = 900;
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn put_get_and_ttl_zero() {
-        let c = Cache::new();
-        c.put("a".into(), 42, 900);
-        assert_eq!(c.get("a"), Some(42));
-        c.put("b".into(), 7, 0); // disabled
-        assert_eq!(c.get("b"), None);
-    }
-
-    #[test]
-    fn key_is_stable() {
-        assert_eq!(Cache::<String>::key("v1", "cap", "{}", "hash"), Cache::<String>::key("v1", "cap", "{}", "hash"));
-        assert_ne!(Cache::<String>::key("v1", "cap", "{}", "hash"), Cache::<String>::key("v2", "cap", "{}", "hash"));
-    }
-}

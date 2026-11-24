@@ -7,7 +7,7 @@ import '../components/system_alert.dart';
 import '../components/green_input.dart';
 import '../components/green_button.dart';
 
-/// Settings screen — configuration options for credentials, defaults, and saving.
+/// Settings screen - configuration options for credentials, defaults, and saving.
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 

@@ -1,4 +1,4 @@
-// parsers/mod.rs — Specialized output parsers (1-5-5.md §6.1, §6.7).
+// parsers/mod.rs - Specialized output parsers (1-5-5.md §6.1, §6.7).
 // Each parser: fn(&str) -> ParseOutcome. Parsers return typed values only;
 // finding_normalizer owns persistence (§6.2).
 

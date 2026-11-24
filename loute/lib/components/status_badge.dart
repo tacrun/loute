@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../themes/midnight_hacker.dart';
 
-/// Status badge — inline text: [LIVE], [DEAD], [SAFE], [VULNERABLE]
+/// Status badge - inline text: [LIVE], [DEAD], [SAFE], [VULNERABLE]
 class StatusBadge extends StatelessWidget {
   final String text;
   final Color color;

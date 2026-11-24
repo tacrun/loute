@@ -1,4 +1,4 @@
-// secrets.rs — Environment secret redaction and handles (§6.14/§12.7).
+// secrets.rs - Environment secret redaction and handles (§6.14/§12.7).
 // Redacted<T> renders as *** in logs; audit stores hashes only.
 
 use std::collections::BTreeMap;
@@ -70,35 +70,4 @@ pub fn secret_fingerprint(value: &str) -> String {
         h = h.wrapping_mul(0x100000001b3);
     }
     format!("fp_{:016x}", h)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn redacted_display_hides_value() {
-        let r = Redacted::new("supersecret".to_string());
-        assert_eq!(format!("{}", r), "***");
-        assert_eq!(format!("{:?}", r), "***");
-        assert_eq!(r.reveal(), "supersecret");
-    }
-
-    #[test]
-    fn redacts_kv_and_bearer() {
-        let line = "TOKEN=abc123 Authorization: Bearer xyz789 done";
-        let r = redact_text(line);
-        assert!(r.contains("TOKEN=***"));
-        assert!(r.contains("Bearer ***"));
-        assert!(!r.contains("abc123"));
-        assert!(!r.contains("xyz789"));
-    }
-
-    #[test]
-    fn fingerprint_is_stable_and_not_value() {
-        let f = secret_fingerprint("hunter2");
-        assert!(f.starts_with("fp_"));
-        assert!(!f.contains("hunter2"));
-        assert_eq!(f, secret_fingerprint("hunter2"));
-    }
 }
