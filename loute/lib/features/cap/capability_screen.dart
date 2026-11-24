@@ -251,7 +251,7 @@ class _CapabilityScreenState extends ConsumerState<CapabilityScreen> {
   Widget build(BuildContext context) {
     final cap = ref.watch(navigationProvider).currentCapability;
     if (cap == null) {
-      return const Center(
+      return Center(
         child: Text('Select a capability from the sidebar to begin.',
             style: MidnightHacker.labelDim),
       );
@@ -488,8 +488,8 @@ class _CapabilityScreenState extends ConsumerState<CapabilityScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (_log.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(20),
+          Padding(
+            padding: const EdgeInsets.all(20),
             child: Text('No execution log yet. Press Execute to begin.',
                 style: MidnightHacker.labelDim, textAlign: TextAlign.center),
           )
@@ -542,7 +542,7 @@ class _CapabilityScreenState extends ConsumerState<CapabilityScreen> {
           decoration: BoxDecoration(border: Border.all(color: MidnightHacker.primary)),
           child: _outputTab == 0
               ? (_outputRaw.isEmpty
-                  ? const Center(child: Text('No output yet.', style: MidnightHacker.labelDim))
+                  ? Center(child: Text('No output yet.', style: MidnightHacker.labelDim))
                   : SingleChildScrollView(
                       child: SelectableText(_outputRaw, style: MidnightHacker.monoSmall),
                     ))
@@ -554,7 +554,7 @@ class _CapabilityScreenState extends ConsumerState<CapabilityScreen> {
 
   Widget _buildJsonList(List<dynamic> items) {
     if (items.isEmpty) {
-      return const Center(child: Text('No records parsed.', style: MidnightHacker.labelDim));
+      return Center(child: Text('No records parsed.', style: MidnightHacker.labelDim));
     }
     return ListView.builder(
       itemCount: items.length,

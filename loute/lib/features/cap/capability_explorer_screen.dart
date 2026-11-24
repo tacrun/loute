@@ -307,7 +307,7 @@ class _ToolManagerScreenState extends ConsumerState<ToolManagerScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('TOOL MANAGER',
+                Text('TOOL MANAGER',
                     style: MidnightHacker.headingLarge,
                     textAlign: TextAlign.center),
                 const SizedBox(height: 6),
@@ -551,8 +551,8 @@ class _ToolManagerScreenState extends ConsumerState<ToolManagerScreen> {
           ),
           const Divider(),
           if (tools.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(24),
+            Padding(
+              padding: const EdgeInsets.all(24),
               child: Text('Select a scope above to see required tools.',
                   style: MidnightHacker.labelDim, textAlign: TextAlign.center),
             )

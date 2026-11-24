@@ -54,7 +54,7 @@ class CatalogUi {
   static const List<PhaseInfo> phases = [
     PhaseInfo(phase: LoutePhase.recon, icon: Icons.radar_outlined, description: 'Passive and active target discovery'),
     PhaseInfo(phase: LoutePhase.surface, icon: Icons.public_outlined, description: 'Exposed attack surface mapping'),
-    PhaseInfo(phase: LoutePhase.vulnerability, icon: Icons.vulnerability_outlined, description: 'Vulnerability detection and validation'),
+    PhaseInfo(phase: LoutePhase.vulnerability, icon: Icons.gpp_maybe_outlined, description: 'Vulnerability detection and validation'),
     PhaseInfo(phase: LoutePhase.payload, icon: Icons.data_object_outlined, description: 'Payload generation and delivery'),
     PhaseInfo(phase: LoutePhase.escalation, icon: Icons.arrow_upward_outlined, description: 'Privilege escalation paths'),
     PhaseInfo(phase: LoutePhase.credentials, icon: Icons.key_outlined, description: 'Credential discovery and testing'),
@@ -113,7 +113,7 @@ class CatalogUi {
   static const Map<String, IconData> _phaseIcons = {
     'recon': Icons.radar_outlined,
     'surface': Icons.public_outlined,
-    'vulnerability': Icons.vulnerability_outlined,
+    'vulnerability': Icons.gpp_maybe_outlined,
     'payload': Icons.data_object_outlined,
     'escalation': Icons.arrow_upward_outlined,
     'credentials': Icons.key_outlined,
@@ -127,7 +127,7 @@ class CatalogUi {
   static const Map<String, List<IconData>> _phaseIconVariants = {
     'recon': [Icons.radar_outlined, Icons.dns_outlined, Icons.language_outlined, Icons.cloud_outlined, Icons.route_outlined, Icons.search_outlined],
     'surface': [Icons.public_outlined, Icons.web_outlined, Icons.http_outlined, Icons.storage_outlined, Icons.dns_outlined, Icons.api_outlined],
-    'vulnerability': [Icons.vulnerability_outlined, Icons.virus_outlined, Icons.gpp_bad_outlined, Icons.security_outlined, Icons.bug_report_outlined, Icons.shield_outlined],
+    'vulnerability': [Icons.gpp_maybe_outlined, Icons.bug_report_outlined, Icons.gpp_bad_outlined, Icons.security_outlined, Icons.report_outlined, Icons.shield_outlined],
     'payload': [Icons.data_object_outlined, Icons.code_outlined, Icons.input_outlined, Icons.terminal_outlined, Icons.content_paste_outlined, Icons.memory_outlined],
     'escalation': [Icons.arrow_upward_outlined, Icons.admin_panel_settings_outlined, Icons.key_outlined, Icons.account_tree_outlined, Icons.security_outlined, Icons.lock_open_outlined],
     'credentials': [Icons.key_outlined, Icons.password_outlined, Icons.fingerprint_outlined, Icons.login_outlined, Icons.vpn_key_outlined, Icons.badge_outlined],
@@ -135,7 +135,7 @@ class CatalogUi {
     'persistence': [Icons.lock_outlined, Icons.schedule_outlined, Icons.settings_outlined, Icons.archive_outlined, Icons.bookmark_outlined, Icons.install_desktop_outlined],
     'exploitation': [Icons.bolt_outlined, Icons.fireplace_outlined, Icons.flash_on_outlined, Icons.gavel_outlined, Icons.model_training_outlined, Icons.whatshot_outlined],
     'wireless': [Icons.wifi_outlined, Icons.bluetooth_outlined, Icons.cell_wifi_outlined, Icons.router_outlined, Icons.sensors_outlined, Icons.rss_feed_outlined],
-    'ctf': [Icons.flag_outlined, Icons.emoji_events_outlined, Icons.extension_outlined, Icons.puzzle_outlined, Icons.psychology_outlined, Icons.front_hand_outlined],
+    'ctf': [Icons.flag_outlined, Icons.emoji_events_outlined, Icons.extension_outlined, Icons.interests_outlined, Icons.psychology_outlined, Icons.front_hand_outlined],
   };
 
   static int stableHash(String s) {
