@@ -1,1 +1,11 @@
 pub mod phase1_recon;
+pub mod phase2_surface;
+pub mod phase3_vulnerability;
+pub mod phase4_payload;
+pub mod phase5_escalation;
+pub mod phase6_credentials;
+pub mod phase7_lateral;
+pub mod phase8_persistence;
+pub mod phase9_exploitation;
+pub mod phase10_wireless;
+pub mod phase11_ctf;
