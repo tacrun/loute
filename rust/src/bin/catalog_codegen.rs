@@ -1,0 +1,178 @@
+// catalog_codegen.rs — Generates Flutter/tooling artifacts from the catalog (§8.2).
+// Regenerates: capability_index.dart, capability_index.json, mitre_coverage.md,
+// provider_matrix.md. CI fails on uncommitted diff. Idempotent (V20).
+
+use std::collections::{BTreeMap, BTreeSet};
+use std::fs;
+use std::path::PathBuf;
+
+/// Locate the master catalog.
+fn find_catalog() -> PathBuf {
+    let candidates = [
+        "capabilities.toml.txt",
+        "../capabilities.toml.txt",
+        "../../capabilities.toml.txt",
+    ];
+    for c in candidates {
+        let p = PathBuf::from(c);
+        if p.exists() { return p; }
+    }
+    panic!("capabilities.toml.txt not found");
+}
+
+fn esc(s: &str) -> String {
+    s.replace('\\', "\\\\").replace('\'', "\\'").replace('\n', " ")
+}
+
+fn main() {
+    let catalog_path = find_catalog();
+    let repo_root = catalog_path.parent().unwrap().to_path_buf();
+    let raw = fs::read_to_string(&catalog_path).expect("read catalog");
+    let value: toml::Value = toml::from_str(&raw).expect("parse catalog TOML");
+    let caps = value.get("capability").and_then(|v| v.as_array()).expect("capability array");
+
+    // Structs for JSON emission.
+    #[derive(serde::Serialize, Clone)]
+    struct Cap {
+        id: String, phase: String, label: String, summary: String,
+        risk: String, noise: String, mitre: Vec<String>, platforms: Vec<String>,
+        privileges: Vec<String>, network: bool, provider: String, binary: String,
+        parser: String, timeout: u64, native: bool, reversible: bool,
+        opsec_safe: bool, shell_escape: bool, inputs: Vec<Input>,
+        provides: Vec<String>, requires: Vec<String>, chains: Vec<String>,
+    }
+    #[derive(serde::Serialize, Clone)]
+    struct Input { name: String, kind: String, required: bool, default: Option<String> }
+
+    fn arr(v: &toml::Value, key: &str) -> Vec<String> {
+        v.get(key).and_then(|x| x.as_array())
+            .map(|a| a.iter().filter_map(|x| x.as_str().map(|s| s.to_string())).collect())
+            .unwrap_or_default()
+    }
+    fn strv(v: &toml::Value, key: &str, def: &str) -> String {
+        v.get(key).and_then(|x| x.as_str()).unwrap_or(def).to_string()
+    }
+    fn boolv(v: &toml::Value, key: &str) -> bool {
+        v.get(key).and_then(|x| x.as_bool()).unwrap_or(false)
+    }
+    fn intv(v: &toml::Value, key: &str, def: i64) -> u64 {
+        v.get(key).and_then(|x| x.as_integer()).unwrap_or(def) as u64
+    }
+
+    let mut all: Vec<Cap> = Vec::new();
+    for c in caps {
+        let binary = c.get("provider").and_then(|p| p.as_array())
+            .and_then(|a| a.first())
+            .and_then(|p| p.get("binary")).and_then(|v| v.as_str())
+            .map(|s| s.to_string())
+            .or_else(|| c.get("binary").and_then(|v| v.as_str()).map(|s| s.to_string()))
+            .unwrap_or_else(|| "native".into());
+        let inputs = c.get("inputs").and_then(|v| v.as_array()).map(|a| a.iter().filter_map(|iv| {
+            let name = iv.get("key").or(iv.get("name"))?.as_str()?;
+            Some(Input {
+                name: name.to_string(),
+                kind: strv(iv, "type", &strv(iv, "kind", "text")),
+                required: boolv(iv, "required"),
+                default: iv.get("default").and_then(|v| v.as_str()).map(|s| s.to_string()),
+            })
+        }).collect()).unwrap_or_default();
+        all.push(Cap {
+            id: strv(c, "id", ""),
+            phase: strv(c, "phase", "recon"),
+            label: strv(c, "label", ""),
+            summary: strv(c, "summary", ""),
+            risk: strv(c, "risk", "R1"),
+            noise: strv(c, "noise", "medium"),
+            mitre: arr(c, "mitre"),
+            platforms: arr(c, "platforms"),
+            privileges: arr(c, "privileges"),
+            network: boolv(c, "network"),
+            provider: strv(c, "provider", &binary),
+            binary,
+            parser: strv(c, "parser", "lines"),
+            timeout: intv(c, "timeout", 900),
+            native: boolv(c, "native"),
+            reversible: boolv(c, "reversible"),
+            opsec_safe: boolv(c, "opsec_safe"),
+            shell_escape: boolv(c, "shell_escape"),
+            inputs,
+            provides: arr(c, "provides"),
+            requires: arr(c, "requires"),
+            chains: arr(c, "chains"),
+        });
+    }
+    all.sort_by(|a, b| a.id.cmp(&b.id));
+
+    // ---- 1. capability_index.json ----
+    let index_json = serde_json::to_string_pretty(&serde_json::json!({
+        "schema": 2,
+        "count": all.len(),
+        "catalog_sha256": loute_core::CATALOG_HASH,
+        "capabilities": all,
+    })).expect("serialize json");
+    let json_path = repo_root.join("loute/assets/capabilities/capability_index.json");
+    fs::write(&json_path, format!("{}\n", index_json)).expect("write json");
+
+    // ---- 2. capability_index.dart ----
+    let mut dart = String::new();
+    dart.push_str("// capability_index.dart — GENERATED by cargo run --bin catalog_codegen.\n");
+    dart.push_str("// DO NOT EDIT. Source: capabilities.toml.txt (schema 2).\n");
+    dart.push_str(&format!("// LOUTE V1.5.5 | 11 phases | {} capabilities | hash {}\n\n", all.len(), loute_core::CATALOG_HASH));
+    dart.push_str("enum LoutePhase { recon, surface, vulnerability, payload, escalation, credentials, lateral, persistence, exploitation, wireless, ctf;");
+    dart.push_str("\n  String get displayName {\n    switch (this) {\n");
+    for (p, d) in [("recon","RECONNAISSANCE"),("surface","ATTACK SURFACE"),("vulnerability","VULNERABILITY"),("payload","PAYLOAD"),("escalation","ESCALATION"),("credentials","CREDENTIALS"),("lateral","LATERAL"),("persistence","PERSISTENCE"),("exploitation","EXPLOITATION"),("wireless","WIRELESS"),("ctf","CTF CHALLENGES")] {
+        dart.push_str(&format!("      case {}: return '{}';\n", p, d));
+    }
+    dart.push_str("    }\n  }\n\n  static LoutePhase fromString(String s) => LoutePhase.values.firstWhere(\n    (p) => p.name == s.toLowerCase(), orElse: () => LoutePhase.recon);\n}\n\n");
+    dart.push_str("enum LouteRisk { r0, r1, r2, r3, r4 }\n");
+    dart.push_str("enum LouteNoise { silent, low, medium, high, screaming }\n\n");
+    dart.push_str("class CapabilityEntry {\n  final String id, phase, label, summary, risk, noise, provider, binary, parser;\n  final List<String> mitre, platforms, privileges, provides, requires, chains;\n  final bool network, native, reversible, opsecSafe, shellEscape;\n  final int timeout;\n  const CapabilityEntry({\n    required this.id, required this.phase, required this.label, required this.summary,\n    required this.risk, required this.noise, required this.provider, required this.binary,\n    required this.parser, required this.mitre, required this.platforms, required this.privileges,\n    required this.provides, required this.requires, required this.chains, required this.network,\n    required this.native, required this.reversible, required this.opsecSafe,\n    required this.shellEscape, required this.timeout,\n  });\n}\n\n");
+    dart.push_str(&format!("const int catalogHashPlaceholder = 0;\nconst String kCatalogHash = '{}';\nconst int kCapabilityCount = {};\n\n", loute_core::CATALOG_HASH, all.len()));
+    dart.push_str("const List<CapabilityEntry> kCapabilities = [\n");
+    for c in &all {
+        let sl = |v: &Vec<String>| format!("const [{}]", v.iter().map(|x| format!("'{}'", esc(x))).collect::<Vec<_>>().join(", "));
+        dart.push_str(&format!(
+            "  CapabilityEntry(id: '{}', phase: '{}', label: '{}', summary: '{}', risk: '{}', noise: '{}', provider: '{}', binary: '{}', parser: '{}', mitre: {}, platforms: {}, privileges: {}, provides: {}, requires: {}, chains: {}, network: {}, native: {}, reversible: {}, opsecSafe: {}, shellEscape: {}, timeout: {}),\n",
+            esc(&c.id), esc(&c.phase), esc(&c.label), esc(&c.summary), esc(&c.risk), esc(&c.noise),
+            esc(&c.provider), esc(&c.binary), esc(&c.parser), sl(&c.mitre), sl(&c.platforms), sl(&c.privileges),
+            sl(&c.provides), sl(&c.requires), sl(&c.chains), c.network, c.native, c.reversible, c.opsec_safe, c.shell_escape, c.timeout
+        ));
+    }
+    dart.push_str("];\n\n");
+    dart.push_str("CapabilityEntry? findCapability(String id) {\n  for (final c in kCapabilities) { if (c.id == id) return c; }\n  return null;\n}\n");
+    dart.push_str("List<CapabilityEntry> byPhase(String phase) => kCapabilities.where((c) => c.phase == phase).toList();\n");
+    let dart_path = repo_root.join("loute/lib/generated/capability_index.dart");
+    fs::write(&dart_path, dart).expect("write dart");
+
+    // ---- 3. mitre_coverage.md ----
+    let mut mitre: BTreeMap<String, Vec<String>> = BTreeMap::new();
+    for c in &all {
+        for t in &c.mitre {
+            mitre.entry(t.clone()).or_default().push(c.id.clone());
+        }
+    }
+    let mut md = format!("# MITRE ATT&CK Coverage\n\nGenerated from `capabilities.toml.txt` (schema 2). {} unique techniques across {} capabilities.\n\n", mitre.len(), all.len());
+    md.push_str("| Technique | Capabilities | Count |\n|---|---|---|\n");
+    for (t, ids) in &mitre {
+        md.push_str(&format!("| `{}` | {} | {} |\n", t, ids.iter().take(5).map(|x| format!("`{}`", x)).collect::<Vec<_>>().join(", "), ids.len()));
+    }
+    fs::write(repo_root.join("docs/mitre_coverage.md"), md).expect("write mitre md");
+
+    // ---- 4. provider_matrix.md ----
+    let mut providers: BTreeMap<String, usize> = BTreeMap::new();
+    for c in &all { *providers.entry(c.binary.clone()).or_default() += 1; }
+    let mut pm = format!("# Provider Matrix\n\nGenerated from `capabilities.toml.txt`. {} distinct provider binaries.\n\n", providers.len());
+    pm.push_str("| Binary | Capabilities |\n|---|---|\n");
+    let mut sorted: Vec<_> = providers.iter().collect();
+    sorted.sort_by(|a, b| b.1.cmp(a.1).then(a.0.cmp(b.0)));
+    for (b, n) in sorted {
+        pm.push_str(&format!("| `{}` | {} |\n", b, n));
+    }
+    fs::write(repo_root.join("docs/provider_matrix.md"), pm).expect("write provider md");
+
+    println!("Generated 4 artifacts from {} capabilities (hash {})", all.len(), loute_core::CATALOG_HASH);
+}
+
+// Silence unused import warnings for BTreeSet (kept for future expansion).
+#[allow(dead_code)]
+fn _anchor(_s: BTreeSet<String>) {}

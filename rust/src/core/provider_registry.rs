@@ -30,6 +30,19 @@ impl ProviderRegistry {
         }
     }
 
+    /// All distinct provider binaries in the shipped catalog (native excluded).
+    pub fn known_binaries(&self) -> Vec<String> {
+        use super::capability_catalog::get_catalog;
+        let mut bins: Vec<String> = get_catalog()
+            .map(|c| c.capabilities.values().map(|cap| cap.binary.clone())
+                .filter(|b| b != "native" && !b.is_empty())
+                .collect())
+            .unwrap_or_default();
+        bins.sort();
+        bins.dedup();
+        bins
+    }
+
     /// Probe a provider binary — check if it exists in PATH.
     pub fn probe(&self, binary: &str) -> ProviderState {
         // Native providers are always "available"
