@@ -10,6 +10,9 @@ pub struct CapabilityCatalog {
     pub capabilities: HashMap<CapabilityId, Capability>,
     pub by_phase: HashMap<Phase, Vec<CapabilityId>>,
     pub by_provider: HashMap<ProviderId, Vec<CapabilityId>>,
+    /// All args across every provider operation, per capability. Used by V4/V5
+    /// validation because placeholders may appear in operations beyond the first.
+    pub all_args: HashMap<CapabilityId, Vec<String>>,
     pub hash: String,
     pub raw: String,
 }
@@ -26,6 +29,7 @@ impl CapabilityCatalog {
         let mut capabilities = HashMap::new();
         let mut by_phase: HashMap<Phase, Vec<CapabilityId>> = HashMap::new();
         let mut by_provider: HashMap<ProviderId, Vec<CapabilityId>> = HashMap::new();
+        let mut all_args: HashMap<CapabilityId, Vec<String>> = HashMap::new();
 
         if let Some(caps) = parsed.get("capability").and_then(|v| v.as_array()) {
             for cap_val in caps {
@@ -34,8 +38,32 @@ impl CapabilityCatalog {
                 let phase = cap.phase;
                 let provider = cap.provider.clone();
 
-                capabilities.insert(id.clone(), cap);
+                // Collect args from every operation of every provider for V4/V5.
+                let mut args_all = Vec::new();
+                if let Some(providers) = cap_val.get("provider").and_then(|v| v.as_array()) {
+                    for p in providers {
+                        if let Some(ops) = p.get("operation").and_then(|v| v.as_array()) {
+                            for op in ops {
+                                if let Some(a) = op.get("args").and_then(|v| v.as_array()) {
+                                    for v in a {
+                                        if let Some(s) = v.as_str() {
+                                            args_all.push(s.to_string());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // Also include flat schema-v2 args.
+                if let Some(a) = cap_val.get("args").and_then(|v| v.as_array()) {
+                    for v in a {
+                        if let Some(s) = v.as_str() { args_all.push(s.to_string()); }
+                    }
+                }
+                all_args.insert(id.clone(), args_all);
 
+                capabilities.insert(id.clone(), cap);
                 by_phase.entry(phase).or_default().push(id.clone());
                 by_provider.entry(provider).or_default().push(id);
             }
@@ -45,6 +73,7 @@ impl CapabilityCatalog {
             capabilities,
             by_phase,
             by_provider,
+            all_args,
             hash,
             raw: raw.to_string(),
         })
@@ -424,6 +453,11 @@ fn parse_capability(val: &toml::Value) -> Result<Capability, String> {
         .map(|i| i as u8)
         .unwrap_or(1);
 
+    let shell_escape = val
+        .get("shell_escape")
+        .and_then(|v| v.as_bool())
+        .unwrap_or(false);
+
     Ok(Capability {
         schema,
         id: CapabilityId(id_str),
@@ -457,6 +491,7 @@ fn parse_capability(val: &toml::Value) -> Result<Capability, String> {
         chains,
         opsec_safe,
         native,
+        shell_escape,
     })
 }
 

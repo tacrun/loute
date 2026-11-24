@@ -1,26 +1,37 @@
-# TSEC capability catalog — the operational surface of TSEC 3.0.
-# Copyright (c) funbinet. All rights reserved.
-# Part of TSEC terminal cybersecurity operations platform by funbinet.
-#
-# Ten phases, between eleven and twenty-seven capabilities each. Every operation is an explicit
-# argument vector with {input} placeholders declared by the capability's
-# input schema. Nothing here is executed through a shell; templates that
-# carry shell syntax are rejected at load time.
-#
-# A capability is offered when at least one of its provider binaries
-# resolves on the host; otherwise it is reported unavailable, by name.
-
-schema = 1
-
-# ==========================================================================
-# PHASE 1 — RECONNAISSANCE
-# ==========================================================================
+# LOUTE CAPABILITY CATALOG — schema 2
+# phases: 11 — capabilities: 241
+# recon 22 · surface 22 · vulnerability 22 · payload 21 · escalation 24
+# credentials 22 · lateral 26 · persistence 19 · exploitation 27 · wireless 21 · ctf 15
+# Execution model: explicit argv vectors. Nothing here runs through a shell.
+# Every capability carries risk/noise/MITRE/platform/privilege metadata (schema 2).
 
 [[capability]]
 id = 'recon.subdomain-discovery'
+schema = 2
 phase = 'recon'
 label = 'SUBDOMAIN DISCOVERY'
 summary = 'Passive, permutation and brute-force subdomain enumeration across public sources'
+risk = 'R1'
+noise = 'low'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = true
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'domain', required = true },
 ]
@@ -158,9 +169,31 @@ network = true
 
 [[capability]]
 id = 'recon.dns-mapping'
+schema = 2
 phase = 'recon'
 label = 'DNS MAPPING'
 summary = 'Full record extraction, zone transfer attempts and DNSSEC zone walking'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = true
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'nameserver', type = 'target', required = false },
@@ -275,9 +308,31 @@ network = true
 
 [[capability]]
 id = 'recon.email-harvesting'
+schema = 2
 phase = 'recon'
 label = 'EMAIL HARVESTING'
 summary = 'Collect email addresses tied to a domain from public sources'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'limit', type = 'integer', required = false, default = '200' },
@@ -376,9 +431,31 @@ network = true
 
 [[capability]]
 id = 'recon.whois-intelligence'
+schema = 2
 phase = 'recon'
 label = 'WHOIS INTELLIGENCE'
 summary = 'Registrant, registrar, nameserver and ownership records'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'domain', type = 'domain', required = true },
 ]
@@ -485,9 +562,31 @@ network = true
 
 [[capability]]
 id = 'recon.certificate-intel'
+schema = 2
 phase = 'recon'
 label = 'CERTIFICATE INTEL'
 summary = 'Certificate transparency harvesting and live TLS certificate metadata'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = true
+shell_escape = true
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'port', type = 'port', required = false, default = '443' },
@@ -598,9 +697,31 @@ network = true
 
 [[capability]]
 id = 'recon.asn-mapping'
+schema = 2
 phase = 'recon'
 label = 'ASN MAPPING'
 summary = 'Map domains and organisations to autonomous systems and prefixes'
+risk = 'R0'
+noise = 'low'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'org', type = 'text', required = false },
@@ -716,9 +837,31 @@ network = true
 
 [[capability]]
 id = 'recon.cloud-exposure'
+schema = 2
 phase = 'recon'
 label = 'CLOUD EXPOSURE'
 summary = 'Enumerate public cloud storage and hosting assets of a domain'
+risk = 'R1'
+noise = 'low'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = true
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'keyword', type = 'text', required = false },
@@ -824,9 +967,31 @@ network = true
 
 [[capability]]
 id = 'recon.username-discovery'
+schema = 2
 phase = 'recon'
 label = 'USERNAME DISCOVERY'
 summary = 'Locate accounts carrying a target username across platforms'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'username', type = 'username', required = true },
 ]
@@ -934,9 +1099,31 @@ network = true
 
 [[capability]]
 id = 'recon.tech-fingerprint'
+schema = 2
 phase = 'recon'
 label = 'TECH FINGERPRINT'
 summary = 'Fingerprint web technologies, frameworks and WAF presence'
+risk = 'R1'
+noise = 'low'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = true
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -1041,9 +1228,31 @@ network = true
 
 [[capability]]
 id = 'recon.web-crawling'
+schema = 2
 phase = 'recon'
 label = 'WEB CRAWLING'
 summary = 'Crawl a target and extract linked endpoints and resources'
+risk = 'R1'
+noise = 'medium'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'depth', type = 'integer', required = false, default = '3' },
@@ -1140,9 +1349,31 @@ network = true
 
 [[capability]]
 id = 'recon.archive-mining'
+schema = 2
 phase = 'recon'
 label = 'ARCHIVE MINING'
 summary = 'Mine historical URL archives for forgotten endpoints and parameters'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'domain', type = 'domain', required = true },
 ]
@@ -1244,9 +1475,31 @@ network = false
 
 [[capability]]
 id = 'recon.metadata-extraction'
+schema = 2
 phase = 'recon'
 label = 'METADATA EXTRACTION'
 summary = 'Extract document and image metadata from files or a directory'
+risk = 'R1'
+noise = 'low'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = true
+shell_escape = false
 inputs = [
   { key = 'path', type = 'path', required = true },
 ]
@@ -1349,9 +1602,31 @@ network = false
 
 [[capability]]
 id = 'recon.network-mapping'
+schema = 2
 phase = 'recon'
 label = 'NETWORK MAPPING'
 summary = 'Discover live hosts and network paths across a range'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = true
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'cidr', type = 'ip/cidr', required = false },
@@ -1464,9 +1739,31 @@ network = true
 
 [[capability]]
 id = 'recon.osint-gathering'
+schema = 2
 phase = 'recon'
 label = 'OSINT GATHERING'
 summary = 'Broad open source intelligence collection for a target'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'domain', type = 'domain', required = true },
 ]
@@ -1569,9 +1866,31 @@ network = true
 
 [[capability]]
 id = 'recon.infra-profiling'
+schema = 2
 phase = 'recon'
 label = 'INFRA PROFILING'
 summary = 'Profile network infrastructure: ports, CDN status and HTTP surface'
+risk = 'R1'
+noise = 'low'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
 ]
@@ -1676,9 +1995,31 @@ network = true
 
 [[capability]]
 id = 'recon.code-leakage'
+schema = 2
 phase = 'recon'
 label = 'CODE LEAKAGE'
 summary = 'Detect exposed secrets in repositories and dumped source trees'
+risk = 'R0'
+noise = 'low'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'path', type = 'path', required = true },
 ]
@@ -1781,9 +2122,31 @@ network = true
 
 [[capability]]
 id = 'recon.ip-intelligence'
+schema = 2
 phase = 'recon'
 label = 'IP INTELLIGENCE'
 summary = 'Enrich an IP address with ownership, geography and network context'
+risk = 'R0'
+noise = 'low'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'ip', type = 'target', required = true },
   { key = 'cidr', type = 'ip/cidr', required = false },
@@ -1895,9 +2258,31 @@ network = true
 
 [[capability]]
 id = 'recon.banner-grabbing'
+schema = 2
 phase = 'recon'
 label = 'BANNER GRABBING'
 summary = 'Pull service banners and response headers from open services'
+risk = 'R1'
+noise = 'low'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'port', type = 'port', required = false, default = '80' },
@@ -2003,9 +2388,31 @@ network = true
 
 [[capability]]
 id = 'recon.js-recon'
+schema = 2
 phase = 'recon'
 label = 'JS RECON'
 summary = 'Locate and mine JavaScript files for endpoints, keys and routes'
+risk = 'R0'
+noise = 'low'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'domain', type = 'domain', required = true },
@@ -2112,9 +2519,31 @@ network = true
 
 [[capability]]
 id = 'recon.takeover-hunting'
+schema = 2
 phase = 'recon'
 label = 'TAKEOVER HUNTING'
 summary = 'Detect dangling DNS records and takeover-able services'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'domain', required = true },
 ]
@@ -2216,9 +2645,31 @@ network = true
 
 [[capability]]
 id = 'recon.iot-exposure'
+schema = 2
 phase = 'recon'
 label = 'IOT EXPOSURE'
 summary = 'Detect exposed IoT, camera and embedded device services'
+risk = 'R1'
+noise = 'low'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'broker', type = 'target', required = false },
@@ -2320,9 +2771,31 @@ network = true
 
 [[capability]]
 id = 'recon.darkweb-monitoring'
+schema = 2
 phase = 'recon'
 label = 'DARKWEB MONITORING'
 summary = 'Surface public leak and breach chatter tied to the target domain'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1590']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:domain']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 900
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'email', type = 'text', required = false },
@@ -2431,9 +2904,31 @@ network = false
 
 [[capability]]
 id = 'surface.port-discovery'
+schema = 2
 phase = 'surface'
 label = 'PORT DISCOVERY'
 summary = 'Fast TCP port discovery across a target host or range'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'rate', type = 'integer', required = false, default = '1000' },
@@ -2538,9 +3033,31 @@ network = true
 
 [[capability]]
 id = 'surface.service-fingerprint'
+schema = 2
 phase = 'surface'
 label = 'SERVICE FINGERPRINT'
 summary = 'Identify the service and version behind each open port'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = true
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'ports', type = 'ports', required = false, default = '1-1000' },
@@ -2644,9 +3161,31 @@ network = true
 
 [[capability]]
 id = 'surface.host-discovery'
+schema = 2
 phase = 'surface'
 label = 'HOST DISCOVERY'
 summary = 'Find live hosts on a network using ICMP, ARP and TCP probes'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'interface', type = 'interface', required = false },
@@ -2755,9 +3294,31 @@ network = true
 
 [[capability]]
 id = 'surface.web-profiling'
+schema = 2
 phase = 'surface'
 label = 'WEB PROFILING'
 summary = 'Probe live web services for titles, servers and response metadata'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
 ]
@@ -2862,9 +3423,31 @@ network = true
 
 [[capability]]
 id = 'surface.api-discovery'
+schema = 2
 phase = 'surface'
 label = 'API DISCOVERY'
 summary = 'Brute force and enumerate API routes and endpoint definitions'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'json'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -2971,9 +3554,31 @@ network = true
 
 [[capability]]
 id = 'surface.vhost-enumeration'
+schema = 2
 phase = 'surface'
 label = 'VHOST ENUMERATION'
 summary = 'Enumerate virtual hosts routed to the same address'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'domain', type = 'domain', required = true },
@@ -3073,9 +3678,31 @@ network = true
 
 [[capability]]
 id = 'surface.content-discovery'
+schema = 2
 phase = 'surface'
 label = 'CONTENT DISCOVERY'
 summary = 'Brute force directories, files and backup artifacts on a web root'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'extensions', type = 'text', required = false, default = 'php,html,bak' },
@@ -3177,9 +3804,31 @@ network = true
 
 [[capability]]
 id = 'surface.parameter-discovery'
+schema = 2
 phase = 'surface'
 label = 'PARAMETER DISCOVERY'
 summary = 'Discover hidden HTTP parameters on an endpoint'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'json'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -3288,9 +3937,31 @@ network = false
 
 [[capability]]
 id = 'surface.tls-analysis'
+schema = 2
 phase = 'surface'
 label = 'TLS ANALYSIS'
 summary = 'Assess TLS protocols, ciphers and certificate configuration'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'port', type = 'port', required = false, default = '443' },
@@ -3396,9 +4067,31 @@ network = true
 
 [[capability]]
 id = 'surface.endpoint-mapping'
+schema = 2
 phase = 'surface'
 label = 'ENDPOINT MAPPING'
 summary = 'Extract endpoints from JavaScript and crawled application surface'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -3508,9 +4201,31 @@ network = true
 
 [[capability]]
 id = 'surface.container-exposure'
+schema = 2
 phase = 'surface'
 label = 'CONTAINER EXPOSURE'
 summary = 'Detect exposed container, registry and orchestration services'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
 ]
@@ -3612,9 +4327,31 @@ network = true
 
 [[capability]]
 id = 'surface.database-exposure'
+schema = 2
 phase = 'surface'
 label = 'DATABASE EXPOSURE'
 summary = 'Detect exposed database services and default configurations'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'target', type = 'target', required = true },
 ]
@@ -3717,9 +4454,31 @@ network = true
 
 [[capability]]
 id = 'surface.network-profiling'
+schema = 2
 phase = 'surface'
 label = 'NETWORK PROFILING'
 summary = 'Profile network services, OS signatures and local broadcast surface'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'interface', type = 'interface', required = false, default = 'eth0' },
@@ -3826,9 +4585,31 @@ network = false
 
 [[capability]]
 id = 'surface.asset-correlation'
+schema = 2
 phase = 'surface'
 label = 'ASSET CORRELATION'
 summary = 'Merge, resolve and deduplicate discovered assets into one inventory'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'json'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'target', type = 'target', required = true },
 ]
@@ -3938,9 +4719,31 @@ network = true
 
 [[capability]]
 id = 'surface.directory-bruteforce'
+schema = 2
 phase = 'surface'
 label = 'DIRECTORY BRUTEFORCE'
 summary = 'Enumerate directories and files on web servers'
+risk = 'R2'
+noise = 'high'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'json'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'extensions', type = 'text', required = false, default = 'php,html,bak' },
@@ -4052,9 +4855,31 @@ network = true
 
 [[capability]]
 id = 'surface.cloud-exposure'
+schema = 2
 phase = 'surface'
 label = 'CLOUD EXPOSURE'
 summary = 'Audit cloud accounts for public buckets, snapshots and over-broad roles'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'json'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'provider', type = 'list', required = false, default = 'aws' },
   { key = 'bucket', type = 'text', required = false, default = 'target-bucket' },
@@ -4147,9 +4972,31 @@ network = true
 
 [[capability]]
 id = 'surface.http-misconfig'
+schema = 2
 phase = 'surface'
 label = 'HTTP MISCONFIG'
 summary = 'Probe HTTP methods, headers, proxies and caching misconfigurations'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -4249,9 +5096,31 @@ network = true
 
 [[capability]]
 id = 'surface.ldap-enum'
+schema = 2
 phase = 'surface'
 label = 'LDAP ENUM'
 summary = 'Enumerate directory services and LDAP-backed surface'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'domain', type = 'domain', required = true },
@@ -4354,9 +5223,31 @@ network = true
 
 [[capability]]
 id = 'surface.smb-enum'
+schema = 2
 phase = 'surface'
 label = 'SMB ENUM'
 summary = 'Enumerate SMB shares, users and session surface'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'target', type = 'target', required = true },
 ]
@@ -4460,9 +5351,31 @@ network = true
 
 [[capability]]
 id = 'surface.mail-surface'
+schema = 2
 phase = 'surface'
 label = 'MAIL SURFACE'
 summary = 'Enumerate mail servers, webmail and mail-related records'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'target', type = 'target', required = true },
@@ -4565,9 +5478,31 @@ network = true
 
 [[capability]]
 id = 'surface.iot-surface'
+schema = 2
 phase = 'surface'
 label = 'IOT SURFACE'
 summary = 'Enumerate exposed IoT protocols: RTSP, MQTT, CoAP and mDNS'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'interface', type = 'interface', required = false, default = 'eth0' },
@@ -4676,9 +5611,31 @@ network = true
 
 [[capability]]
 id = 'surface.vpn-surface'
+schema = 2
 phase = 'surface'
 label = 'VPN SURFACE'
 summary = 'Enumerate VPN and remote-access gateway exposure'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595.002']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:host']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 300
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
 ]
@@ -4790,9 +5747,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.template-scan'
+schema = 2
 phase = 'vulnerability'
 label = 'TEMPLATE SCAN'
 summary = 'Run curated nuclei templates against targets, filtered by severity'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'severity', type = 'list', required = false, default = 'medium,high,critical' },
@@ -4893,9 +5872,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.web-assessment'
+schema = 2
 phase = 'vulnerability'
 label = 'WEB ASSESSMENT'
 summary = 'Audit a web application for vulnerabilities across common classes'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'json'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -5003,9 +6004,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.sql-injection'
+schema = 2
 phase = 'vulnerability'
 label = 'SQL INJECTION'
 summary = 'Detect and characterise SQL injection in parameters and forms'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -5108,9 +6131,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.xss-detection'
+schema = 2
 phase = 'vulnerability'
 label = 'XSS DETECTION'
 summary = 'Detect reflected, stored and DOM cross site scripting'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -5217,9 +6262,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.command-injection'
+schema = 2
 phase = 'vulnerability'
 label = 'COMMAND INJECTION'
 summary = 'Detect operating system command injection in parameters'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -5330,9 +6397,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.ssti-detection'
+schema = 2
 phase = 'vulnerability'
 label = 'SSTI DETECTION'
 summary = 'Detect server side template injection and engine fingerprint'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -5445,9 +6534,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.file-inclusion'
+schema = 2
 phase = 'vulnerability'
 label = 'FILE INCLUSION'
 summary = 'Detect local and remote file inclusion in parameters'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'json'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -5564,9 +6675,31 @@ network = false
 
 [[capability]]
 id = 'vulnerability.file-upload'
+schema = 2
 phase = 'vulnerability'
 label = 'FILE UPLOAD'
 summary = 'Test upload endpoints for unrestricted file upload flaws'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'field', type = 'text', required = false, default = 'file' },
@@ -5667,9 +6800,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.ssrf-detection'
+schema = 2
 phase = 'vulnerability'
 label = 'SSRF DETECTION'
 summary = 'Detect server side request forgery in URL-accepting parameters'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'oast', type = 'text', required = false },
@@ -5787,9 +6942,31 @@ network = false
 
 [[capability]]
 id = 'vulnerability.deserialization-test'
+schema = 2
 phase = 'vulnerability'
 label = 'DESERIALIZATION TEST'
 summary = 'Probe endpoints and Java services for deserialization flaws'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'lhost', type = 'target', required = false, default = '127.0.0.1' },
@@ -5898,9 +7075,31 @@ network = false
 
 [[capability]]
 id = 'vulnerability.fuzz-testing'
+schema = 2
 phase = 'vulnerability'
 label = 'FUZZ TESTING'
 summary = 'Fuzz parameters, paths and headers for abnormal behaviour'
+risk = 'R2'
+noise = 'high'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'json'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -6000,9 +7199,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.dependency-audit'
+schema = 2
 phase = 'vulnerability'
 label = 'DEPENDENCY AUDIT'
 summary = 'Audit project dependencies and container images for known CVEs'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'json'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'path', type = 'path', required = true },
   { key = 'lockfile', type = 'file', required = true },
@@ -6111,9 +7332,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.config-audit'
+schema = 2
 phase = 'vulnerability'
 label = 'CONFIG AUDIT'
 summary = 'Audit system and service configuration against hardening baselines'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'target', type = 'target', required = true },
 ]
@@ -6220,9 +7463,31 @@ network = false
 
 [[capability]]
 id = 'vulnerability.cms-assessment'
+schema = 2
 phase = 'vulnerability'
 label = 'CMS ASSESSMENT'
 summary = 'Assess content management systems for vulnerable components'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'json'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -6328,9 +7593,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.api-testing'
+schema = 2
 phase = 'vulnerability'
 label = 'API TESTING'
 summary = 'Test API endpoints for broken objects, methods and schemas'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'token', type = 'secret', required = false },
@@ -6431,9 +7718,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.takeover-check'
+schema = 2
 phase = 'vulnerability'
 label = 'TAKEOVER CHECK'
 summary = 'Detect dangling DNS records and takeover-able services'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'domain', required = true },
 ]
@@ -6537,9 +7846,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.tls-assessment'
+schema = 2
 phase = 'vulnerability'
 label = 'TLS ASSESSMENT'
 summary = 'Assess TLS deployment for protocol and cipher weaknesses'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'target', type = 'target', required = true },
   { key = 'port', type = 'port', required = false, default = '443' },
@@ -6648,9 +7979,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.auth-bypass'
+schema = 2
 phase = 'vulnerability'
 label = 'AUTH BYPASS'
 summary = 'Test authentication and session handling for bypass flaws'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'username', type = 'username', required = true },
@@ -6758,9 +8111,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.header-security'
+schema = 2
 phase = 'vulnerability'
 label = 'HEADER SECURITY'
 summary = 'Audit security headers and browser-facing policy posture'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -6866,9 +8241,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.exposure-sweep'
+schema = 2
 phase = 'vulnerability'
 label = 'EXPOSURE SWEEP'
 summary = 'Sweep for exposed panels, configs, dashboards and debug endpoints'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -6972,9 +8369,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.injection-sweep'
+schema = 2
 phase = 'vulnerability'
 label = 'INJECTION SWEEP'
 summary = 'Broad injection sweep: NoSQL, LDAP, XPath and header injections'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -7084,9 +8503,31 @@ network = true
 
 [[capability]]
 id = 'vulnerability.finding-validation'
+schema = 2
 phase = 'vulnerability'
 label = 'FINDING VALIDATION'
 summary = 'Re-verify automated findings with focused second-pass probes'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1595', 'T1190']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['finding:vuln']
+parser = 'lines'
+probe = []
+timeout = 1800
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'template', type = 'text', required = false },
@@ -7199,9 +8640,31 @@ network = true
 # PHASE 4 — PAYLOAD
 [[capability]]
 id = 'payload.shellcode-generation'
+schema = 2
 phase = 'payload'
 label = 'SHELLCODE GENERATION'
 summary = 'Multi platform shellcode and executable payload generation'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'lhost', type = 'target', required = true },
   { key = 'lport', type = 'port', required = true },
@@ -7274,9 +8737,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.payload-encoding'
+schema = 2
 phase = 'payload'
 label = 'PAYLOAD ENCODING'
 summary = 'Encode and obfuscate payloads against signature detection'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'lhost', type = 'target', required = true },
   { key = 'lport', type = 'port', required = true },
@@ -7361,9 +8846,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.binary-weaponization'
+schema = 2
 phase = 'payload'
 label = 'BINARY WEAPONIZATION'
 summary = 'Bind payloads into legitimate binaries and pack artifacts'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'lhost', type = 'target', required = true },
   { key = 'lport', type = 'port', required = true },
@@ -7453,9 +8960,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.macro-crafting'
+schema = 2
 phase = 'payload'
 label = 'MACRO CRAFTING'
 summary = 'Generate macro enabled documents and script droppers for payload delivery'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'lhost', type = 'target', required = true },
   { key = 'lport', type = 'port', required = true },
@@ -7534,9 +9063,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.implant-building'
+schema = 2
 phase = 'payload'
 label = 'IMPLANT BUILDING'
 summary = 'Compile C2 implants with configurable transport and format'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'c2host', type = 'target', required = true },
   { key = 'c2port', type = 'port', required = true },
@@ -7612,9 +9163,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.stager-creation'
+schema = 2
 phase = 'payload'
 label = 'STAGER CREATION'
 summary = 'Produce staged loaders that fetch and execute a second stage'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'lhost', type = 'target', required = true },
   { key = 'lport', type = 'port', required = true },
@@ -7693,9 +9266,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.dropper-packaging'
+schema = 2
 phase = 'payload'
 label = 'DROPPER PACKAGING'
 summary = 'Package payloads into droppers and self extracting wrappers'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'payload', type = 'file', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -7781,9 +9376,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.artifact-obfuscation'
+schema = 2
 phase = 'payload'
 label = 'ARTIFACT OBFUSCATION'
 summary = 'Obfuscate compiled artifacts to resist static analysis'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'payload', type = 'file', required = true },
 ]
@@ -7873,9 +9490,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.binary-analysis'
+schema = 2
 phase = 'payload'
 label = 'BINARY ANALYSIS'
 summary = 'Inspect compiled artifacts: format, imports, strings and traces'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'binary', type = 'file', required = true },
 ]
@@ -7959,9 +9598,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.c2-configuration'
+schema = 2
 phase = 'payload'
 label = 'C2 CONFIGURATION'
 summary = 'Configure listeners and handlers for implant callbacks'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'lhost', type = 'target', required = true },
   { key = 'lport', type = 'port', required = true },
@@ -8044,9 +9705,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'payload.evasion-testing'
+schema = 2
 phase = 'payload'
 label = 'EVASION TESTING'
 summary = 'Test artifacts against signatures and heuristic detection'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'binary', type = 'file', required = true },
 ]
@@ -8134,9 +9817,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.staging-server'
+schema = 2
 phase = 'payload'
 label = 'STAGING SERVER'
 summary = 'Serve payloads over HTTP for staged delivery'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'port', type = 'port', required = true },
   { key = 'path', type = 'path', required = true },
@@ -8227,9 +9932,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.delivery-preparation'
+schema = 2
 phase = 'payload'
 label = 'DELIVERY PREPARATION'
 summary = 'Prepare and test delivery of payload artifacts to targets'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'payload', type = 'file', required = true },
   { key = 'rhost', type = 'target', required = true },
@@ -8322,9 +10049,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.payload-validation'
+schema = 2
 phase = 'payload'
 label = 'PAYLOAD VALIDATION'
 summary = 'Validate payload integrity, format and runtime behaviour'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'binary', type = 'file', required = true },
 ]
@@ -8412,9 +10161,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.payload-testing'
+schema = 2
 phase = 'payload'
 label = 'PAYLOAD TESTING'
 summary = 'Exercise a built payload against static and rule-based inspection'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'payload', type = 'file', required = true },
   { key = 'rules', type = 'path', required = false, default = '/usr/share/yara/rules' },
@@ -8495,9 +10266,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.listener-deployment'
+schema = 2
 phase = 'payload'
 label = 'LISTENER DEPLOYMENT'
 summary = 'Stand up handlers and listeners that receive implant callbacks'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'bind', type = 'text', required = false, default = '0.0.0.0' },
   { key = 'port', type = 'port', required = false, default = '4444' },
@@ -8580,9 +10373,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'payload.registry-persistence'
+schema = 2
 phase = 'payload'
 label = 'REGISTRY PERSISTENCE'
 summary = 'Test registry-based payload execution vectors on Windows targets'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'payload', type = 'file', required = true },
   { key = 'rhost', type = 'target', required = true },
@@ -8675,9 +10490,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'payload.linux-persistence'
+schema = 2
 phase = 'payload'
 label = 'LINUX PERSISTENCE'
 summary = 'Test Linux persistence vectors: cron, systemd, profile and SSH'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'payload', type = 'file', required = true },
   { key = 'name', type = 'text', required = false, default = 'tsupdate' },
@@ -8764,9 +10601,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.webshell-deployment'
+schema = 2
 phase = 'payload'
 label = 'WEBSHELL DEPLOYMENT'
 summary = 'Deploy and exercise webshells on reachable web roots'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'path', type = 'file', required = false, default = '{artifacts}/shell.php' },
@@ -8853,9 +10712,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'payload.dns-c2'
+schema = 2
 phase = 'payload'
 label = 'DNS C2'
 summary = 'Establish DNS-based command and control channels'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -8950,9 +10831,31 @@ network = true
 # ==========================================================================
 [[capability]]
 id = 'payload.payload-delivery'
+schema = 2
 phase = 'payload'
 label = 'PAYLOAD DELIVERY'
 summary = 'Transfer built payloads to target-reachable drop points'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1588.001', 'T1587.001']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['artifact:payload']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'rport', type = 'port', required = false, default = '8000' },
@@ -9074,9 +10977,31 @@ network = false
 
 [[capability]]
 id = 'escalation.suid-hunting'
+schema = 2
 phase = 'escalation'
 label = 'SUID HUNTING'
 summary = 'Locate and triage SUID/SGID binaries for privilege abuse'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = false, default = '127.0.0.1' },
   { key = 'username', type = 'username', required = false, default = '' },
@@ -9187,9 +11112,31 @@ network = false
 
 [[capability]]
 id = 'escalation.sudo-misconfig'
+schema = 2
 phase = 'escalation'
 label = 'SUDO MISCONFIG'
 summary = 'Enumerate sudo rules and abuse permissive sudo entries'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'sudo-password', type = 'password', required = false, default = '' },
 ]
@@ -9300,9 +11247,31 @@ network = false
 
 [[capability]]
 id = 'escalation.cron-abuse'
+schema = 2
 phase = 'escalation'
 label = 'CRON ABUSE'
 summary = 'Enumerate scheduled jobs and hijack writable cron scripts'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'name', type = 'text', required = false, default = 'tsupd' },
 ]
@@ -9421,9 +11390,31 @@ network = false
 
 [[capability]]
 id = 'escalation.service-exploit'
+schema = 2
 phase = 'escalation'
 label = 'SERVICE EXPLOIT'
 summary = 'Abuse weakly configured or writable systemd services'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'name', type = 'text', required = false, default = 'tsupd' },
 ]
@@ -9535,9 +11526,31 @@ network = false
 
 [[capability]]
 id = 'escalation.path-hijack'
+schema = 2
 phase = 'escalation'
 label = 'PATH HIJACK'
 summary = 'Detect writable PATH directories and hijack privileged lookups'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'name', type = 'text', required = false, default = 'tsupd' },
 ]
@@ -9656,9 +11669,31 @@ network = false
 
 [[capability]]
 id = 'escalation.capability-abuse'
+schema = 2
 phase = 'escalation'
 label = 'CAPABILITY ABUSE'
 summary = 'Enumerate file capabilities and exploit privileged capabilities'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = false, default = '127.0.0.1' },
   { key = 'pid', type = 'integer', required = true },
@@ -9778,9 +11813,31 @@ network = false
 
 [[capability]]
 id = 'escalation.kernel-exploit'
+schema = 2
 phase = 'escalation'
 label = 'KERNEL EXPLOIT'
 summary = 'Fingerprint kernel and match local privilege escalation exploits'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = false, default = '127.0.0.1' },
   { key = 'username', type = 'username', required = false, default = '' },
@@ -9897,9 +11954,31 @@ network = false
 
 [[capability]]
 id = 'escalation.container-escape'
+schema = 2
 phase = 'escalation'
 label = 'CONTAINER ESCAPE'
 summary = 'Detect containerization and probe breakout vectors'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'socket', type = 'file', required = false, default = '/var/run/docker.sock' },
   { key = 'kube_ip', type = 'target', required = false, default = '10.96.0.1' },
@@ -10019,9 +12098,31 @@ network = false
 
 [[capability]]
 id = 'escalation.password-harvest'
+schema = 2
 phase = 'escalation'
 label = 'PASSWORD HARVEST'
 summary = 'Harvest credentials from config files, history and logs'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'path', type = 'path', required = false, default = '/home' },
 ]
@@ -10140,9 +12241,31 @@ network = false
 
 [[capability]]
 id = 'escalation.ssh-key-harvest'
+schema = 2
 phase = 'escalation'
 label = 'SSH KEY HARVEST'
 summary = 'Locate and reuse SSH private keys and authorized keys'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'path', type = 'path', required = false, default = '/home' },
   { key = 'rhost', type = 'target', required = false, default = '127.0.0.1' },
@@ -10258,9 +12381,31 @@ network = false
 
 [[capability]]
 id = 'escalation.windows-service-hijack'
+schema = 2
 phase = 'escalation'
 label = 'WINDOWS SERVICE HIJACK'
 summary = 'Enumerate and abuse weakly configured Windows services'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -10382,9 +12527,31 @@ network = true
 
 [[capability]]
 id = 'escalation.token-impersonation'
+schema = 2
 phase = 'escalation'
 label = 'TOKEN IMPERSONATION'
 summary = 'Enumerate domain tokens and impersonate privileged principals'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'rhost', type = 'target', required = true },
@@ -10506,9 +12673,31 @@ network = true
 
 [[capability]]
 id = 'escalation.writable-file-abuse'
+schema = 2
 phase = 'escalation'
 label = 'WRITABLE FILE ABUSE'
 summary = 'Enumerate writable sensitive files and system paths'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'name', type = 'text', required = false, default = 'tsupd' },
 ]
@@ -10627,9 +12816,31 @@ network = false
 
 [[capability]]
 id = 'escalation.environment-leak'
+schema = 2
 phase = 'escalation'
 label = 'ENVIRONMENT LEAK'
 summary = 'Extract secrets and hints from environment, shell and proc'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'pid', type = 'port', required = false, default = '1' },
 ]
@@ -10748,9 +12959,31 @@ network = false
 
 [[capability]]
 id = 'escalation.nfs-squash'
+schema = 2
 phase = 'escalation'
 label = 'NFS SQUASH'
 summary = 'Probe NFS exports for no_root_squash and mount abuse'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
 ]
@@ -10869,9 +13102,31 @@ network = false
 
 [[capability]]
 id = 'escalation.smb-share-privilege'
+schema = 2
 phase = 'escalation'
 label = 'SMB SHARE PRIVILEGE'
 summary = 'Map share permissions and abuse writable SMB shares'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -10992,9 +13247,31 @@ network = true
 
 [[capability]]
 id = 'escalation.database-cred-exfil'
+schema = 2
 phase = 'escalation'
 label = 'DATABASE CRED EXFIL'
 summary = 'Abuse local database access for credential and data extraction'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'db-host', type = 'target', required = false, default = '127.0.0.1' },
   { key = 'db-user', type = 'username', required = false, default = 'root' },
@@ -11115,9 +13392,31 @@ network = true
 
 [[capability]]
 id = 'escalation.web-root-write'
+schema = 2
 phase = 'escalation'
 label = 'WEB ROOT WRITE'
 summary = 'Test web root writability for code execution escalation'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'path', type = 'file', required = false, default = 'probe.php' },
@@ -11237,9 +13536,31 @@ network = true
 
 [[capability]]
 id = 'escalation.log-poisoning'
+schema = 2
 phase = 'escalation'
 label = 'LOG POISONING'
 summary = 'Detect log injection potential for LFI-to-RCE chains'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'log-path', type = 'file', required = false, default = '/var/log/apache2/access.log' },
   { key = 'marker', type = 'text', required = false, default = 'tsprobe' },
@@ -11360,9 +13681,31 @@ network = false
 
 [[capability]]
 id = 'escalation.dns-zone-privilege'
+schema = 2
 phase = 'escalation'
 label = 'DNS ZONE PRIVILEGE'
 summary = 'Probe DNS zone transfer and resolver config for escalation intel'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'dns-server', type = 'target', required = false, default = '' },
@@ -11483,9 +13826,31 @@ network = true
 
 [[capability]]
 id = 'escalation.git-repo-privilege'
+schema = 2
 phase = 'escalation'
 label = 'GIT REPO PRIVILEGE'
 summary = 'Detect exposed git repos and harvest internal secrets'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -11604,9 +13969,31 @@ network = true
 
 [[capability]]
 id = 'escalation.kerberos-privilege'
+schema = 2
 phase = 'escalation'
 label = 'KERBEROS PRIVILEGE'
 summary = 'Enumerate and abuse Kerberos misconfigurations'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'domain', type = 'domain', required = true },
@@ -11728,9 +14115,31 @@ network = true
 
 [[capability]]
 id = 'escalation.privilege-audit'
+schema = 2
 phase = 'escalation'
 label = 'PRIVILEGE AUDIT'
 summary = 'Consolidated local privilege escalation posture audit'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'path', type = 'path', required = false, default = '/home' },
 ]
@@ -11849,9 +14258,31 @@ network = false
 
 [[capability]]
 id = 'escalation.remote-code-exec'
+schema = 2
 phase = 'escalation'
 label = 'REMOTE CODE EXEC'
 summary = 'Convert foothold-level access into remote command execution probes'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1068']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['finding:escalation']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'rhost', type = 'target', required = true },
@@ -11971,9 +14402,31 @@ network = true
 
 [[capability]]
 id = 'credentials.hash-identification'
+schema = 2
 phase = 'credentials'
 label = 'HASH IDENTIFICATION'
 summary = 'Identify hash formats and estimate cracking difficulty'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'hash', type = 'text', required = true },
 ]
@@ -12093,9 +14546,31 @@ network = false
 
 [[capability]]
 id = 'credentials.hash-cracking'
+schema = 2
 phase = 'credentials'
 label = 'HASH CRACKING'
 summary = 'Crack recovered hashes with rule and wordlist driven attacks'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'hashes', type = 'file', required = true },
   { key = 'mode', type = 'text', required = false, default = '1000' },
@@ -12222,9 +14697,31 @@ network = false
 
 [[capability]]
 id = 'credentials.ntlm-dump'
+schema = 2
 phase = 'credentials'
 label = 'NTLM DUMP'
 summary = 'Dump Windows credential material from domain hosts'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -12352,9 +14849,31 @@ network = false
 
 [[capability]]
 id = 'credentials.smb-auth-spray'
+schema = 2
 phase = 'credentials'
 label = 'SMB AUTH SPRAY'
 summary = 'Test and spray SMB credentials across target hosts'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -12482,9 +15001,31 @@ network = false
 
 [[capability]]
 id = 'credentials.http-auth-brute'
+schema = 2
 phase = 'credentials'
 label = 'HTTP AUTH BRUTE'
 summary = 'Brute force HTTP basic, form and API authentication'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'username', type = 'username', required = false, default = 'admin' },
@@ -12607,9 +15148,31 @@ network = true
 
 [[capability]]
 id = 'credentials.service-login-brute'
+schema = 2
 phase = 'credentials'
 label = 'SERVICE LOGIN BRUTE'
 summary = 'Brute force network service authentication across protocols'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -12736,9 +15299,31 @@ network = true
 
 [[capability]]
 id = 'credentials.kerberoast'
+schema = 2
 phase = 'credentials'
 label = 'KERBEROAST TICKET HARVEST'
 summary = 'Harvest and crack service account tickets in the domain'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'domain', type = 'domain', required = true },
@@ -12867,9 +15452,31 @@ network = true
 
 [[capability]]
 id = 'credentials.wifi-handshake-crack'
+schema = 2
 phase = 'credentials'
 label = 'WIFI HANDSHAKE CRACK'
 summary = 'Crack captured WPA handshakes and PMKIDs'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'capture', type = 'file', required = false, default = '{artifacts}/capture.cap' },
 ]
@@ -12988,9 +15595,31 @@ network = false
 
 [[capability]]
 id = 'credentials.ssh-key-crack'
+schema = 2
 phase = 'credentials'
 label = 'SSH KEY CRACK'
 summary = 'Recover SSH private key passphrases and test key reuse'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'key', type = 'file', required = true },
   { key = 'rhost', type = 'target', required = false, default = '' },
@@ -13110,9 +15739,31 @@ network = false
 
 [[capability]]
 id = 'credentials.zip-archive-crack'
+schema = 2
 phase = 'credentials'
 label = 'ZIP ARCHIVE CRACK'
 summary = 'Recover passwords from encrypted archives'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'archive', type = 'file', required = true },
 ]
@@ -13231,9 +15882,31 @@ network = false
 
 [[capability]]
 id = 'credentials.credential-dump-linux'
+schema = 2
 phase = 'credentials'
 label = 'CREDENTIAL DUMP LINUX'
 summary = 'Harvest local Linux credential material and keychains'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'path', type = 'path', required = false, default = '/home' },
 ]
@@ -13352,9 +16025,31 @@ network = false
 
 [[capability]]
 id = 'credentials.windows-credential-sweep'
+schema = 2
 phase = 'credentials'
 label = 'WINDOWS CREDENTIAL SWEEP'
 summary = 'Enumerate Windows credential stores and saved secrets'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -13475,9 +16170,31 @@ network = true
 
 [[capability]]
 id = 'credentials.keystores-cert-pull'
+schema = 2
 phase = 'credentials'
 label = 'KEYSTORES CERT PULL'
 summary = 'Extract keys, certs and keystore secrets from filesystems'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'path', type = 'path', required = false, default = '/' },
 ]
@@ -13596,9 +16313,31 @@ network = false
 
 [[capability]]
 id = 'credentials.browser-password-extract'
+schema = 2
 phase = 'credentials'
 label = 'BROWSER PASSWORD EXTRACT'
 summary = 'Extract saved passwords from browser credential stores'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'path', type = 'path', required = false, default = '/home' },
 ]
@@ -13717,9 +16456,31 @@ network = false
 
 [[capability]]
 id = 'credentials.secret-scan-filesystem'
+schema = 2
 phase = 'credentials'
 label = 'SECRET SCAN FILESYSTEM'
 summary = 'Sweep the filesystem for embedded secrets and API keys'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'json'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'path', type = 'path', required = false, default = '/home' },
 ]
@@ -13838,9 +16599,31 @@ network = false
 
 [[capability]]
 id = 'credentials.cloud-credential-probe'
+schema = 2
 phase = 'credentials'
 label = 'CLOUD CREDENTIAL PROBE'
 summary = 'Enumerate cloud credential files and unauthenticated cloud APIs'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'bucket', type = 'text', required = false, default = '' },
@@ -13960,9 +16743,31 @@ network = false
 
 [[capability]]
 id = 'credentials.jwt-token-audit'
+schema = 2
 phase = 'credentials'
 label = 'JWT TOKEN AUDIT'
 summary = 'Decode, verify and attack JWT implementations'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'token', type = 'text', required = true },
   { key = 'url', type = 'url', required = true },
@@ -14082,9 +16887,31 @@ network = false
 
 [[capability]]
 id = 'credentials.database-cred-test'
+schema = 2
 phase = 'credentials'
 label = 'DATABASE CRED TEST'
 summary = 'Test and abuse database authentication across engines'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = false, default = 'root' },
@@ -14205,9 +17032,31 @@ network = true
 
 [[capability]]
 id = 'credentials.credential-reuse-test'
+schema = 2
 phase = 'credentials'
 label = 'CREDENTIAL REUSE TEST'
 summary = 'Test recovered credentials against multiple protocols and hosts'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -14329,9 +17178,31 @@ network = true
 
 [[capability]]
 id = 'credentials.wordlist-preparation'
+schema = 2
 phase = 'credentials'
 label = 'WORDLIST PREPARATION'
 summary = 'Generate and mutate targeted wordlists for brute force campaigns'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'domain', type = 'domain', required = false, default = '' },
 ]
@@ -14450,9 +17321,31 @@ network = false
 
 [[capability]]
 id = 'credentials.wireless-credential-audit'
+schema = 2
 phase = 'credentials'
 label = 'WIRELESS CREDENTIAL AUDIT'
 summary = 'Extract and audit wireless credential material'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'capture', type = 'file', required = false, default = '{artifacts}/capture.cap' },
 ]
@@ -14571,9 +17464,31 @@ network = false
 
 [[capability]]
 id = 'credentials.hash-extraction-pcap'
+schema = 2
 phase = 'credentials'
 label = 'HASH EXTRACTION PCAP'
 summary = 'Extract authentication material from captured traffic'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1110', 'T1003']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['credential:ref']
+parser = 'lines'
+probe = []
+timeout = 3600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'capture', type = 'file', required = false, default = '{artifacts}/capture.pcap' },
 ]
@@ -14701,9 +17616,31 @@ network = false
 # PHASE 7 — LATERAL
 [[capability]]
 id = 'lateral.network-discovery'
+schema = 2
 phase = 'lateral'
 label = 'NETWORK DISCOVERY'
 summary = 'Map the internal network from a foothold position'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'cidr', type = 'text', required = true },
   { key = 'iface', type = 'text', required = false, default = 'eth0' },
@@ -14794,9 +17731,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'lateral.service-enumeration'
+schema = 2
 phase = 'lateral'
 label = 'SERVICE ENUMERATION'
 summary = 'Enumerate live services across internal hosts for lateral targets'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
 ]
@@ -14886,9 +17845,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.smb-pivot'
+schema = 2
 phase = 'lateral'
 label = 'SMB PIVOT'
 summary = 'Move laterally through SMB with valid credentials or hashes'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -14981,9 +17962,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.winrm-pivot'
+schema = 2
 phase = 'lateral'
 label = 'WINRM PIVOT'
 summary = 'Move laterally through WinRM and PowerShell remoting'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -15076,9 +18079,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.rdp-pivot'
+schema = 2
 phase = 'lateral'
 label = 'RDP PIVOT'
 summary = 'Test and use RDP access for lateral movement'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -15170,9 +18195,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.ssh-pivot'
+schema = 2
 phase = 'lateral'
 label = 'SSH PIVOT'
 summary = 'Move laterally through SSH with keys, agents and passwords'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -15265,9 +18312,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.ntlm-relay'
+schema = 2
 phase = 'lateral'
 label = 'NTLM RELAY'
 summary = 'Capture and relay NTLM authentication to pivot access'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'iface', type = 'text', required = false, default = 'eth0' },
   { key = 'rhost', type = 'target', required = true },
@@ -15360,9 +18429,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'lateral.arp-spoof'
+schema = 2
 phase = 'lateral'
 label = 'ARP SPOOF'
 summary = 'Position on-path for local network traffic interception'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'iface', type = 'text', required = false, default = 'eth0' },
   { key = 'gateway', type = 'target', required = true },
@@ -15454,9 +18545,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'lateral.llmnr-nbtns-poison'
+schema = 2
 phase = 'lateral'
 label = 'LLMNR NBTNS POISON'
 summary = 'Poison name resolution to harvest internal auth material'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'iface', type = 'text', required = false, default = 'eth0' },
 ]
@@ -15546,9 +18659,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'lateral.port-forward'
+schema = 2
 phase = 'lateral'
 label = 'PORT FORWARD'
 summary = 'Establish forwarding and tunnels to reach internal segments'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -15643,9 +18778,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'lateral.socks-pivot'
+schema = 2
 phase = 'lateral'
 label = 'SOCKS PIVOT'
 summary = 'Route tooling through SOCKS proxies into internal segments'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -15737,9 +18894,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'lateral.mssql-pivot'
+schema = 2
 phase = 'lateral'
 label = 'MSSQL PIVOT'
 summary = 'Abuse MSSQL links and xp_cmdshell for lateral movement'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -15831,9 +19010,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.session-hijack'
+schema = 2
 phase = 'lateral'
 label = 'SESSION HIJACK'
 summary = 'Capture and replay cookies, tokens and process sessions'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'cookie', type = 'text', required = false, default = '' },
@@ -15925,9 +19126,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.internal-web-pivot'
+schema = 2
 phase = 'lateral'
 label = 'INTERNAL WEB PIVOT'
 summary = 'Enumerate and exploit internal-only web applications'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'port', type = 'port', required = false, default = '80' },
@@ -16018,9 +19241,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.vpn-internal-access'
+schema = 2
 phase = 'lateral'
 label = 'VPN INTERNAL ACCESS'
 summary = 'Probe VPN endpoints and protocols for internal access paths'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = false, default = 'test' },
@@ -16112,9 +19357,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.ad-recon'
+schema = 2
 phase = 'lateral'
 label = 'AD RECON'
 summary = 'Map Active Directory structure, users and trust paths'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'domain', type = 'domain', required = true },
@@ -16207,9 +19474,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.adcs-abuse'
+schema = 2
 phase = 'lateral'
 label = 'ADCS ABUSE'
 summary = 'Enumerate and abuse Active Directory Certificate Services'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'domain', type = 'domain', required = true },
@@ -16302,9 +19591,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.dns-internal-recon'
+schema = 2
 phase = 'lateral'
 label = 'DNS INTERNAL RECON'
 summary = 'Enumerate internal DNS for hosts, zones and services'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'dns-server', type = 'target', required = true },
@@ -16395,9 +19706,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.wmi-pivot'
+schema = 2
 phase = 'lateral'
 label = 'WMI PIVOT'
 summary = 'Use WMI for remote enumeration and command execution'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -16489,9 +19822,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.credential-reuse-pivot'
+schema = 2
 phase = 'lateral'
 label = 'CREDENTIAL REUSE PIVOT'
 summary = 'Spray valid credentials across internal host inventory'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'hosts', type = 'file', required = true },
   { key = 'username', type = 'username', required = true },
@@ -16584,9 +19939,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.packet-capture-pivot'
+schema = 2
 phase = 'lateral'
 label = 'PACKET CAPTURE PIVOT'
 summary = 'Capture and mine network traffic for lateral intel'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'iface', type = 'text', required = false, default = 'eth0' },
 ]
@@ -16669,9 +20046,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'lateral.coercion-trigger'
+schema = 2
 phase = 'lateral'
 label = 'COERCION TRIGGER'
 summary = 'Trigger forced authentication from internal hosts to a listener'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'listener', type = 'target', required = true },
@@ -16764,9 +20163,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'lateral.firewall-rule-recon'
+schema = 2
 phase = 'lateral'
 label = 'FIREWALL RULE RECON'
 summary = 'Map egress and internal firewall filtering from a foothold'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
 ]
@@ -16856,9 +20277,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'lateral.lateral-map-report'
+schema = 2
 phase = 'lateral'
 label = 'LATERAL MAP REPORT'
 summary = 'Consolidate lateral movement findings into a pivot map'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'cidr', type = 'text', required = true },
   { key = 'username', type = 'username', required = false, default = '' },
@@ -16954,9 +20397,31 @@ network = false
 # ==========================================================================
 [[capability]]
 id = 'lateral.dns-discovery'
+schema = 2
 phase = 'lateral'
 label = 'DNS DISCOVERY'
 summary = 'Enumerate internal DNS infrastructure to map domain controllers and services'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'text', required = true },
   { key = 'dns-server', type = 'target', required = true },
@@ -17075,9 +20540,31 @@ output = 'lines'
 network = true
 [[capability]]
 id = 'lateral.share-harvest'
+schema = 2
 phase = 'lateral'
 label = 'SHARE HARVEST'
 summary = 'Enumerate and mine network shares for lateral intel'
+risk = 'R3'
+noise = 'low'
+mitre = ['T1021', 'T1550']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -17201,9 +20688,31 @@ network = false
 
 [[capability]]
 id = 'persistence.cron-persistence'
+schema = 2
 phase = 'persistence'
 label = 'CRON PERSISTENCE'
 summary = 'Establish scheduled-task persistence via cron on Linux targets'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'payload', type = 'file', required = false, default = '{artifacts}/rev.sh' },
   { key = 'name', type = 'text', required = false, default = 'tsupd' },
@@ -17295,9 +20804,31 @@ network = false
 
 [[capability]]
 id = 'persistence.systemd-persistence'
+schema = 2
 phase = 'persistence'
 label = 'SYSTEMD PERSISTENCE'
 summary = 'Install systemd service and timer persistence units'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'payload', type = 'file', required = true },
   { key = 'name', type = 'text', required = false, default = 'tsupd' },
@@ -17389,9 +20920,31 @@ network = false
 
 [[capability]]
 id = 'persistence.shell-profile-persistence'
+schema = 2
 phase = 'persistence'
 label = 'SHELL PROFILE PERSISTENCE'
 summary = 'Hook shell startup files for trigger-on-login persistence'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'payload', type = 'file', required = true },
   { key = 'user', type = 'text', required = false, default = 'root' },
@@ -17483,9 +21036,31 @@ network = false
 
 [[capability]]
 id = 'persistence.ssh-authorized-keys'
+schema = 2
 phase = 'persistence'
 label = 'SSH AUTHORIZED KEYS'
 summary = 'Plant and verify SSH key-based persistence'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -17578,9 +21153,31 @@ network = true
 
 [[capability]]
 id = 'persistence.registry-run-keys'
+schema = 2
 phase = 'persistence'
 label = 'REGISTRY RUN KEYS'
 summary = 'Install and verify Windows registry run-key persistence'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -17674,9 +21271,31 @@ network = true
 
 [[capability]]
 id = 'persistence.scheduled-task-windows'
+schema = 2
 phase = 'persistence'
 label = 'SCHEDULED TASK WINDOWS'
 summary = 'Install and verify Windows scheduled task persistence'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -17771,9 +21390,31 @@ network = true
 
 [[capability]]
 id = 'persistence.wmi-subscription'
+schema = 2
 phase = 'persistence'
 label = 'WMI SUBSCRIPTION'
 summary = 'Install WMI event subscription persistence on Windows hosts'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -17867,9 +21508,31 @@ network = true
 
 [[capability]]
 id = 'persistence.startup-folder'
+schema = 2
 phase = 'persistence'
 label = 'STARTUP FOLDER'
 summary = 'Drop persistence payloads into startup and logon script locations'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -17963,9 +21626,31 @@ network = false
 
 [[capability]]
 id = 'persistence.service-persistence-linux'
+schema = 2
 phase = 'persistence'
 label = 'SERVICE PERSISTENCE LINUX'
 summary = 'Backdoor existing services and install replacement daemons'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'payload', type = 'file', required = true },
   { key = 'name', type = 'text', required = false, default = 'tsupdd' },
@@ -18057,9 +21742,31 @@ network = false
 
 [[capability]]
 id = 'persistence.webshell-persistence'
+schema = 2
 phase = 'persistence'
 label = 'WEBSHELL PERSISTENCE'
 summary = 'Deploy persistent webshells and verify access over time'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'path', type = 'file', required = false, default = '{artifacts}/shell.php' },
@@ -18152,9 +21859,31 @@ network = false
 
 [[capability]]
 id = 'persistence.dns-persistence'
+schema = 2
 phase = 'persistence'
 label = 'DNS PERSISTENCE'
 summary = 'Maintain DNS-based callback channel for persistent access'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'domain', type = 'domain', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -18246,9 +21975,31 @@ network = true
 
 [[capability]]
 id = 'persistence.cloud-persistence'
+schema = 2
 phase = 'persistence'
 label = 'CLOUD PERSISTENCE'
 summary = 'Probe cloud control-plane persistence vectors keylessly'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'bucket', type = 'text', required = true },
   { key = 'region', type = 'text', required = false, default = 'us-east-1' },
@@ -18340,9 +22091,31 @@ network = false
 
 [[capability]]
 id = 'persistence.backdoor-user'
+schema = 2
 phase = 'persistence'
 label = 'BACKDOOR USER'
 summary = 'Create and verify hidden local accounts for persistent access'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'username', type = 'username', required = true },
@@ -18437,9 +22210,31 @@ network = false
 
 [[capability]]
 id = 'persistence.ldaps-persistence'
+schema = 2
 phase = 'persistence'
 label = 'LDAPS PERSISTENCE'
 summary = 'Plant AD objects and adminSDHolder-style persistence'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'domain', type = 'domain', required = true },
@@ -18533,9 +22328,31 @@ network = true
 
 [[capability]]
 id = 'persistence.wireless-rogue-ap'
+schema = 2
 phase = 'persistence'
 label = 'WIRELESS ROGUE AP'
 summary = 'Establish and monitor rogue access point footholds'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'iface', type = 'text', required = false, default = 'wlan0' },
   { key = 'ssid', type = 'text', required = false, default = 'TSec-Test' },
@@ -18628,9 +22445,31 @@ network = false
 
 [[capability]]
 id = 'persistence.macro-autorun-persistence'
+schema = 2
 phase = 'persistence'
 label = 'MACRO AUTORUN PERSISTENCE'
 summary = 'Verify document-based autorun persistence vectors'
+risk = 'R2'
+noise = 'low'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'lhost', type = 'target', required = true },
   { key = 'lport', type = 'port', required = true },
@@ -18722,9 +22561,31 @@ network = true
 
 [[capability]]
 id = 'persistence.persistence-audit'
+schema = 2
 phase = 'persistence'
 label = 'PERSISTENCE AUDIT'
 summary = 'Enumerate all persistence locations for coverage verification'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'name', type = 'text', required = false, default = 'tsupd' },
 ]
@@ -18815,9 +22676,31 @@ network = false
 
 [[capability]]
 id = 'persistence.persistence-teardown'
+schema = 2
 phase = 'persistence'
 label = 'PERSISTENCE TEARDOWN'
 summary = 'Cleanly remove planted persistence artifacts'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'name', type = 'text', required = false, default = 'tsupd' },
 ]
@@ -18908,9 +22791,31 @@ network = false
 
 [[capability]]
 id = 'persistence.persistence-verification'
+schema = 2
 phase = 'persistence'
 label = 'PERSISTENCE VERIFICATION'
 summary = 'Actively verify each persistence mechanism still fires'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1543', 'T1547']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['persistence:record']
+parser = 'lines'
+probe = []
+timeout = 600
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = true
+cleanup = 'persistence.persistence-teardown'
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'name', type = 'text', required = false, default = 'tsupd' },
   { key = 'rhost', type = 'target', required = true },
@@ -19008,9 +22913,31 @@ network = false
 
 [[capability]]
 id = 'exploitation.nuclei-critical'
+schema = 2
 phase = 'exploitation'
 label = 'NUCLEI CRITICAL'
 summary = 'Fire critical and known-CVE templates against live targets'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -19104,9 +23031,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.metasploit-framework'
+schema = 2
 phase = 'exploitation'
 label = 'METASPLOIT FRAMEWORK'
 summary = 'Run verified Metasploit modules non-interactively against targets'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'rport', type = 'port', required = true },
@@ -19207,9 +23156,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.sqlmap-rce'
+schema = 2
 phase = 'exploitation'
 label = 'SQLMAP RCE'
 summary = 'Escalate SQL injection to OS command execution and file access'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'data', type = 'text', required = false, default = '' },
@@ -19322,9 +23293,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.deserialization'
+schema = 2
 phase = 'exploitation'
 label = 'DESERIALIZATION EXPLOITATION'
 summary = 'Exploit insecure deserialization across Java, PHP and Python stacks'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'rhost', type = 'target', required = true },
@@ -19439,9 +23432,31 @@ network = false
 
 [[capability]]
 id = 'exploitation.log4shell-jndi'
+schema = 2
 phase = 'exploitation'
 label = 'LOG4SHELL JNDI'
 summary = 'Detect and exploit Log4Shell JNDI injection vectors'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -19545,9 +23560,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.file-upload-rce'
+schema = 2
 phase = 'exploitation'
 label = 'FILE UPLOAD RCE'
 summary = 'Achieve code execution through unrestricted file upload paths'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'shell', type = 'file', required = false, default = '{artifacts}/shell.php' },
@@ -19648,9 +23685,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.ssti-rce'
+schema = 2
 phase = 'exploitation'
 label = 'SSTI RCE'
 summary = 'Escalate template injection to remote code execution'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'param', type = 'text', required = false, default = 'name' },
@@ -19762,9 +23821,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.xxe-ssrf-chain'
+schema = 2
 phase = 'exploitation'
 label = 'XXE SSRF CHAIN'
 summary = 'Chain XXE into SSRF for internal access and file reads'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -19889,9 +23970,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.path-traversal-rce'
+schema = 2
 phase = 'exploitation'
 label = 'PATH TRAVERSAL RCE'
 summary = 'Escalate path traversal to sensitive file access and RCE'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'param', type = 'text', required = false, default = 'file' },
@@ -19990,9 +24093,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.spring-rce'
+schema = 2
 phase = 'exploitation'
 label = 'SPRING RCE'
 summary = 'Exploit Spring Boot and Spring4Shell vectors'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'json'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -20099,9 +24224,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.preauth-proxy-rce'
+schema = 2
 phase = 'exploitation'
 label = 'PREAUTH PROXY RCE'
 summary = 'Exploit unauthenticated proxy and edge device RCE vectors'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -20209,9 +24356,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.smb-rce'
+schema = 2
 phase = 'exploitation'
 label = 'SMB RCE'
 summary = 'Exploit SMB vectors for remote code execution'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -20346,9 +24515,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.spooler-rce'
+schema = 2
 phase = 'exploitation'
 label = 'SPOOLER RCE'
 summary = 'Exploit print spooler and PrintNightmare-class vectors'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -20474,9 +24665,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.redis-rce'
+schema = 2
 phase = 'exploitation'
 label = 'REDIS RCE'
 summary = 'Exploit unauthenticated Redis for RCE and file access'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -20589,9 +24802,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.jenkins-rce'
+schema = 2
 phase = 'exploitation'
 label = 'JENKINS RCE'
 summary = 'Exploit Jenkins script consoles and unauthenticated endpoints'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -20707,9 +24942,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.tomcat-deploy-rce'
+schema = 2
 phase = 'exploitation'
 label = 'TOMCAT DEPLOY RCE'
 summary = 'Exploit Tomcat manager and WAR deployment for RCE'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'rport', type = 'port', required = false, default = '8080' },
@@ -20839,9 +25096,31 @@ network = false
 
 [[capability]]
 id = 'exploitation.weblogic-rce'
+schema = 2
 phase = 'exploitation'
 label = 'WEBLOGIC RCE'
 summary = 'Exploit WebLogic T3 deserialization and console vectors'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'rport', type = 'port', required = false, default = '7001' },
@@ -20955,9 +25234,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.struts-ognl-rce'
+schema = 2
 phase = 'exploitation'
 label = 'STRUTS OGNL RCE'
 summary = 'Exploit Apache Struts OGNL injection for RCE'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -21063,9 +25364,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.wordpress-rce'
+schema = 2
 phase = 'exploitation'
 label = 'WORDPRESS RCE'
 summary = 'Exploit vulnerable WordPress plugins and themes for RCE'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -21196,9 +25519,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.container-runtime-rce'
+schema = 2
 phase = 'exploitation'
 label = 'CONTAINER RUNTIME RCE'
 summary = 'Exploit container runtime and orchestration for host RCE'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'json'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'socket', type = 'file', required = false, default = '/var/run/docker.sock' },
@@ -21311,9 +25656,31 @@ network = false
 
 [[capability]]
 id = 'exploitation.citrix-netscaler-rce'
+schema = 2
 phase = 'exploitation'
 label = 'CITRIX NETSCALER RCE'
 summary = 'Exploit Citrix NetScaler ADC RCE and info leak vectors'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -21427,9 +25794,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.vcenter-rce'
+schema = 2
 phase = 'exploitation'
 label = 'VCENTER RCE'
 summary = 'Exploit VMware vCenter RCE and SSRF vectors'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -21543,9 +25932,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.gitlab-rce'
+schema = 2
 phase = 'exploitation'
 label = 'GITLAB RCE'
 summary = 'Exploit GitLab CI and import vectors for code execution'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'json'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -21675,9 +26086,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.oauth-session-abuse'
+schema = 2
 phase = 'exploitation'
 label = 'OAUTH SESSION ABUSE'
 summary = 'Exploit OAuth misconfigurations and session handling flaws'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'json'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'client-id', type = 'text', required = false, default = '' },
@@ -21791,9 +26224,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.public-cve-sweep'
+schema = 2
 phase = 'exploitation'
 label = 'PUBLIC CVE SWEEP'
 summary = 'Sweep targets against high yield public CVE exploitation checks'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'url', type = 'url', required = true },
 ]
@@ -21906,9 +26361,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.idor-access-control'
+schema = 2
 phase = 'exploitation'
 label = 'IDOR ACCESS CONTROL'
 summary = 'Exploit broken access control and IDOR for unauthorized data access'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'json'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [
   { key = 'url', type = 'url', required = true },
   { key = 'token', type = 'password', required = false, default = '' },
@@ -22021,9 +26498,31 @@ network = true
 
 [[capability]]
 id = 'exploitation.exploit-chain-verify'
+schema = 2
 phase = 'exploitation'
 label = 'EXPLOIT CHAIN VERIFY'
 summary = 'Confirm exploitation success and capture proof of execution'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1190', 'T1203']
+platforms = ['linux', 'windows']
+privileges = ['user']
+network = true
+requires = []
+provides = ['session']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'rhost', type = 'target', required = true },
   { key = 'lhost', type = 'target', required = true },
@@ -22160,9 +26659,31 @@ network = true
 # WIRELESS
 [[capability]]
 id = 'wireless.interface-setup'
+schema = 2
 phase = 'wireless'
 label = 'INTERFACE SETUP'
 summary = 'Prepare wireless interfaces for monitor mode and testing'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0' } ]
 [[capability.provider]]
 binary = 'rfkill'
@@ -22276,9 +26797,31 @@ output = 'json'
 network = false
 [[capability]]
 id = 'wireless.monitor-capture'
+schema = 2
 phase = 'wireless'
 label = 'MONITOR CAPTURE'
 summary = 'Broad spectrum beacon and client capture on monitor iface'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0mon' } ,
   { key = 'bssid', type = 'mac', required = false }
 ]
@@ -22395,9 +26938,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.ap-discovery'
+schema = 2
 phase = 'wireless'
 label = 'AP DISCOVERY'
 summary = 'Enumerate access points, security modes and WPS availability'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0mon' } ]
 [[capability.provider]]
 binary = 'airodump-ng'
@@ -22514,9 +27079,31 @@ output = 'json'
 network = false
 [[capability]]
 id = 'wireless.handshake-capture'
+schema = 2
 phase = 'wireless'
 label = 'HANDSHAKE CAPTURE'
 summary = 'Capture WPA/WPA2 four-way handshakes for offline cracking'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0mon' }, { key = 'bssid', type = 'target', required = true }, { key = 'channel', type = 'port', required = true } ,
   { key = 'client', type = 'text', required = false }, { key = 'ssid', type = 'text', required = false }
 ]
@@ -22642,9 +27229,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.pmkid-attack'
+schema = 2
 phase = 'wireless'
 label = 'PMKID ATTACK'
 summary = 'Clientless PMKID harvesting and offline cracking'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0mon' }, { key = 'bssid', type = 'target', required = false, default = '' } ]
 [[capability.provider]]
 binary = 'hcxdumptool'
@@ -22759,9 +27368,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.deauth-testing'
+schema = 2
 phase = 'wireless'
 label = 'DEAUTH TESTING'
 summary = 'Controlled deauthentication and resilience testing'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0mon' }, { key = 'bssid', type = 'target', required = true }, { key = 'channel', type = 'port', required = true } ,
   { key = 'client', type = 'text', required = false }, { key = 'client_ip', type = 'ip/cidr', required = false }
 ]
@@ -22880,9 +27511,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.evil-twin'
+schema = 2
 phase = 'wireless'
 label = 'EVIL TWIN'
 summary = 'Rogue AP deployment for credential and traffic capture testing'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0' }, { key = 'ssid', type = 'text', required = true } ,
   { key = 'rogue_bssid', type = 'mac', required = false }
 ]
@@ -23012,9 +27665,31 @@ output = 'json'
 network = false
 [[capability]]
 id = 'wireless.wpa-crack'
+schema = 2
 phase = 'wireless'
 label = 'WPA CRACK'
 summary = 'Offline WPA/WPA2-PSK cracking across hash modes'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'cap', type = 'file', required = false, default = '{artifacts}/hs/target_hs-01.cap' }, { key = 'bssid', type = 'target', required = true } ,
   { key = 'ssid', type = 'text', required = false }
 ]
@@ -23129,9 +27804,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.wep-crack'
+schema = 2
 phase = 'wireless'
 label = 'WEP CRACK'
 summary = 'Legacy WEP key recovery via ARP replay and statistical attack'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0mon' }, { key = 'bssid', type = 'target', required = true }, { key = 'channel', type = 'port', required = true } ,
   { key = 'ourmac', type = 'mac', required = false }, { key = 'ssid', type = 'text', required = false }
 ]
@@ -23252,9 +27949,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.wps-attacks'
+schema = 2
 phase = 'wireless'
 label = 'WPS ATTACKS'
 summary = 'WPS Pixie Dust and PIN brute force testing'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0mon' }, { key = 'bssid', type = 'target', required = true }, { key = 'channel', type = 'port', required = true } ,
   { key = 'pin', type = 'text', required = false }
 ]
@@ -23373,9 +28092,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.wpa3-dragonfly'
+schema = 2
 phase = 'wireless'
 label = 'WPA3 DRAGONFLY'
 summary = 'WPA3-SAE Dragonfly and transition mode weakness testing'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0mon' }, { key = 'bssid', type = 'target', required = true } ]
 [[capability.provider]]
 binary = 'tshark'
@@ -23487,9 +28228,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.bt-recon'
+schema = 2
 phase = 'wireless'
 label = 'BLUETOOTH RECON'
 summary = 'Classic Bluetooth device discovery and service enumeration'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'hci0' } ,
   { key = 'btaddr', type = 'mac', required = false }
 ]
@@ -23609,9 +28372,31 @@ output = 'json'
 network = false
 [[capability]]
 id = 'wireless.iot-ble-sweep'
+schema = 2
 phase = 'wireless'
 label = 'IOT BLE SWEEP'
 summary = 'BLE device scanning and GATT characteristic enumeration'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'hci0' } ,
   { key = 'bleaddr', type = 'mac', required = false }
 ]
@@ -23726,9 +28511,31 @@ output = 'json'
 network = false
 [[capability]]
 id = 'wireless.captive-portal'
+schema = 2
 phase = 'wireless'
 label = 'CAPTIVE PORTAL'
 summary = 'Captive portal bypass and credential capture testing'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'url', type = 'url', required = true }, { key = 'iface', type = 'text', required = false, default = 'wlan0' } ,
   { key = 'domain', type = 'domain', required = false }, { key = 'portal_dns', type = 'domain', required = false }
 ]
@@ -23849,9 +28656,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.rogue-dhcp'
+schema = 2
 phase = 'wireless'
 label = 'ROGUE DHCP'
 summary = 'Rogue DHCP and ARP spoofing on wireless segments'
+risk = 'R3'
+noise = 'high'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0' }, { key = 'gw', type = 'target', required = true } ]
 [[capability.provider]]
 binary = 'python3'
@@ -23974,9 +28803,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.wifi-mitm'
+schema = 2
 phase = 'wireless'
 label = 'WIFI MITM'
 summary = 'Wireless man in the middle with traffic and credential capture'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0' }, { key = 'gw', type = 'target', required = true } ,
   { key = 'domain', type = 'domain', required = false }
 ]
@@ -24088,9 +28939,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.packet-analysis'
+schema = 2
 phase = 'wireless'
 label = 'PACKET ANALYSIS'
 summary = 'Deep 802.11 frame analysis for security assessment'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [ { key = 'pcap', type = 'file', required = false, default = '{artifacts}/cap/full_band-01.cap' } ]
 [[capability.provider]]
 binary = 'tshark'
@@ -24209,9 +29082,31 @@ output = 'json'
 network = false
 [[capability]]
 id = 'wireless.spectrum-survey'
+schema = 2
 phase = 'wireless'
 label = 'SPECTRUM SURVEY'
 summary = 'RF spectrum and channel utilization survey'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0mon' } ]
 [[capability.provider]]
 binary = 'airodump-ng'
@@ -24323,9 +29218,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.probe-privacy'
+schema = 2
 phase = 'wireless'
 label = 'PROBE PRIVACY'
 summary = 'Probe request privacy leakage and client tracking assessment'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0mon' } ]
 [[capability.provider]]
 binary = 'tcpdump'
@@ -24439,9 +29356,31 @@ output = 'json'
 network = false
 [[capability]]
 id = 'wireless.isolation-testing'
+schema = 2
 phase = 'wireless'
 label = 'ISOLATION TESTING'
 summary = 'Client isolation and lateral reachability from wireless segment'
+risk = 'R2'
+noise = 'medium'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = false
 inputs = [ { key = 'iface', type = 'text', required = false, default = 'wlan0' }, { key = 'cidr', type = 'ip/cidr', required = true } ,
   { key = 'client_ip', type = 'ip/cidr', required = false }, { key = 'domain', type = 'domain', required = false }, { key = 'gw_ip', type = 'ip/cidr', required = false }
 ]
@@ -24566,9 +29505,31 @@ output = 'lines'
 network = false
 [[capability]]
 id = 'wireless.audit-reporting'
+schema = 2
 phase = 'wireless'
 label = 'AUDIT REPORTING'
 summary = 'Consolidate wireless findings into final audit artifacts'
+risk = 'R0'
+noise = 'silent'
+mitre = ['T1552.004']
+platforms = ['linux']
+privileges = ['none']
+network = true
+requires = []
+provides = ['asset:ap']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [ { key = 'domain', type = 'domain', required = false, default = '' } ]
 [[capability.provider]]
 binary = 'python3'
@@ -24702,9 +29663,31 @@ network = false
 
 [[capability]]
 id = 'ctf.web-app-security'
+schema = 2
 phase = 'ctf'
 label = 'WEB APP SECURITY'
 summary = 'Challenge web targets: content discovery, parameter fuzzing, injection probes and flag extraction'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'target', type = 'url', required = true },
@@ -24957,9 +29940,31 @@ probe = true
 timeout = 60
 [[capability]]
 id = 'ctf.network-recon-service'
+schema = 2
 phase = 'ctf'
 label = 'NETWORK RECON'
 summary = 'Challenge network targets: port discovery, service identification and protocol probing'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'target', type = 'target', required = true },
@@ -25185,9 +30190,31 @@ probe = true
 timeout = 30
 [[capability]]
 id = 'ctf.active-directory'
+schema = 2
 phase = 'ctf'
 label = 'ACTIVE DIRECTORY'
 summary = 'Challenge directory targets: anonymous enumeration, kerberos abuse and credential extraction'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'target', type = 'target', required = true },
@@ -25390,9 +30417,31 @@ probe = true
 timeout = 60
 [[capability]]
 id = 'ctf.mobile-app-security'
+schema = 2
 phase = 'ctf'
 label = 'MOBILE APP SECURITY'
 summary = 'Challenge mobile packages: static analysis, manifest disassembly and embedded flag hunting'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'apk_file', type = 'file', required = true },
@@ -25606,9 +30655,31 @@ probe = true
 timeout = 60
 [[capability]]
 id = 'ctf.cloud-security'
+schema = 2
 phase = 'ctf'
 label = 'CLOUD SECURITY'
 summary = 'Challenge cloud environments: cli enumeration, posture scans and exposed-secret hunting'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'json'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['json', 'text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'cloud_profile', type = 'cloud_profile', required = false, default = 'default' },
@@ -25785,9 +30856,31 @@ probe = true
 timeout = 60
 [[capability]]
 id = 'ctf.reverse-engineering'
+schema = 2
 phase = 'ctf'
 label = 'REVERSE ENGINEERING'
 summary = 'Challenge binaries: structure inspection, disassembly and embedded-string analysis'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'challenge_file', type = 'file', required = true },
@@ -26015,9 +31108,31 @@ probe = true
 timeout = 60
 [[capability]]
 id = 'ctf.binary-exploitation'
+schema = 2
 phase = 'ctf'
 label = 'BINARY EXPLOITATION'
 summary = 'Challenge pwn targets: protection checks, gadget harvesting, offset discovery and exploit crafting'
+risk = 'R4'
+noise = 'screaming'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = false
+native = false
+shell_escape = true
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'challenge_file', type = 'file', required = true },
@@ -26209,9 +31324,31 @@ probe = true
 timeout = 60
 [[capability]]
 id = 'ctf.network-forensics'
+schema = 2
 phase = 'ctf'
 label = 'NETWORK FORENSICS'
 summary = 'Challenge packet captures: protocol dissection, stream reassembly and credential recovery'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'pcap_file', type = 'file', required = true },
@@ -26380,9 +31517,31 @@ probe = true
 timeout = 15
 [[capability]]
 id = 'ctf.digital-forensics'
+schema = 2
 phase = 'ctf'
 label = 'DIGITAL FORENSICS'
 summary = 'Challenge disk and memory images: volume carving, file recovery, registry and artifact analysis'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'evidence_file', type = 'file', required = true },
@@ -26650,9 +31809,31 @@ probe = true
 timeout = 120
 [[capability]]
 id = 'ctf.cryptography'
+schema = 2
 phase = 'ctf'
 label = 'CRYPTO CHALLENGES'
 summary = 'Challenge crypto material: encoding layers, hash cracking, cipher analysis and token decoding'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'token', type = 'ctf_token', required = false },
@@ -26825,9 +32006,31 @@ probe = true
 timeout = 30
 [[capability]]
 id = 'ctf.steganography'
+schema = 2
 phase = 'ctf'
 label = 'STEGO ANALYSIS'
 summary = 'Challenge media files: steganography extraction, metadata sweep and embedded payload carving'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'media_file', type = 'file', required = true },
@@ -26998,9 +32201,31 @@ probe = true
 timeout = 15
 [[capability]]
 id = 'ctf.privilege-escalation'
+schema = 2
 phase = 'ctf'
 label = 'PRIVILEGE ESCALATION'
 summary = 'Challenge host footholds: suid hunting, capability audit, cron and permission misconfiguration analysis'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'priv_dir', type = 'path', required = false },
@@ -27173,9 +32398,31 @@ probe = true
 timeout = 30
 [[capability]]
 id = 'ctf.wireless-iot'
+schema = 2
 phase = 'ctf'
 label = 'WIRELESS IOT'
 summary = 'Challenge wireless targets: capture analysis, handshake cracking and bluetooth enumeration'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'capture_file', type = 'file', required = false },
@@ -27361,9 +32608,31 @@ probe = true
 timeout = 30
 [[capability]]
 id = 'ctf.scripting-misc'
+schema = 2
 phase = 'ctf'
 label = 'SCRIPTING MISC'
 summary = 'Challenge odds and ends: encoding ladders, archive layers, sql archaeology and file identification'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = true
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = false, default = '' },
   { key = 'challenge_file', type = 'file', required = false },
@@ -27606,9 +32875,31 @@ timeout = 30
 
 [[capability]]
 id = 'ctf.flag-scanning'
+schema = 2
 phase = 'ctf'
 label = 'FLAG SCANNING'
 summary = 'Hunt the flag across finished runs: sweep recorded raw evidence for the flag value, its bare prefix, and any flag-shaped string'
+risk = 'R1'
+noise = 'silent'
+mitre = ['T1595']
+platforms = ['linux', 'android', 'windows']
+privileges = ['none']
+network = true
+requires = []
+provides = ['flag']
+parser = 'lines'
+probe = []
+timeout = 900
+retry = 1
+concurrency = 4
+cache_ttl = 0
+artifacts = ['text']
+reversible = false
+cleanup = ''
+chains = []
+opsec_safe = true
+native = false
+shell_escape = false
 inputs = [
   { key = 'flag_format', type = 'ctf_flag_format', required = true },
   { key = 'scan_dir', type = 'path', required = true },

@@ -522,6 +522,9 @@ pub struct Capability {
     pub chains: Vec<CapabilityId>,
     pub opsec_safe: bool,
     pub native: bool,
+    /// True when a capability declares its own pre-escaped single-string args
+    /// (payload/regex data). Execution is still argv-only — never a shell (I1).
+    pub shell_escape: bool,
 }
 
 impl Capability {
@@ -782,16 +785,5 @@ pub struct AuditRecord {
 }
 
 // ── Validation report ──
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct ValidationReport {
-    pub valid: bool,
-    pub errors: Vec<ValidationError>,
-}
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct ValidationError {
-    pub rule: String,
-    pub capability_id: String,
-    pub message: String,
-}
+// ValidationReport / ValidationError / ValidationWarning live in catalog_validate.rs
+// (the authoritative validation module) and are re-exported via core/mod.rs.
